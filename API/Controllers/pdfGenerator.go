@@ -4,11 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/johnfercher/maroto/pkg/consts"
 	"github.com/johnfercher/maroto/pkg/pdf"
-
-	"net/http"
 )
 
-func GeneratePdf(c *fiber.Ctx, w http.ResponseWriter) error {
+func GeneratePdf(c *fiber.Ctx) error {
 
 	//Criando o novo PDF
 	m := pdf.NewMaroto(consts.Landscape, consts.A4)
@@ -17,7 +15,7 @@ func GeneratePdf(c *fiber.Ctx, w http.ResponseWriter) error {
 	m.SetPageMargins(10, 10, 10)
 
 	//Salvando o arquivo
-	err := m.OutputFileAndClose("pdfs/output.pdf")
+	err := m.OutputFileAndClose("pdfs/certificate.pdf")
 
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
@@ -27,9 +25,10 @@ func GeneratePdf(c *fiber.Ctx, w http.ResponseWriter) error {
 	}
 
 	//Download test
-	w.Header().Set("Content-Disposition", "attachment; filename=certificate.pdf")
+	c.Set("Content-type", "attachment; filename=certificate.pdf")
+	c.Response().Header.ContentType()
 
-	w.Header().Set("Content-Type", c.GetRespHeader("Content-Type"))
+	c.Download("../pdfs/certificate.pdf")
 
 	return c.JSON(fiber.Map{
 		"message": "PDF created",

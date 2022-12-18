@@ -7,7 +7,11 @@ function App() {
   const [count, setCount] = useState(0);
 
   const download_pdf = async () => {
-    await axios({ url: "http://localhost:3000/download", method: "GET" });
+    await axios({ url: "http://localhost:3000/download", method: "GET" }).then(
+      (res) => {
+        console.log(res);
+      }
+    );
   };
 
   return (

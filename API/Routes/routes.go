@@ -7,11 +7,13 @@ import (
 )
 
 func Setup(app *fiber.App) {
+	app.Get("/api/User", controllers.User)
+
+	app.Get("/download", controllers.GeneratePdf)
+
 	app.Post("/Register", controllers.Register)
 
 	app.Post("/Login", controllers.Login)
-
-	app.Get("/api/User", controllers.User)
 
 	app.Post("/Logout", controllers.Logout)
 }
