@@ -25,6 +25,7 @@ func GeneratePdf(c *fiber.Ctx, w http.ResponseWriter) error {
 			"message": "Could not create PDF",
 		})
 	}
+
 	//Download test
 	w.Header().Set("Content-Disposition", "attachment; filename=certificate.pdf")
 
@@ -35,12 +36,12 @@ func GeneratePdf(c *fiber.Ctx, w http.ResponseWriter) error {
 	})
 }
 
-func buildHeader(m pdf.Maroto) {
-	m.RegisterHeader(func() {
-		m.Row(50, func() {
-			m.Col(12, func() {
+// func buildHeader(m pdf.Maroto) {
+// 	m.RegisterHeader(func() {
+// 		m.Row(50, func() {
+// 			m.Col(12, func() {
 
-			})
-		})
-	})
-}
+// 			})
+// 		})
+// 	})
+// }
