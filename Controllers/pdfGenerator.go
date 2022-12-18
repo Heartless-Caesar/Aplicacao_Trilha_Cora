@@ -25,7 +25,7 @@ func GeneratePdf(c *fiber.Ctx, w http.ResponseWriter) error {
 			"message": "Could not create PDF",
 		})
 	}
-
+	//Download test
 	w.Header().Set("Content-Disposition", "attachment; filename=certificate.pdf")
 
 	w.Header().Set("Content-Type", c.GetRespHeader("Content-Type"))
