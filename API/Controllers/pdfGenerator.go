@@ -13,7 +13,7 @@ import (
 )
 
 func GeneratePdf(c *fiber.Ctx) error {
-  	Err := godotenv.Load("../.env")
+  	Err := godotenv.Load(".env")
  	
 	if Err != nil {
    	 log.Fatal("Error loading .env file")
