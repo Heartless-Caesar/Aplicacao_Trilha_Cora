@@ -36,6 +36,36 @@
   padding: 2em;
 }
 
+.credential-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-bottom: 20%;
+}
+
+.cred-text {
+  font-size: 2rem;
+  margin-bottom: 10%;
+  margin-left: 10%;
+}
+
 .read-the-docs {
   color: #888;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+  padding: 10%;
+  border-radius: 5px;
+}
+
+#button-div {
+  display: flex;
+  justify-content: center;
+  padding-left: 25%;
 }
