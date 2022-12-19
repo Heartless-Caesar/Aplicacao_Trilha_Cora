@@ -28,11 +28,7 @@ func GeneratePdf(c *fiber.Ctx) error {
 	c.Set("Content-type", "attachment; filename=certificate.pdf")
 	c.Response().Header.ContentType()
 
-	c.Download("../pdfs/certificate.pdf")
-
-	return c.JSON(fiber.Map{
-		"message": "PDF created",
-	})
+	return c.Download("./pdfs/certificate.pdf")
 }
 
 // func buildHeader(m pdf.Maroto) {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import FileDownload from "js-file-download";
 import reactLogo from "./assets/react.svg";
 import axios from "axios";
 import "./App.css";
@@ -7,11 +8,18 @@ function App() {
   const [count, setCount] = useState(0);
 
   const download_pdf = async () => {
-    await axios({ url: "http://localhost:3000/download", method: "GET" }).then(
-      (res) => {
-        console.log(res);
-      }
-    );
+    await axios({
+      url: "http://localhost:3000/download",
+      method: "POST",
+      responseType: "blob",
+    })
+      .then((res) => {
+        console.log(res.data);
+        FileDownload(res.data, "certificate.pdf");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

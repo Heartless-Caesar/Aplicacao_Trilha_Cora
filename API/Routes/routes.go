@@ -9,7 +9,7 @@ import (
 func Setup(app *fiber.App) {
 	app.Get("/api/User", controllers.User)
 
-	app.Get("/download", controllers.GeneratePdf)
+	app.Post("/download", controllers.GeneratePdf)
 
 	app.Post("/Register", controllers.Register)
 
