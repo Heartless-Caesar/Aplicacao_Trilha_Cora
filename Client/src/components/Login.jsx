@@ -1,3 +1,4 @@
+import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { useContext } from "react";
 import { useState } from "react";
@@ -7,6 +8,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { logged, setLogged } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const loginUser = async () => {
     await axios({
@@ -20,6 +22,7 @@ const Login = () => {
       .then((res) => {
         console.log(res);
         setLogged(true);
+        navigate("/Home");
       })
       .catch((err) => {
         console.log(err);
@@ -30,7 +33,7 @@ const Login = () => {
     <div>
       <div className="login-container">
         <div className="credential-div">
-          <label for="username" className="cred-text">
+          <label htmlFor="username" className="cred-text">
             Username
           </label>
           <input
@@ -42,7 +45,7 @@ const Login = () => {
           />
         </div>
         <div className="credential-div">
-          <label for="password" className="cred-text">
+          <label htmlFor="password" className="cred-text">
             Password
           </label>
           <input

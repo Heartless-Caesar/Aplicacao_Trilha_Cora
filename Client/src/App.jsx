@@ -5,14 +5,10 @@ import axios from "axios";
 import "./App.css";
 import { useEffect } from "react";
 import Login from "./components/Login";
-import { createContext } from "react";
-
-export const UserContext = createContext({});
 
 function App() {
-  const [user, setUser] = useState(0);
+  const [user, setUser] = useState("");
   const [logged, setLogged] = useState(false);
-
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
