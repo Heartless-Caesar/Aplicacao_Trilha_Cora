@@ -3,12 +3,23 @@ import FileDownload from "js-file-download";
 import reactLogo from "./assets/react.svg";
 import axios from "axios";
 import "./App.css";
+import { useEffect } from "react";
+import Login from "./components/Login";
+import { createContext } from "react";
+
+export const UserContext = createContext({});
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [user, setUser] = useState(0);
   const [logged, setLogged] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUser(foundUser);
+    }
+  }, []);
 
   const download_pdf = async () => {
     await axios({
@@ -46,37 +57,9 @@ function App() {
           </p>
         </div>
       ) : (
-        <div>
-          <div className="login-container">
-            <div className="credential-div">
-              <label for="username" className="cred-text">
-                Username
-              </label>
-              <input
-                className="input"
-                type="text"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div className="credential-div">
-              <label for="password" className="cred-text">
-                Password
-              </label>
-              <input
-                className="input"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div id="button-div">
-              <button type="button">Login</button>
-            </div>
-          </div>
-        </div>
+        <UserContext.Provider value={{ logged, setLogged }}>
+          <Login />
+        </UserContext.Provider>
       )}
     </div>
   );
