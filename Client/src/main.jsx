@@ -1,21 +1,26 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Register from "./components/Register";
 import ReactDOM from "react-dom/client";
 import { createContext } from "react";
 import React from "react";
 import App from "./App";
 import "./index.css";
-
-export const UserContext = createContext({});
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Register />,
-  },
-  {
-    path: "/Home",
-    element: <App />,
+    element: <Login />,
+    children: [
+      {
+        path: "/Home",
+        element: <App />,
+      },
+      {
+        path: "/Register",
+        element: <Register />,
+      },
+    ],
   },
 ]);
 

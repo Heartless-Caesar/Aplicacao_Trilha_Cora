@@ -61,6 +61,11 @@ const Login = () => {
             Login
           </button>
         </div>
+        <div id="button-div">
+          <button type="button" onClick={() => navigate("/Register")}>
+            Register
+          </button>
+        </div>
       </div>
     </div>
   );
