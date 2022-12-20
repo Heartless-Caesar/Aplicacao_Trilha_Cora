@@ -6,6 +6,10 @@ import "./App.css";
 import { useEffect } from "react";
 import Login from "./components/Login";
 
+/* 
+  TODO Add main page component where the context is provided to all components
+  ! Add context so that user persistence is possible
+*/
 function App() {
   const [user, setUser] = useState("");
   const [logged, setLogged] = useState(false);
