@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	database "app_trilha/Database"
+	models "app_trilha/Models"
 	"fmt"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/johnfercher/maroto/pkg/consts"
 	"github.com/johnfercher/maroto/pkg/pdf"
@@ -10,20 +13,24 @@ import (
 
 func GeneratePdf(c *fiber.Ctx) error {
 	
-	// user_cookie := c.Cookies("user")
+	cookie := c.Cookies("user")
 	
-	// token, err := jwt.Parse(user_cookie, func(token *jwt.Token) (interface{}, error) {
-	// 	 return []byte("secretKey"), nil
-	//  })
-	 
-	// if err != nil {
-	// 	c.Status(fiber.StatusInternalServerError)
-	// 	return c.JSON(fiber.Map{
-	// 		"message" : "Unable to get token",
-	// 	})
-	// }
+	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
 
-	//payload := token.Claims.(jwt.MapClaims)
+	if err != nil {
+		c.Status(fiber.StatusUnauthorized)
+		return c.JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
+	claims := token.Claims.(*jwt.StandardClaims)
+
+	var user models.User
+
+	database.DB.Where("id = ?", claims.Issuer).First(&user)
 
 	//Criando o novo PDF
 	m := pdf.NewMaroto(consts.Landscape, consts.A4)
@@ -32,9 +39,7 @@ func GeneratePdf(c *fiber.Ctx) error {
 	m.SetPageMargins(10, 10, 10)
 
 	//Salvando o arquivo
-	//errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/%s-certificate.pdf", payload["email"].(string)))
-
-	errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/test-certificate.pdf"))
+	errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/certificado_%s.pdf", user.Username))
 
 	if errr != nil {
 		c.Status(fiber.StatusInternalServerError)
@@ -44,15 +49,9 @@ func GeneratePdf(c *fiber.Ctx) error {
 	}
 
 
-	/*
-	  * Added payload with user email for certificate file name
-	*/
-	c.Set( "Content-type", fmt.Sprintf("attachment; filename=test-certificate.pdf"))
-
-	c.Response().Header.ContentType()
-
-	return c.Download("./pdfs/certificate.pdf")
+	return c.Download(fmt.Sprintf("./pdfs/certificate_%s.pdf", user.Username))
 }
+
 
 // func buildHeader(m pdf.Maroto) {
 // 	m.RegisterHeader(func() {

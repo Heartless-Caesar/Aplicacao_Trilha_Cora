@@ -12,7 +12,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const SecretKey = "secretKey"
+const SecretKey string = "secretKey"
 
 func Register(c *fiber.Ctx) error {
 	var data map[string]string
