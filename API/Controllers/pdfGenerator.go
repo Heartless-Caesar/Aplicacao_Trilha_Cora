@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/johnfercher/maroto/pkg/consts"
 	"github.com/johnfercher/maroto/pkg/pdf"
@@ -11,20 +10,20 @@ import (
 
 func GeneratePdf(c *fiber.Ctx) error {
 	
-	user_cookie := c.Cookies("jwt")
+	// user_cookie := c.Cookies("user")
 	
-	token, err := jwt.Parse(user_cookie, func(token *jwt.Token) (interface{}, error) {
-		 return []byte("secretKey"), nil
-	 })
+	// token, err := jwt.Parse(user_cookie, func(token *jwt.Token) (interface{}, error) {
+	// 	 return []byte("secretKey"), nil
+	//  })
 	 
-	if err != nil {
-		c.Status(fiber.StatusInternalServerError)
-		return c.JSON(fiber.Map{
-			"message" : "Unable to get token",
-		})
-	}
+	// if err != nil {
+	// 	c.Status(fiber.StatusInternalServerError)
+	// 	return c.JSON(fiber.Map{
+	// 		"message" : "Unable to get token",
+	// 	})
+	// }
 
-	payload := token.Claims.(jwt.MapClaims)
+	//payload := token.Claims.(jwt.MapClaims)
 
 	//Criando o novo PDF
 	m := pdf.NewMaroto(consts.Landscape, consts.A4)
@@ -33,7 +32,9 @@ func GeneratePdf(c *fiber.Ctx) error {
 	m.SetPageMargins(10, 10, 10)
 
 	//Salvando o arquivo
-	errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/%s-certificate.pdf", payload["email"]))
+	//errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/%s-certificate.pdf", payload["email"].(string)))
+
+	errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/test-certificate.pdf"))
 
 	if errr != nil {
 		c.Status(fiber.StatusInternalServerError)
@@ -46,7 +47,7 @@ func GeneratePdf(c *fiber.Ctx) error {
 	/*
 	  * Added payload with user email for certificate file name
 	*/
-	c.Set( "Content-type", fmt.Sprintf("attachment; filename=%s-certificate.pdf", payload["email"]))
+	c.Set( "Content-type", fmt.Sprintf("attachment; filename=test-certificate.pdf"))
 
 	c.Response().Header.ContentType()
 
