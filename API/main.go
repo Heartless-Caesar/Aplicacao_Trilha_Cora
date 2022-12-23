@@ -3,20 +3,15 @@ package main
 import (
 	database "app_trilha/Database"
 	routes "app_trilha/Routes"
-	"log"
+	configutils "app_trilha/Utils"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// TODO "Error loading .env file"
-	Err := godotenv.Load()
- 	
-	if Err != nil {
-   	 log.Fatal("Error loading .env file")
- 	}
+	configutils.InitEnvConfigs()
 
 	database.Connect()
 
@@ -27,6 +22,8 @@ func main() {
 	}))
 
 	routes.Setup(app)
+	
+	port := fmt.Sprintf(":%s",configutils.EnvConfigs.LocalServerPort)
 
-	app.Listen(":3000")
+	app.Listen(port)
 }

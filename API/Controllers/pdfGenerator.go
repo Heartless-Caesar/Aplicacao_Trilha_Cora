@@ -3,6 +3,7 @@ package controllers
 import (
 	database "app_trilha/Database"
 	models "app_trilha/Models"
+	configutils "app_trilha/Utils"
 	"fmt"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -16,7 +17,7 @@ func GeneratePdf(c *fiber.Ctx) error {
 	cookie := c.Cookies("user")
 	
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(SecretKey), nil
+		return []byte(configutils.EnvConfigs.SecretKey), nil
 	})
 
 	if err != nil {
@@ -49,7 +50,7 @@ func GeneratePdf(c *fiber.Ctx) error {
 	}
 
 
-	return c.Download(fmt.Sprintf("./pdfs/certificate_%s.pdf", user.Username))
+	return c.Download(fmt.Sprintf("./pdfs/certificado_%s.pdf", user.Username))
 }
 
 

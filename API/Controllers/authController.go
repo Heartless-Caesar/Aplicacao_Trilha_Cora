@@ -3,6 +3,7 @@ package controllers
 import (
 	database "app_trilha/Database"
 	models "app_trilha/Models"
+	configutils "app_trilha/Utils"
 
 	"strconv"
 	"time"
@@ -11,8 +12,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 )
-
-const SecretKey string = "secretKey"
 
 func Register(c *fiber.Ctx) error {
 	var data map[string]string
@@ -64,7 +63,7 @@ func Login(c *fiber.Ctx) error {
 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 Dia
 	})
 
-	token, err := claims.SignedString([]byte(SecretKey))
+	token, err := claims.SignedString([]byte(configutils.EnvConfigs.SecretKey))
 
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
@@ -91,7 +90,7 @@ func User(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(SecretKey), nil
+		return []byte(configutils.EnvConfigs.SecretKey), nil
 	})
 
 	if err != nil {
