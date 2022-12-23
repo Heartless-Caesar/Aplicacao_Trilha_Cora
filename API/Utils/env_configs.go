@@ -7,8 +7,8 @@ import (
 )
 
 type EnvConfig struct {
-	LocalServerPort string `mapstructure: "LOCAL_SERVER_PORT"`
-	SecretKey       string `mapstructure: "SECRET_KEY"`
+	LocalServerPort string `mapstructure:"LOCAL_SERVER_PORT"`
+	SecretKey       string `mapstructure:"SECRET_KEY"`
 }
 
 //Call variables from this variable
@@ -17,10 +17,10 @@ var EnvConfigs *EnvConfig
 //Loads the desired env file
 func loadEnvVariables() (config *EnvConfig) {
 	//PATH
-	viper.AddConfigPath("./")
+	viper.AddConfigPath(".")
 
 	//NAME
-	viper.SetConfigName("app.env")
+	viper.SetConfigName("app")
 
 	//TYPE
 	viper.SetConfigType("env")
@@ -39,6 +39,6 @@ func loadEnvVariables() (config *EnvConfig) {
 }
 
 //Initialize this function in main so that env variables are usable in the whole app
-func InitEnvConfigs(){
+func InitEnvConfigs() {
 	EnvConfigs = loadEnvVariables()
 }

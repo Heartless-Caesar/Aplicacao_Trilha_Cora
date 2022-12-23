@@ -4,7 +4,6 @@ import (
 	database "app_trilha/Database"
 	routes "app_trilha/Routes"
 	configutils "app_trilha/Utils"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -22,8 +21,6 @@ func main() {
 	}))
 
 	routes.Setup(app)
-	
-	port := fmt.Sprintf(":%s",configutils.EnvConfigs.LocalServerPort)
 
-	app.Listen(port)
+	app.Listen(configutils.EnvConfigs.LocalServerPort)
 }
