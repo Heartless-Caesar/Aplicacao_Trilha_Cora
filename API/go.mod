@@ -5,11 +5,19 @@ go 1.18
 require github.com/dgrijalva/jwt-go v3.2.0+incompatible
 
 require (
+	github.com/gofiber/fiber v1.13.3 // indirect
+	github.com/gofiber/utils v0.0.9 // indirect
+	github.com/gorilla/schema v1.1.0 // indirect
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gofiber/fiber/v2 v2.40.1 // indirect
+	github.com/gofiber/jwt v0.2.0
+	github.com/gofiber/jwt/v2 v2.2.7
 	github.com/gofiber/jwt/v3 v3.3.4 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
