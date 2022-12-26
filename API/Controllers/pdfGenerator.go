@@ -13,9 +13,9 @@ import (
 )
 
 func GeneratePdf(c *fiber.Ctx) error {
-	
+
 	cookie := c.Cookies("user")
-	
+
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(configutils.EnvConfigs.SecretKey), nil
 	})
@@ -49,10 +49,8 @@ func GeneratePdf(c *fiber.Ctx) error {
 		})
 	}
 
-
 	return c.Download(fmt.Sprintf("./pdfs/certificado_%s.pdf", user.Username))
 }
-
 
 // func buildHeader(m pdf.Maroto) {
 // 	m.RegisterHeader(func() {
