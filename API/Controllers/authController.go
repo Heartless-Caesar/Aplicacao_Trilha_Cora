@@ -86,6 +86,7 @@ func Login(c *fiber.Ctx) error {
 	})
 }
 
+// ? Token validation middleware
 func User(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 
