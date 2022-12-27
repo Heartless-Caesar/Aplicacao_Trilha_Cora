@@ -4,18 +4,9 @@ import Login_screen from "./pages/login_screen";
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <View>
       <Login_screen />
       <StatusBar style="auto" />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F9FBFC",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

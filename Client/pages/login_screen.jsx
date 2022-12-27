@@ -40,7 +40,7 @@ const Login_screen = () => {
         placeholder="Password"
         value={password}
         setValue={setPassword}
-        secureTextEntry={true}
+        secureTextEntry
       />
       <CustomButton onPress={onSignInPress} text="Sign In" />
     </View>
