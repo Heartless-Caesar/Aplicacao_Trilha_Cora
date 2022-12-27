@@ -14,10 +14,12 @@ const Login_screen = () => {
         <TextInput
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
         />
         <TextInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
         />
       </View>
     </View>
