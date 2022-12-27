@@ -54,7 +54,6 @@ const Register_screen = () => {
         setValue={setCheckPassword}
         secureTextEntry={true}
       />
-
       <CustomButton onPress={onRegisterPress} text="Register" />
     </View>
   );
