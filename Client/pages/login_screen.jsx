@@ -31,7 +31,7 @@ const Login_screen = ({ navigation }) => {
     })
       .then((res) => {
         console.log(res.data);
-        navigation.navigate("Home");
+        navigation.replace("Home");
       })
       .catch((err) => {
         console.log(err);
@@ -39,7 +39,7 @@ const Login_screen = ({ navigation }) => {
   };
 
   const onRegisterPress = () => {
-    navigation.navigate("Register");
+    navigation.replace("Register");
   };
 
   return (
