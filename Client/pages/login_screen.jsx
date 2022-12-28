@@ -12,23 +12,34 @@ import loginStyle from "../styles/login_style";
 import Logo from "../assets/caminho-de-cora-black.png";
 import CustomInput from "../components/customInput";
 import CustomButton from "../components/custom_button";
+import axios from "axios";
 
 // TODO Finish login screen
-const Login_screen = () => {
+const Login_screen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { height } = useWindowDimensions();
 
-  const onSignInPress = () => {
-    console.warn("Sign in pressed");
+  const onSignInPress = async () => {
+    await axios({
+      url: "http://localhost:3000/Login",
+      method: "POST",
+      data: {
+        username: username,
+        password: password,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onRegisterPress = () => {
-    // if (password != checkPassword) {
-    //   toast.show("Passwords do not match", toast.LONG, toast.TOP);
-    //   return;
-    // }
-    console.warn("Register pressed");
+    navigation.navigate("Register");
   };
 
   return (
@@ -51,15 +62,7 @@ const Login_screen = () => {
         setValue={setPassword}
       />
       <CustomButton onPress={onSignInPress} text="Sign In" />
-      <CustomButton
-        onPress={
-          {
-            /* Navigate to Register page */
-          }
-        }
-        text="Register"
-        type="TERTIARY"
-      />
+      <CustomButton onPress={onRegisterPress} text="Register" type="TERTIARY" />
     </View>
   );
 };

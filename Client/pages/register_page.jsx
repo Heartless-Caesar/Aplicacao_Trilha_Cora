@@ -1,18 +1,11 @@
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  ImageBackground,
-  Image,
-  useWindowDimensions,
-} from "react-native";
+import { View, Image, useWindowDimensions } from "react-native";
 import React, { useState } from "react";
 import loginStyle from "../styles/login_style";
 import Logo from "../assets/caminho-de-cora-black.png";
 import CustomInput from "../components/customInput";
 import CustomButton from "../components/custom_button";
 import toast from "react-native-simple-toast";
+import axios from "axios";
 
 const Register_screen = () => {
   const [username, setUsername] = useState("");
@@ -20,12 +13,32 @@ const Register_screen = () => {
   const [checkPassword, setCheckPassword] = useState("");
   const { height } = useWindowDimensions();
 
-  const onRegisterPress = () => {
+  const onRegisterPress = async () => {
     if (password != checkPassword) {
-      toast.show("Passwords do not match", toast.LONG, toast.TOP);
+      toast.show("As senhas não são iguais", toast.LONG, toast.TOP);
       return;
     }
-    console.warn("Register pressed");
+
+    await axios({
+      url: "http://localhost:3000/Register",
+      method: "POST",
+      data: {
+        username: username,
+        password: password,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        toast.show("Cadastrado com sucesso", toast.LONG, toast.TOP);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.show(
+          "Não foi possível realizar o cadastro",
+          toast.LONG,
+          toast.TOP
+        );
+      });
   };
 
   return (
@@ -59,4 +72,4 @@ const Register_screen = () => {
   );
 };
 
-export default Login_screen;
+export default Register_screen;
