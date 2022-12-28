@@ -8,9 +8,11 @@ const input_style = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginVertical: 5,
+    marginVertical: 20,
   },
-  input: {},
+  input: {
+    padding: 10,
+  },
 });
 
 export default input_style;

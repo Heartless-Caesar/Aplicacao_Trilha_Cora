@@ -4,7 +4,7 @@ const login = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
   },
   logo: {
     width: "70%",

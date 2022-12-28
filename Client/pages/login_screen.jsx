@@ -23,6 +23,14 @@ const Login_screen = () => {
     console.warn("Sign in pressed");
   };
 
+  const onRegisterPress = () => {
+    // if (password != checkPassword) {
+    //   toast.show("Passwords do not match", toast.LONG, toast.TOP);
+    //   return;
+    // }
+    console.warn("Register pressed");
+  };
+
   return (
     <View style={loginStyle.container}>
       <Image
@@ -41,8 +49,18 @@ const Login_screen = () => {
         value={password}
         setValue={setPassword}
         secureTextEntry
+        keyboardType="default"
       />
       <CustomButton onPress={onSignInPress} text="Sign In" />
+      <CustomButton
+        onPress={
+          {
+            /* Navigate to Register page */
+          }
+        }
+        text="Registerr"
+        type="TERTIARY"
+      />
     </View>
   );
 };
