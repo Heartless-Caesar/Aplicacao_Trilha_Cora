@@ -45,11 +45,10 @@ const Login_screen = () => {
         setValue={setUsername}
       />
       <CustomInput
+        secureTextEntry={true}
         placeholder="Password"
         value={password}
         setValue={setPassword}
-        secureTextEntry
-        keyboardType="default"
       />
       <CustomButton onPress={onSignInPress} text="Sign In" />
       <CustomButton
@@ -58,7 +57,7 @@ const Login_screen = () => {
             /* Navigate to Register page */
           }
         }
-        text="Registerr"
+        text="Register"
         type="TERTIARY"
       />
     </View>

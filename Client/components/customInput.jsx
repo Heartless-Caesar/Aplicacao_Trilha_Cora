@@ -6,6 +6,7 @@ const CustomInput = (props) => {
   return (
     <View style={input_style.container}>
       <TextInput
+        secureTextEntry={props.secureTextEntry}
         style={input_style.input}
         placeholder={props.placeholder}
         value={props.value}

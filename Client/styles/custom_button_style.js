@@ -5,7 +5,7 @@ const button_style = StyleSheet.create({
     width: 400,
     maxWidth: 400,
     padding: 15,
-    marginVertical: 20,
+    marginVertical: 5,
     alignItems: "center",
     alignSelf: "stretch",
     borderRadius: 5,
@@ -18,8 +18,7 @@ const button_style = StyleSheet.create({
     backgroundColor: "#FFCC80",
   },
   container_TERTIARY: {
-    borderWidth: 1,
-    borderColor: "#000000",
+    backgroundColor: "#FFCC80",
   },
 });
 
