@@ -8,8 +8,10 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/johnfercher/maroto/pkg/color"
 	"github.com/johnfercher/maroto/pkg/consts"
 	"github.com/johnfercher/maroto/pkg/pdf"
+	"github.com/johnfercher/maroto/pkg/props"
 )
 
 func GeneratePdf(c *fiber.Ctx) error {
@@ -37,7 +39,9 @@ func GeneratePdf(c *fiber.Ctx) error {
 	m := pdf.NewMaroto(consts.Landscape, consts.A4)
 
 	//Valores das margens
-	m.SetPageMargins(10, 10, 10)
+	m.SetPageMargins(20, 10, 20)
+
+	buildHeader(m)
 
 	//Salvando o arquivo
 	errr := m.OutputFileAndClose(fmt.Sprintf("pdfs/certificado_%s.pdf", user.Username))
@@ -52,12 +56,39 @@ func GeneratePdf(c *fiber.Ctx) error {
 	return c.Download(fmt.Sprintf("./pdfs/certificado_%s.pdf", user.Username))
 }
 
-// func buildHeader(m pdf.Maroto) {
-// 	m.RegisterHeader(func() {
-// 		m.Row(50, func() {
-// 			m.Col(12, func() {
+func buildHeader(m pdf.Maroto) {
+	m.RegisterHeader(func() {
+		m.Row(50, func() {
+			//Imagem do header
+			m.Col(12, func() {
+				err := m.FileImage("../Assets/caminho-de-cora-black.png", props.Rect{
+					Center:  true,
+					Percent: 75,
+				})
 
-// 			})
-// 		})
-// 	})
-// }
+				if err != nil {
+					fmt.Print("Something went wrong in the header image creation", err)
+
+				}
+			})
+		})
+
+		//Primeira linha após a imagem
+		m.Row(10, func() {
+			m.Col(12, func() {
+				m.Text("A Associação Caminho de Cora Coralina certifica que:", props.Text{
+					Top:   3,
+					Align: consts.Center,
+				})
+			})
+		})
+	})
+}
+
+func getNameSigningColor(m pdf.Maroto, c *fiber.Ctx) color.Color {
+	return color.Color{
+		Red:   199,
+		Green: 150,
+		Blue:  114,
+	}
+}
