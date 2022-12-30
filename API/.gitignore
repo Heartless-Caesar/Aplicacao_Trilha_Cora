@@ -1,3 +1,4 @@
 node_modules
 .env
-*.sql
+Queries.sql
+development.db
