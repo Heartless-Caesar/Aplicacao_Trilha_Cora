@@ -2,6 +2,10 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const { sequelize } = require("./models/index.js");
+const { auth_router } = require("./routes/auth_routes.js");
+
+//Auth endpoints
+app.use(auth_router);
 
 const start = async () => {
   try {
