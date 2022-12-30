@@ -4,6 +4,7 @@ const port = process.env.PORT || 3000;
 const { sequelize } = require("./models/index.js");
 const { auth_router } = require("./routes/auth_routes.js");
 require("dotenv").config();
+
 //Auth endpoints
 app.use(auth_router);
 
