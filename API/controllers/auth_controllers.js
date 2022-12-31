@@ -10,7 +10,7 @@ const register_user = async (req, res) => {
     if (!username || !password || !email) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .JSON({ Message: "Por favor insira todas as credenciais" })
+            .json({ Message: "Por favor insira todas as credenciais" })
     }
 
     const hashed_password = await bcrypt.hash(
@@ -27,7 +27,7 @@ const register_user = async (req, res) => {
     if (!new_user) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .JSON({ Message: "Falha ao tentar criar o usuário" })
+            .json({ Message: "Falha ao tentar criar o usuário" })
     }
 
     const token = jwt.sign({ id: new_user.id }, process.env.JWT_SECRET, {
@@ -48,7 +48,7 @@ const login_user = async (req, res) => {
     if (!found_user) {
         return res
             .staus(StatusCodes.NOT_FOUND)
-            .JSON({ Message: "Usuario não encontrado" })
+            .json({ Message: "Usuario não encontrado" })
     }
 
     const check_password = await bcrypt.compare(password, found_user.password)
@@ -56,7 +56,7 @@ const login_user = async (req, res) => {
     if (!check_password) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .JSON({ Message: "Senha inserida incorreta" })
+            .json({ Message: "Senha inserida incorreta" })
     }
 
     const token = jwt.sign({ id: found_user.id }, process.env.JWT_SECRET, {
