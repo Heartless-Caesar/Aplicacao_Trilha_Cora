@@ -2,7 +2,7 @@ require("dotenv").config();
 
 module.exports = {
   development: {
-    storage: "development.db",
+    storage: "dev.db",
     dialect: "sqlite",
   },
   test: {

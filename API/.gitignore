@@ -1,4 +1,4 @@
 node_modules
 .env
 Queries.sql
-development.db
+dev.db
