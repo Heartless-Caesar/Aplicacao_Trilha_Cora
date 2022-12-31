@@ -1,5 +1,5 @@
-require("dotenv").config();
+require("dotenv").config()
 
-const base_url = process.env.base_url;
+const base_url = process.env.BASE_URL
 
-module.exports = { base_url };
+module.exports = { base_url }
