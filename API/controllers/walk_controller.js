@@ -17,10 +17,12 @@ const create_walk = async (req, res) => {
 
     console.log(prev_walk);
 
+    // TODO Fix Date format for Postgres
+    // * Other than this date problem everything works ok
     await Walk.create({
       start_local: prev_walk.dataValues.finish_local,
       start_time: prev_walk.dataValues.finish_time,
-      start_date: prev_walk.dataValues.start_date,
+      start_date: prev_walk.dataValues.finish_date,
       UserId: req.user.id,
     });
 
