@@ -74,6 +74,20 @@ const get_all_user_walks = async (req, res) => {
   res.status(StatusCodes.OK).json({ Entries: all_entries });
 };
 
+const get_single_walk = async (req, res) => {
+  const { id } = req.params;
+
+  const walk = await Walk.findOne({ where: { id: id } });
+
+  if (!walk) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ Message: `Item de id ${id} nao encontrado` });
+  }
+
+  res.status(StatusCodes.OK).json({ Item: walk });
+};
+
 const delete_walk = async (req, res) => {
   const { id } = req.params;
 
@@ -90,4 +104,10 @@ const delete_walk = async (req, res) => {
   res.status(StatusCodes.OK).json({ Message: `Element of id ${id} deleted` });
 };
 
-module.exports = { create_walk, finish_walk, get_all_user_walks, delete_walk };
+module.exports = {
+  create_walk,
+  finish_walk,
+  get_all_user_walks,
+  delete_walk,
+  get_single_walk,
+};
