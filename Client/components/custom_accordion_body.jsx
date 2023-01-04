@@ -1,3 +1,4 @@
+import custom_accordion_title_styles from "../styles/custom_accordion_title_style";
 import { View, Text } from "react-native";
 import React from "react";
 
