@@ -4,6 +4,7 @@ import Login_screen from "./pages/login_screen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Register_screen from "./pages/register_page";
+import Homepage from "./pages/home_page";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +15,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={<Login_screen />} />
         <Stack.Screen name="Register" component={<Register_screen />} />
+        <Stack.Screen name="Home" component={<Homepage />} />
       </Stack.Navigator>
     </NavigationContainer>
   );

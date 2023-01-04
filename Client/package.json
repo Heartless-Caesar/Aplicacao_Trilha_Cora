@@ -18,6 +18,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-accordion-list-view": "^2.0.0",
     "react-native-simple-toast": "^2.0.0",
     "react-native-web": "~0.18.9"
   },
