@@ -2,10 +2,14 @@ const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
 const { options } = require("../config/pdf_options");
-const partial = fs.readFileSync(path.join(`../assets/partial_cert.html`));
-const complete = fs.readFileSync(path.join(`../assets/complete_cert.html`));
+const partial = fs.readFileSync(
+  path.join(`${__dirname}/../assets/partial_cert.html`)
+);
+const complete = fs.readFileSync(
+  path.join(`${__dirname}/../assets/complete_cert.html`)
+);
 
-const generate_partial_trial_cert = async (req, res) => {
+const generate_trial_cert = async (req, res) => {
   const { name, start_local, start_time, finish_local, finish_time, type } =
     req.query;
   const document = {};
@@ -53,3 +57,5 @@ const generate_partial_trial_cert = async (req, res) => {
       console.log(`Output error ${error}`);
     });
 };
+
+module.exports = { generate_trial_cert };

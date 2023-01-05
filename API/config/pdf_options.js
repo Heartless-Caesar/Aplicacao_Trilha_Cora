@@ -1,7 +1,7 @@
 const options = {
   format: "A4",
   orientation: "landscape",
-  border: "5mm",
+  border: "10mm",
   header: {
     height: "10mm",
     contents:
