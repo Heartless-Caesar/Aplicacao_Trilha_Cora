@@ -1,7 +1,7 @@
 const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
-
+const { options } = require("../config/pdf_options");
 const partial = fs.readFileSync(path.join(`../assets/partial_cert.html`));
 const complete = fs.readFileSync(path.join(`../assets/complete_cert.html`));
 
@@ -20,6 +20,8 @@ const generate_partial_trial_cert = async (req, res) => {
         start_time: start_time,
         finish_time: finish_time,
       },
+      path: "../output",
+      type: "Stream",
     };
   } else {
     document = {
@@ -31,8 +33,23 @@ const generate_partial_trial_cert = async (req, res) => {
         start_time: start_time,
         finish_time: finish_time,
       },
+      path: `../output_files/${name}_certificate.pdf`,
+      type: "Stream",
     };
   }
 
-  pdf.create(document, options);
+  return pdf
+    .create(document, options)
+    .then(async (res) => {
+      console.log("Criação de PDF sucedida");
+      // * Envio de email para medico
+      // * Parametros: Diretorio & Nome do arquivo
+      //TODO: Adicionar parametro para email do usuario correspondente ao codigo
+      await enviarEmail(`../output_files/`, `${name}_certificate.pdf`);
+      console.log(res);
+    })
+    .catch(async (error) => {
+      console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
+      console.log(`Output error ${error}`);
+    });
 };
