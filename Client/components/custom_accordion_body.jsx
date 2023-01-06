@@ -3,6 +3,7 @@ import dropdown_styles from "../styles/dropdown_styles";
 import { View, Text, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
+import formatDate from "../utils/get_current_date";
 
 const CustomBody = ({
   date,
@@ -38,9 +39,8 @@ const CustomBody = ({
 
   const generate_pdf = async () => {
     await axios({
-      url: "http://localhost:3000/all_walks",
+      url: "http://localhost:3000/download_cert",
       method: "GET",
-      responseType: "application/json",
       params: {
         start_local: start_local,
         start_time: start_time,
@@ -48,11 +48,11 @@ const CustomBody = ({
         finish_time: finish_time,
         type: value,
         start_date: date,
-        finish_date: f_date,
+        finish_date: formatDate(new Date()),
       },
     })
       .then((res) => {
-        setItems(res.data);
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
