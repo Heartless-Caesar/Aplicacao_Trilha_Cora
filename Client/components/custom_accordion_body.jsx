@@ -38,6 +38,8 @@ const CustomBody = ({
   };
 
   const generate_pdf = async () => {
+    const end_date = formatDate(new Date());
+
     await axios({
       url: "http://localhost:3000/download_cert",
       method: "GET",
@@ -48,7 +50,7 @@ const CustomBody = ({
         finish_time: finish_time,
         type: value,
         start_date: date,
-        finish_date: formatDate(new Date()),
+        finish_date: end_date,
       },
     })
       .then((res) => {
