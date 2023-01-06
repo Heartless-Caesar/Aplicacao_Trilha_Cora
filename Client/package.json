@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/native": "^6.1.1",
     "@react-navigation/native-stack": "^6.9.7",
@@ -19,6 +20,7 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-accordion-list-view": "^2.0.0",
+    "react-native-element-dropdown": "^2.5.3",
     "react-native-simple-toast": "^2.0.0",
     "react-native-web": "~0.18.9"
   },

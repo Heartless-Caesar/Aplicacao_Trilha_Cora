@@ -15,18 +15,6 @@ const Homepage = () => {
         UIManager.setLayoutAnimationEnabledExperimental(true);
       }
     }
-
-    await axios({
-      url: "http://localhost:3000/all_walks",
-      method: "GET",
-      responseType: "application/json",
-    })
-      .then((res) => {
-        setItems(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }, []);
 
   return (

@@ -18,7 +18,7 @@ const generate_trial_cert = async (req, res) => {
     document = {
       html: partial,
       data: {
-        name: name,
+        name: req.user.name,
         start_local: start_local,
         finish_local: finish_local,
         start_time: start_time,
