@@ -62,7 +62,7 @@ const Login_screen = ({ navigation }) => {
         setValue={setPassword}
       />
       <CustomButton onPress={onSignInPress} text="Sign In" />
-      <CustomButton onPress={onRegisterPress} text="Register" type="TERTIARY" />
+      <CustomButton onPress={onRegisterPress} text="Cadastre-se" type="TERTIARY" />
     </View>
   );
 };

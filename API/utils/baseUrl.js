@@ -1,4 +1,4 @@
-require("dotenv").config()
+require('dotenv').config()
 
 const base_url = process.env.BASE_URL
 
