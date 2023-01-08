@@ -79,6 +79,11 @@ const login_user = async (req, res) => {
         }
     )
 
+    res.cookie('jwt', refresh_token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+    })
+
     res.status(StatusCodes.OK).json({ Message: 'Usuario logado', token: token })
 }
 
