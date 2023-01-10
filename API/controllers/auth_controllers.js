@@ -63,7 +63,7 @@ const login_user = async (req, res) => {
             .json({ Message: 'Senha inserida incorreta' })
     }
 
-    const token = jwt.sign(
+    const access_token = jwt.sign(
         { id: found_user.id, username: found_user.username },
         process.env.JWT_SECRET,
         {
@@ -79,12 +79,17 @@ const login_user = async (req, res) => {
         }
     )
 
-    res.cookie('jwt', refresh_token, {
+    res.cookie('jwt', access_token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
     })
 
-    res.status(StatusCodes.OK).json({ Message: 'Usuario logado', token: token })
+    res.status(StatusCodes.OK).json({
+        Message: 'Usuario logado',
+        User: found_user,
+    })
 }
 
-module.exports = { register_user, login_user }
+const logout = async (req, res) => {}
+
+module.exports = { register_user, login_user, logout }
