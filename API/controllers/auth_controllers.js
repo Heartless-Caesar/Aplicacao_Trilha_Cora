@@ -1,8 +1,9 @@
-const { sequelize, User, Walk } = require("../models");
+const { User } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { sign_jwt, verify_jwt } = require("../utils/jwt_utils");
+const { create_session } = require("../utils/session_utils");
 require("dotenv").config();
 
 const register_user = async (req, res) => {
@@ -28,8 +29,6 @@ const register_user = async (req, res) => {
       .json({ Message: "Falha ao tentar criar o usuário" });
   }
 
-  const token = sign_jwt({ id: new_user.id, username: new_user.username });
-
   res.status(StatusCodes.CREATED).json({
     Message: "Usuário criado",
   });
@@ -54,10 +53,13 @@ const login_user = async (req, res) => {
       .json({ Message: "Senha inserida incorreta" });
   }
 
-  const access_token = sign_jwt({
-    id: found_user.id,
-    username: found_user.username,
-  });
+  const access_token = sign_jwt(
+    {
+      id: found_user.id,
+      username: found_user.username,
+    },
+    "5s"
+  );
 
   const refresh_token = jwt.sign(
     { id: found_user.id, username: found_user.username },
@@ -66,6 +68,10 @@ const login_user = async (req, res) => {
       expiresIn: "1y",
     }
   );
+
+  const created_session = await create_session(found_user.username);
+
+  console.log(created_session);
 
   res.cookie("access_token", access_token, {
     httpOnly: true,
@@ -85,6 +91,11 @@ const login_user = async (req, res) => {
 
 const logout = async (req, res) => {
   res.cookie("access_token", "", {
+    maxAge: 0,
+    httpOnly: true,
+  });
+
+  res.cookie("refresh_token", "", {
     maxAge: 0,
     httpOnly: true,
   });

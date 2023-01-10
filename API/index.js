@@ -18,15 +18,15 @@ app.use(cookie_parser());
 
 app.use(body_parser.json());
 
-app.use(deserialize_user);
-
-//Auth endpoints
 app.use(auth_router);
 
-//Start and finish walks endpoints
-app.use(auth_middleware, walk_router);
+app.use(deserialize_user);
+//Auth endpoints
 
-app.use(auth_middleware, pdf_router);
+//Start and finish walks endpoints
+app.use(walk_router);
+
+app.use(pdf_router);
 
 const start = async () => {
   try {

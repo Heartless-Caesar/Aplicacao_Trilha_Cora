@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const sign_jwt = (payload) => {
+const sign_jwt = (payload, expires) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: expires,
   });
 };
 
@@ -12,7 +12,7 @@ const verify_jwt = (token) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return { payload: decoded, expired: false };
   } catch (error) {
-    return { payload: null, expired: error.message.include("jwt expired") };
+    return { payload: null, expired: error.message.includes("jwt expired") };
   }
 };
 

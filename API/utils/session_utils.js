@@ -2,17 +2,17 @@ const { StatusCodes } = require("http-status-codes");
 const { session } = require("../models");
 
 const get_session = async (sessionId) => {
-  const session = await session.findOne({ where: { id: sessionId } });
+  const f_session = await session.findOne({ where: { id: sessionId } });
 
-  console.log(session);
+  console.log(f_session);
 
   return session && session.valid ? session : null;
 };
 
 const invalidate_session = async (sessionId) => {
-  const session = await session.findOne({ where: { id: sessionId } });
+  const f_session = await session.findOne({ where: { id: sessionId } });
 
-  if (!session) {
+  if (!f_session) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ Message: "Inavlid session" });
@@ -22,15 +22,15 @@ const invalidate_session = async (sessionId) => {
 
   await session.save();
 
-  console.log(session);
+  console.log(f_session);
 
-  return session;
+  return f_session;
 };
 
 const create_session = async (username) => {
   const new_session = await session.create({ username: username });
 
-  if (!create_session) {
+  if (!new_session) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ Message: "Erro ao criar nova sessao" });
