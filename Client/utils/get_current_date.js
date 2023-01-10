@@ -1,3 +1,4 @@
+//Adds a 0 before a single digit number
 function padTo2Digits(num) {
   return num.toString().padStart(2, "0");
 }

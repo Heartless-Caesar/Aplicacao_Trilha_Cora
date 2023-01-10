@@ -17,6 +17,7 @@ const Homepage = () => {
     }
   }, []);
 
+
   return (
     <View>
       <View style={home_styles.container}>

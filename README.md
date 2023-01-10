@@ -2,37 +2,29 @@
 
 ## Elementos necessários
 
-Para executar este código é necessário ter Go instalado em sua máquina.
+Para executar este código é necessário ter Node JS instalado em sua máquina.
 
-Primeiramente vá para o endereço https://go.dev/doc/install em que é possível encontrar
-o download apropriado para seu SO de preferência.
+Para ter acesso a diferentes versões do Node JS é recomendado utilizar o Node Version Manager.
+Esta ferramenta possibilita instalar diferentes versões do Node JS e trocar de versão de acordo 
+com o projeto que quer executar em sua máquina.
 
 ### Linux:
-
-Para Linux é possível encontrar Golang nos repositórios de sua distribuição de preferência e após instalar utilizar o
-comando para verificar se foi instalado corretamente:
-
 - Ubuntu:
 
 ```Bash
-sudo apt install golang-go
-go -v
+node -v
 ```
 
 - Fedora:
 
 ```Bash
-sudo dnf install golang-go
-go -v
+node -v
 ```
 
 ### Mac
 
-No link acima tem o pkg apropriado para installer Go em sua máquina com MacOS.
-Posteriormente utilize o comando abaixo para verificar se a Golang foi isntalada corretamente.
-
 ```zsh
-go -v
+node -v
 ```
 
 ### Windows:
@@ -41,15 +33,15 @@ No Windows basta baixar o executável que ele irá te guiar durante toda a insta
 
 ## Executando a aplicação
 
-Ao realizar o download dos arquivos verifique se os arquivos **god.mod** e **go.sum** estão presentes,
-caso estejam execute o comando:
+Ao realizar o download dos arquivos verifique se o arquivo package.json está presente,
+caso esteja execute o comando:
 
 ```Bash
-go mod download
+npm install
 ```
 
 Após buscar todas as dependências basta utilizar o comando:
 
 ```Bash
-go run main.go
+npm run dev
 ```
