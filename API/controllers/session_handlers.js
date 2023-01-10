@@ -4,6 +4,8 @@ const { session } = require("../models");
 const get_session = async (sessionId) => {
   const session = await session.findOne({ where: { id: sessionId } });
 
+  console.log(session);
+
   return session && session.valid ? session : null;
 };
 
@@ -20,6 +22,8 @@ const invalidate_session = async (sessionId) => {
 
   await session.save();
 
+  console.log(session);
+
   return session;
 };
 
@@ -31,6 +35,8 @@ const create_session = async (username) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ Message: "Erro ao criar nova sessao" });
   }
+
+  console.log(new_session);
 
   return new_session;
 };

@@ -14,4 +14,6 @@ auth_router.route(`/Login`).post(login_user);
 
 auth_router.route("/Logout").post(require_user, logout);
 
+//auth_router.route("/Session").get
+
 module.exports = { auth_router };
