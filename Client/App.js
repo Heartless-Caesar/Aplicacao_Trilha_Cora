@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+	 <NavigationContainer>
       <StatusBar style="auto" />
       <Stack.Navigator
         initialRouteName="Login"
@@ -23,3 +23,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+

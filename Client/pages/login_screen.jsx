@@ -49,7 +49,6 @@ const Login_screen = ({ navigation }) => {
         style={[loginStyle.logo, { height: height * 0.3 }]}
         resizeMode="contain"
       />
-
       <CustomInput
         placeholder="Username"
         value={username}
