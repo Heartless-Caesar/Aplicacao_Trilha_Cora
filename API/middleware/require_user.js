@@ -1,13 +1,13 @@
-const { StatusCodes } = require("http-status-codes");
+const { StatusCodes } = require('http-status-codes')
 
 const require_user = (req, res, next) => {
-  if (!req.user) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ Message: "Invalid session" });
-  }
+    if (!req.user) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ Message: 'No req.user header' })
+    }
 
-  return next();
-};
+    return next()
+}
 
-module.exports = { require_user };
+module.exports = { require_user }

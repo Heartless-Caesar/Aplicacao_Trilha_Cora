@@ -12,7 +12,7 @@ const complete = fs.readFileSync(
 const generate_trial_cert = async (req, res) => {
     const { name, start_local, start_time, finish_local, finish_time, type } =
         req.query
-    const document = {}
+    let document = {}
 
     if (type == 'partial') {
         document = {
