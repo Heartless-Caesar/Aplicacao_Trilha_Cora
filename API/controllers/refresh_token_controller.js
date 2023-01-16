@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const { sign_jwt, verify_jwt } = require('../utils/jwt_utils')
 require('dotenv').config()
 
-const register_user = async (req, res) => {
+const handle_refresh_token = async (req, res) => {
     const { username, password, email } = req.body
 
     if (!username || !password || !email) {

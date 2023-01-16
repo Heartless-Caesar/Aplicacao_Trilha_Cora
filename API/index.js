@@ -9,8 +9,6 @@ const { sequelize } = require('./models/index.js')
 const { auth_router } = require('./routes/auth_routes.js')
 const { walk_router } = require('./routes/walk_routes.js')
 const { pdf_router } = require('./routes/pdf_routes.js')
-const { deserialize_user } = require('./middleware/deserialize_user.js')
-const { require_user } = require('./middleware/require_user.js')
 require('dotenv').config()
 
 app.use(cors())
@@ -19,16 +17,15 @@ app.use(cookie_parser())
 
 app.use(body_parser.json())
 
+//Auth endpoints
 app.use(auth_router)
 
-app.use(deserialize_user)
-
-//Auth endpoints
+app.use(auth_middleware)
 
 //Start and finish walks endpoints
-app.use(require_user, walk_router)
+app.use(walk_router)
 
-app.use(require_user, pdf_router)
+app.use(pdf_router)
 
 const start = async () => {
     try {

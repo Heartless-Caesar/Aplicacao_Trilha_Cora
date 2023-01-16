@@ -1,6 +1,5 @@
 const express = require('express')
 const auth_router = express.Router()
-const { base_url } = require('../utils/baseUrl')
 const {
     register_user,
     login_user,
