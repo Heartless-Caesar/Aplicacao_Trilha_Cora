@@ -73,7 +73,7 @@ const login_user = async (req, res) => {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: '1d',
+            expiresIn: '1y',
         }
     )
 
@@ -96,15 +96,7 @@ const login_user = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-    res.cookie('access_token', '', {
-        maxAge: 0,
-        httpOnly: true,
-    })
-
-    res.cookie('refresh_token', '', {
-        maxAge: 0,
-        httpOnly: true,
-    })
+    // ! Implement logout controller and endpoint
 
     res.status(StatusCodes.OK).json({ Message: 'User logged out' })
 }

@@ -9,6 +9,7 @@ const { sequelize } = require('./models/index.js')
 const { auth_router } = require('./routes/auth_routes.js')
 const { walk_router } = require('./routes/walk_routes.js')
 const { pdf_router } = require('./routes/pdf_routes.js')
+const { refresh_router } = require('./routes/refresh_route.js')
 require('dotenv').config()
 
 app.use(cors())
@@ -20,6 +21,9 @@ app.use(body_parser.json())
 //Auth endpoints
 app.use(auth_router)
 
+app.use(refresh_router)
+
+//Checks for auth header
 app.use(auth_middleware)
 
 //Start and finish walks endpoints
