@@ -22,6 +22,8 @@ app.use(auth_middleware, walk_router);
 
 app.use(auth_middleware, pdf_router);
 
+
+// * Create entities according to db tables
 const start = async () => {
   try {
     await sequelize.sync();
