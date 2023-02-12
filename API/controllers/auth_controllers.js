@@ -1,4 +1,4 @@
-const { sequelize, User, Walk } = require('../models')
+const { sequelize, User, Walk } = require('../config/models')
 const { StatusCodes } = require('http-status-codes')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')

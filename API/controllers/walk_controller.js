@@ -1,4 +1,4 @@
-const { Walk } = require('../models/index')
+const { Walk } = require('../config/models/index')
 const { StatusCodes } = require('http-status-codes')
 
 // TODO In the creation of a walk verify if the user wants to start from another desired endpoint as their starting point
