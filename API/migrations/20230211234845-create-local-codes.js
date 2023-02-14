@@ -9,25 +9,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      CBG_code: {
+      cbg_code: {
         type: Sequelize.STRING
       },
-      COG_code: {
+      cog_code: {
         type: Sequelize.STRING
       },
-      PRN_code: {
+      prn_code: {
         type: Sequelize.STRING
       },
-      SFG_code: {
+      sfg_code: {
         type: Sequelize.STRING
       },
-      JRG_code: {
+      jrg_code: {
         type: Sequelize.STRING
       },
-      ITG_code: {
+      itg_code: {
         type: Sequelize.STRING
       },
-      CDG_code: {
+      cdg_code: {
         type: Sequelize.STRING
       },
       createdAt: {

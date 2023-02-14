@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   local_codes.init({
-    CBG_code: DataTypes.STRING,
-    COG_code: DataTypes.STRING,
-    PRN_code: DataTypes.STRING,
-    SFG_code: DataTypes.STRING,
-    JRG_code: DataTypes.STRING,
-    ITG_code: DataTypes.STRING,
-    CDG_code: DataTypes.STRING
+    cbg_code: DataTypes.STRING,
+    cog_code: DataTypes.STRING,
+    prn_code: DataTypes.STRING,
+    sfg_code: DataTypes.STRING,
+    jrg_code: DataTypes.STRING,
+    itg_code: DataTypes.STRING,
+    cdg_code: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'local_codes',
