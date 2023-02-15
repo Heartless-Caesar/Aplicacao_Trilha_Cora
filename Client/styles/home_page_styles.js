@@ -2,10 +2,9 @@ import { StyleSheet } from "react-native";
 
 const home_styles = StyleSheet.create({
   container: {
-    paddingVertical: "2%",
-    paddingHorizontal: "3%",
+    alignItems: "center",
     height: "100%",
-    backgroundColor: "#e7e7e7",
+    display: "flex"
   },
 });
 

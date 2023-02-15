@@ -1,9 +1,5 @@
 import {
   View,
-  Text,
-  TextInput,
-  Pressable,
-  ImageBackground,
   Image,
   useWindowDimensions,
 } from "react-native";
