@@ -1,46 +1,46 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('certificates', {
+    await queryInterface.createTable("certificates", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      CDG: {
-        type: Sequelize.BOOLEAN
+      cdg: {
+        type: Sequelize.BOOLEAN,
       },
-      ITG: {
-        type: Sequelize.BOOLEAN
+      itg: {
+        type: Sequelize.BOOLEAN,
       },
-      JRG: {
-        type: Sequelize.BOOLEAN
+      jrg: {
+        type: Sequelize.BOOLEAN,
       },
-      SFG: {
-        type: Sequelize.BOOLEAN
+      sfg: {
+        type: Sequelize.BOOLEAN,
       },
-      PRN: {
-        type: Sequelize.BOOLEAN
+      prn: {
+        type: Sequelize.BOOLEAN,
       },
-      COG: {
-        type: Sequelize.BOOLEAN
+      cog: {
+        type: Sequelize.BOOLEAN,
       },
-      CBG: {
-        type: Sequelize.BOOLEAN
+      cbg: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('certificates');
-  }
+    await queryInterface.dropTable("certificates");
+  },
 };

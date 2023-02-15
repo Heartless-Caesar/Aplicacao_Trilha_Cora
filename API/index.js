@@ -8,11 +8,14 @@ const { sequelize } = require("./config/models/index.js");
 const { auth_router } = require("./routes/auth_routes.js");
 const { walk_router } = require("./routes/walk_routes.js");
 const { pdf_router } = require("./routes/pdf_routes.js");
+const { code_router } = require("./routes/code_routes.js");
 require("dotenv").config();
 
 app.use(cors());
 
 app.use(body_parser.json());
+
+app.use(code_router);
 
 //Auth endpoints
 app.use(auth_router);
@@ -21,7 +24,6 @@ app.use(auth_router);
 app.use(auth_middleware, walk_router);
 
 app.use(auth_middleware, pdf_router);
-
 
 // * Create entities according to db tables
 const start = async () => {
