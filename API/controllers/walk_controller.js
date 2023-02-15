@@ -1,5 +1,6 @@
 const { walk } = require("../config/models/index");
 const { StatusCodes } = require("http-status-codes");
+const { locals } = require("../utils/code_order");
 
 // TODO In the creation of a walk verify if the user wants to start from another desired endpoint as their starting point
 // * last_endpoint == desired walk id
@@ -51,6 +52,11 @@ const finish_walk = async (req, res) => {
     start_code,
     finish_code,
   } = req.body;
+
+  /* 
+   TODO | Find location based on given code, based on their placement on the local
+   TODO | array either add or subract so the locations in between are considered as passed through 
+  */
 
   const selected_walk = await walk.update(
     {
