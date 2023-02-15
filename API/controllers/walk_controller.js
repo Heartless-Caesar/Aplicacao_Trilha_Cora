@@ -4,8 +4,8 @@ const { StatusCodes } = require("http-status-codes");
 // TODO In the creation of a walk verify if the user wants to start from another desired endpoint as their starting point
 // * last_endpoint == desired walk id
 // ! FRONT END -> User can select which previous walk ending point they wish to use as a new starting point
-const create_walk = async (req, res) => { 
-    const { start_location, start_time, start_date, last_endpoint_id } = req.body
+const create_walk = async (req, res) => {
+  const { start_location, start_time, start_date, last_endpoint_id } = req.body;
 
   if (last_endpoint_id) {
     const prev_walk = await walk.findOne({
@@ -42,7 +42,14 @@ const create_walk = async (req, res) => {
 };
 
 const finish_walk = async (req, res) => {
-  const { finish_time, finish_location, finish_date, walk_id } = req.body;
+  const {
+    finish_time,
+    finish_location,
+    finish_date,
+    walk_id,
+    start_code,
+    finish_code,
+  } = req.body;
 
   const selected_walk = await walk.update(
     {
