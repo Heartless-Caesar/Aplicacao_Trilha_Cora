@@ -41,6 +41,7 @@ const create_walk = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ Message: "walk created" });
 };
 
+// * Validate that inputted validation code is for the specific town and then validate that town for PDF generation
 const finish_walk = async (req, res) => {
   const {
     finish_time,
