@@ -7,7 +7,7 @@ const CustomMapStyle = StyleSheet.create({
     backgroundColor: "#B0C4DE",
     width: "70%",
     height: "70%",
-    margin: "13%"
+    margin: "10%"
   },
 });
 
