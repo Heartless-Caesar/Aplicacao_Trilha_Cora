@@ -1,4 +1,4 @@
-const { walk } = require("../config/models/index");
+const { walk, local_codes } = require("../config/models/index");
 const { StatusCodes } = require("http-status-codes");
 const { locals } = require("../utils/code_order");
 
@@ -57,6 +57,9 @@ const finish_walk = async (req, res) => {
    TODO | Find location based on given code, based on their placement on the local
    TODO | array either add or subract so the locations in between are considered as passed through 
   */
+  const found_codes = await local_codes.findAll({ where: { id: 3 } });
+
+  console.log(found_codes);
 
   const selected_walk = await walk.update(
     {

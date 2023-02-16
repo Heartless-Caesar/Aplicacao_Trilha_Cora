@@ -16,13 +16,13 @@ const register_codes = async (req, res) => {
 
   if (!codes) {
     await local_codes.create({
-      cbg_code: cbg_code,
-      cog_code: cog_code,
-      prn_code: prn_code,
-      sfg_code: sfg_code,
-      jrg_code: jrg_code,
-      itg_code: itg_code,
-      cdg_code: cdg_code,
+      cbg: cbg_code,
+      cog: cog_code,
+      prn: prn_code,
+      sfg: sfg_code,
+      jrg: jrg_code,
+      itg: itg_code,
+      cdg: cdg_code,
     });
 
     return res.status(StatusCodes.CREATED).json({ msg: "Codes created" });
@@ -44,13 +44,13 @@ const update_codes = async (req, res) => {
 
   await local_codes.update(
     {
-      cbg_code: cbg_code,
-      cog_code: cog_code,
-      prn_code: prn_code,
-      sfg_code: sfg_code,
-      jrg_code: jrg_code,
-      itg_code: itg_code,
-      cdg_code: cdg_code,
+      cbg: cbg_code,
+      cog: cog_code,
+      prn: prn_code,
+      sfg: sfg_code,
+      jrg: jrg_code,
+      itg: itg_code,
+      cdg: cdg_code,
     },
     {
       where: { id: 3 },
