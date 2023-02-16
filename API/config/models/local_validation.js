@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class local_validation extends Model {
     /**
@@ -13,17 +11,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  local_validation.init({
-    CDG: DataTypes.BOOLEAN,
-    ITG: DataTypes.BOOLEAN,
-    JRG: DataTypes.BOOLEAN,
-    SFG: DataTypes.BOOLEAN,
-    PRN: DataTypes.BOOLEAN,
-    COG: DataTypes.BOOLEAN,
-    CBG: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'local_validation',
-  });
+  local_validation.init(
+    {
+      CDG: DataTypes.BOOLEAN,
+      ITG: DataTypes.BOOLEAN,
+      JRG: DataTypes.BOOLEAN,
+      SFG: DataTypes.BOOLEAN,
+      PRN: DataTypes.BOOLEAN,
+      COG: DataTypes.BOOLEAN,
+      CBG: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: "local_validation",
+    }
+  );
   return local_validation;
 };
