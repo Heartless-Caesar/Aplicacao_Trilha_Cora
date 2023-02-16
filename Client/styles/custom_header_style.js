@@ -4,20 +4,20 @@ const CustomHeaderStyle = StyleSheet.create({
     header: {
         backgroundColor: "#FFCC80",
         width: "100%",
-        height: "8%",
+        height: "10%",
         overflow: "hidden",
         flexDirection: "row",
         flexWrap: "wrap"
     },
     menu: {
-        marginTop: "6%",
+        marginTop: "8%",
         marginLeft: "6%",
         alignItems: "baseline",
         justifyContent: "center"
     },
     bell: {
-        marginTop: "6%",
-        marginLeft: "80%",
+        marginTop: "8%",
+        marginLeft: "79%",
         alignItems: "baseline",
         justifyContent: "center"
     }

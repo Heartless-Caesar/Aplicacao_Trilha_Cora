@@ -8,7 +8,7 @@ const home_styles = StyleSheet.create({
   footer: {
     alignItems: "center",
     justifyContent: "center",
-    display: "flex"
+    marginBottom: "4%"
   }
 });
 
