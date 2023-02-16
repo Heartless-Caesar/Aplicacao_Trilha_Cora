@@ -56,6 +56,32 @@ const test = async (start_code, finish_code, user_id) => {
     }
   }
 
+  // * COG start_code
+  if (start_code == found_codes[0].cog) {
+    switch (finish_code) {
+      case finish_code == found_codes[0].cbg:
+        await local_validation.update(
+          {
+            CBG: true,
+            COG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case finish_code == found_codes[0].prn:
+        await local_validation.update(
+          {
+            PRN: true,
+            COG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   console.log(
     found_codes[0].cbg,
     found_codes[0].cog,
