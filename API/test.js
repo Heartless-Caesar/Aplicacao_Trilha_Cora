@@ -3,6 +3,7 @@ const { local_codes, local_validation } = require("./config/models/index");
 const test = async (start_code, finish_code, user_id) => {
   const found_codes = await local_codes.findAll({ where: { id: 3 } });
 
+  // * CBG start point
   if (start_code == found_codes[0].cbg) {
     switch (finish_code) {
       case found_codes[0].cog:
