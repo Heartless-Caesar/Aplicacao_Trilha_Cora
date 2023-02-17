@@ -59,7 +59,7 @@ const test = async (start_code, finish_code, user_id) => {
   // * COG start_code
   if (start_code == found_codes[0].cog) {
     switch (finish_code) {
-      case finish_code == found_codes[0].cbg:
+      case found_codes[0].cbg:
         await local_validation.update(
           {
             CBG: true,
@@ -68,11 +68,129 @@ const test = async (start_code, finish_code, user_id) => {
           { where: { user_id: user_id } }
         );
         break;
-      case finish_code == found_codes[0].prn:
+      case found_codes[0].prn:
         await local_validation.update(
           {
             PRN: true,
             COG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].sfg:
+        await local_validation.update(
+          {
+            SFG: true,
+            COG: true,
+            PRN: true,
+            SFG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].jrg:
+        await local_validation.update(
+          {
+            COG: true,
+            PRN: true,
+            SFG: true,
+            JRG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].itg:
+        await local_validation.update(
+          {
+            COG: true,
+            PRN: true,
+            SFG: true,
+            JRG: true,
+            ITG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+
+      case found_codes[0].cdg:
+        await local_validation.update(
+          {
+            COG: true,
+            PRN: true,
+            SFG: true,
+            JRG: true,
+            ITG: true,
+            CDG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      default:
+        console.log("Invalid codes");
+        break;
+    }
+  }
+
+  // * PRN start_local
+  if (start_code == found_codes[0].prn) {
+    switch (finish_code) {
+      case found_codes[0].cog:
+        await local_validation.update(
+          {
+            COG: true,
+            PRN: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].cbg:
+        await local_validation.update(
+          {
+            PRN: true,
+            COG: true,
+            CBG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].sfg:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].jrg:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+            JRG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].itg:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+            JRG: true,
+            ITG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].cdg:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+            JRG: true,
+            ITG: true,
+            CDG: true,
           },
           { where: { user_id: user_id } }
         );
@@ -82,6 +200,42 @@ const test = async (start_code, finish_code, user_id) => {
     }
   }
 
+  if (start_code == found_codes[0].sfg) {
+    switch (finish_code) {
+      case found_codes[0].prn:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].cog:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+            COG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].cbg:
+        await local_validation.update(
+          {
+            PRN: true,
+            SFG: true,
+            COG: true,
+            CBG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      default:
+        break;
+    }
+  }
   console.log(
     found_codes[0].cbg,
     found_codes[0].cog,
