@@ -200,6 +200,7 @@ const test = async (start_code, finish_code, user_id) => {
     }
   }
 
+  // * SFG start code
   if (start_code == found_codes[0].sfg) {
     switch (finish_code) {
       case found_codes[0].prn:
@@ -228,6 +229,24 @@ const test = async (start_code, finish_code, user_id) => {
             SFG: true,
             COG: true,
             CBG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].jrg:
+        await local_validation.update(
+          {
+            SFG: true,
+            JRG: true,
+          },
+          { where: { user_id: user_id } }
+        );
+        break;
+      case found_codes[0].itg:
+        await local_validation.update(
+          {
+            SFG: true,
+            JRG: true,
           },
           { where: { user_id: user_id } }
         );
