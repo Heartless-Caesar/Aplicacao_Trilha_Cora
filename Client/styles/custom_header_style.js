@@ -5,7 +5,6 @@ const CustomHeaderStyle = StyleSheet.create({
         backgroundColor: "#FFCC80",
         width: "100%",
         height: "10%",
-        overflow: "hidden",
         flexDirection: "row",
         flexWrap: "wrap"
     },
@@ -16,8 +15,8 @@ const CustomHeaderStyle = StyleSheet.create({
         justifyContent: "center"
     },
     bell: {
-        marginTop: "8%",
-        marginLeft: "79%",
+        marginTop: "3%",
+        marginLeft: "78%",
         alignItems: "baseline",
         justifyContent: "center"
     }

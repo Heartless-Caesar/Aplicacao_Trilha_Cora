@@ -1,15 +1,16 @@
-import { View, SafeAreaView } from "react-native";
+import { View } from "react-native";
 import CustomHeaderStyle from "../styles/custom_header_style";
-import { Feather, MaterialCommunityIcons } from "react-native-vector-icons"
+import { MaterialCommunityIcons } from "react-native-vector-icons"
+import CustomMenu from "./custom_menu";
 
 const CustomHeader = () => {
     return (
         <View style={CustomHeaderStyle.header}>
             <View style={CustomHeaderStyle.menu}>
-                <Feather name="menu" size={20} color="white" />
+                <CustomMenu />
             </View>
             <View style={CustomHeaderStyle.bell}>
-                <MaterialCommunityIcons name="bell" size={20} color="white" />
+                <MaterialCommunityIcons name="bell" size={24} color="white" />
             </View>
         </View>
     );

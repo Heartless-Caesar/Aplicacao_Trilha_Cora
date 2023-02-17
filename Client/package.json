@@ -22,9 +22,11 @@
     "react-native": "0.70.5",
     "react-native-accordion-list-view": "^2.0.0",
     "react-native-element-dropdown": "^2.5.3",
+    "react-native-paper": "^5.2.0",
+    "react-native-select-dropdown": "^3.2.1",
     "react-native-simple-toast": "^2.0.0",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "^0.18.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

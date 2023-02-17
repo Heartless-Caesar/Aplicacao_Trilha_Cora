@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useEffect, useState } from "react";
 import HomeStyles from "../styles/home_page_styles";
 import CustomButton from "../components/custom_button";
@@ -13,7 +13,7 @@ const Homepage = () => {
       <CustomHeader />
       <CustomMap />
       <View style={HomeStyles.footer}>
-        <CustomButton text={<MaterialCommunityIcons name="run" size={24} color="white" />}/>
+        <CustomButton text={<MaterialCommunityIcons name="run" size={28} color="white" />} />
       </View>
     </View>
   );
