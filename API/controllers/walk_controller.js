@@ -1,6 +1,7 @@
 const { walk, local_codes } = require("../config/models/index");
 const { StatusCodes } = require("http-status-codes");
 const { locals } = require("../utils/code_order");
+const { validate_locals } = require("../utils/validate_locals");
 
 // TODO In the creation of a walk verify if the user wants to start from another desired endpoint as their starting point
 // * last_endpoint == desired walk id
@@ -57,9 +58,6 @@ const finish_walk = async (req, res) => {
    TODO | Find location based on given code, based on their placement on the local
    TODO | array either add or subract so the locations in between are considered as passed through 
   */
-  const found_codes = await local_codes.findAll({ where: { id: 3 } });
-
-  console.log(found_codes);
 
   const selected_walk = await walk.update(
     {
@@ -75,6 +73,8 @@ const finish_walk = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ Message: `Could not update element with id of ${walk_id}` });
   }
+
+  await validate_locals(start_code, finish_code, req.user.id);
 
   res.status(StatusCodes.OK).json({
     Message: `walk of id ${walk_id} updated`,

@@ -442,3 +442,5 @@ const validate_locals = async (start_code, finish_code, user_id) => {
     }
   }
 };
+
+module.exports = { validate_locals };
