@@ -74,6 +74,15 @@ const finish_walk = async (req, res) => {
       .json({ Message: `Could not update element with id of ${walk_id}` });
   }
 
+  // * Create user's local_validation row
+  const found_local_validation = await local_validation.findOne({
+    user_id: req.user.id,
+  });
+
+  if (!found_local_validation) {
+    await local_validation.create({ user_id: req.user.id });
+  }
+
   await validate_locals(start_code, finish_code, req.user.id);
 
   res.status(StatusCodes.OK).json({
