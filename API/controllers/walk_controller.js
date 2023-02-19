@@ -33,6 +33,15 @@ const create_walk = async (req, res) => {
       .json({ Message: "walk created from previous endpoint" });
   }
 
+  // * Create user's local_validation row
+  const found_local_validation = await local_validation.findOne({
+    where: { user_id: req.user.id },
+  });
+
+  if (!found_local_validation) {
+    await local_validation.create({ user_id: req.user.id });
+  }
+
   await walk.create({
     start_location: start_location,
     start_time: start_time,
@@ -72,15 +81,6 @@ const finish_walk = async (req, res) => {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ Message: `Could not update element with id of ${walk_id}` });
-  }
-
-  // * Create user's local_validation row
-  const found_local_validation = await local_validation.findOne({
-    user_id: req.user.id,
-  });
-
-  if (!found_local_validation) {
-    await local_validation.create({ user_id: req.user.id });
   }
 
   await validate_locals(start_code, finish_code, req.user.id);
