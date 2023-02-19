@@ -37,7 +37,6 @@ const register_user = async (req, res) => {
 
   res.status(StatusCodes.CREATED).json({
     Message: "Usuário criado",
-    token: token,
   });
 };
 
@@ -60,23 +59,41 @@ const login_user = async (req, res) => {
       .json({ Message: "Senha inserida incorreta" });
   }
 
-  const token = jwt.sign(
-    { id: found_user.id, username: found_user.username },
+  const access_token = sign_jwt(
+    {
+      id: found_user.id,
+      username: found_user.username,
+      email: found_user.email,
+    },
+    process.env.JWT_SECRET,
+    "600s"
+  );
+
+  const refresh_token = sign_jwt(
+    {
+      id: found_user.id,
+      username: found_user.username,
+      email: found_user.email,
+    },
     process.env.JWT_SECRET,
     {
-      expiresIn: process.env.EXPIRES_IN,
+      expiresIn: "1y",
     }
   );
 
-  const refresh_token = jwt.sign(
-    { id: found_user.id, username: found_user.username },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "1d",
-    }
+  await User.update(
+    { where: { username: found_user.username } },
+    { refresh_token: refresh_token }
   );
 
-  res.status(StatusCodes.OK).json({ Message: "Usuario logado", token: token });
+  await User.save();
+
+  res.cookie("refresh_token", refresh_token, {
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  });
+
+  res.status(StatusCodes.OK).json({ Message: "Usuario logado" });
 };
 
 module.exports = { register_user, login_user };
