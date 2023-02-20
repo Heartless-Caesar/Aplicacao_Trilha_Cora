@@ -1,7 +1,7 @@
 const { User } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 
-const handle_refresh_token = async (req, res) => {
+const handle_logout = async (req, res) => {
   const cookies = req.cookies;
 
   if (!cookies?.refresh_token) {
@@ -21,6 +21,10 @@ const handle_refresh_token = async (req, res) => {
 
   // * Delete refresh_token in DB
   await User.update({ refresh_token: "" }, { where: { id: found_user.id } });
+
+  res.clearCookie("refresh_token", { httpOnly: true });
+
+  res.status(StatusCodes.NO_CONTENT).json({ msg: "User logged out" });
 };
 
-module.exports = { handle_refresh_token };
+module.exports = { handle_logout };

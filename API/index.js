@@ -11,6 +11,7 @@ const { pdf_router } = require("./routes/pdf_routes.js");
 const { code_router } = require("./routes/code_routes.js");
 const { refresh_router } = require("./routes/refresh_route");
 const cookie_parser = require("cookie-parser");
+const { logout_router } = require("./routes/logout_route.js");
 require("dotenv").config();
 
 // * Enable CORS
@@ -26,6 +27,9 @@ app.use(code_router);
 
 // * Auth endpoints
 app.use(auth_router);
+
+// * Logs user out
+app.use(logout_router);
 
 // * Start and finish walks endpoints
 app.use(auth_middleware, walk_router);
