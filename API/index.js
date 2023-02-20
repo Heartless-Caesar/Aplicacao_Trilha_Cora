@@ -9,18 +9,24 @@ const { auth_router } = require("./routes/auth_routes.js");
 const { walk_router } = require("./routes/walk_routes.js");
 const { pdf_router } = require("./routes/pdf_routes.js");
 const { code_router } = require("./routes/code_routes.js");
+const cookie_parser = require("cookie-parser");
 require("dotenv").config();
 
+// * Enable CORS
 app.use(cors());
 
+// * Cookie middleware
+app.use(cookie_parser());
+
+// * JSON parser
 app.use(body_parser.json());
 
 app.use(code_router);
 
-//Auth endpoints
+// * Auth endpoints
 app.use(auth_router);
 
-//Start and finish walks endpoints
+// * Start and finish walks endpoints
 app.use(auth_middleware, walk_router);
 
 app.use(auth_middleware, pdf_router);

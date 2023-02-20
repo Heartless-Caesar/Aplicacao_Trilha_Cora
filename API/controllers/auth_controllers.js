@@ -66,7 +66,7 @@ const login_user = async (req, res) => {
       email: found_user.email,
     },
     process.env.JWT_SECRET,
-    "600s"
+    "1800s"
   );
 
   const refresh_token = sign_jwt(
@@ -89,6 +89,11 @@ const login_user = async (req, res) => {
   await User.save();
 
   res.cookie("refresh_token", refresh_token, {
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  });
+
+  res.cookie("access_token", access_token, {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,
   });
