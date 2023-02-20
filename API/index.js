@@ -9,6 +9,7 @@ const { auth_router } = require("./routes/auth_routes.js");
 const { walk_router } = require("./routes/walk_routes.js");
 const { pdf_router } = require("./routes/pdf_routes.js");
 const { code_router } = require("./routes/code_routes.js");
+const { refresh_router } = require("./routes/refresh_route");
 const cookie_parser = require("cookie-parser");
 require("dotenv").config();
 
@@ -30,6 +31,8 @@ app.use(auth_router);
 app.use(auth_middleware, walk_router);
 
 app.use(auth_middleware, pdf_router);
+
+app.use(auth_middleware, refresh_router);
 
 // * Create entities according to db tables
 const start = async () => {

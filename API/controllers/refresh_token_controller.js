@@ -7,11 +7,11 @@ require("dotenv").config();
 const handle_refresh_token = async (req, res) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) {
+  if (!cookies?.refresh_token) {
     return res.status(StatusCodes.UNAUTHORIZED);
   }
 
-  const refresh_token = cookies.jwt;
+  const refresh_token = cookies.refresh_token;
 
   const found_user = await User.findOne({
     where: { refresh_token: refresh_token },
