@@ -4,7 +4,7 @@ import HomeStyles from "../styles/home_page_styles";
 import CustomButton from "../components/custom_button";
 import CustomHeader from "../components/custom_header";
 import CustomMap from "../components/custom_map";
-import { MaterialCommunityIcons } from "react-native-vector-icons"
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 const Homepage = () => {
 
