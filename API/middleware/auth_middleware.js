@@ -21,7 +21,7 @@ const auth_middleware = async (req, res, next) => {
         console.log(error)
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .json({ Message: 'No auth header' })
+            .json({ Message: 'Expired token' })
     }
 }
 
