@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User } = require("../config/models/index");
 const { StatusCodes } = require("http-status-codes");
 
 const handle_logout = async (req, res) => {

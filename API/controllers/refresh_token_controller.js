@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User } = require("../config/models/index");
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 
@@ -31,7 +31,7 @@ const handle_refresh_token = async (req, res) => {
       { expiresIn: "1800s" }
     );
 
-    res.json({ access_token });
+    res.json({ access_token: access_token });
   });
 };
 
