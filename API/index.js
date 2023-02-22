@@ -3,7 +3,6 @@ const { auth_middleware } = require("./middleware/auth_middleware.js");
 const app = express();
 const cors = require("cors");
 const body_parser = require("body-parser");
-const port = process.env.PORT || 3000;
 const { sequelize } = require("./config/models/index.js");
 const { auth_router } = require("./routes/auth_routes.js");
 const { walk_router } = require("./routes/walk_routes.js");
@@ -13,6 +12,7 @@ const { refresh_router } = require("./routes/refresh_route");
 const cookie_parser = require("cookie-parser");
 const { logout_router } = require("./routes/logout_route.js");
 require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 // * Enable CORS
 app.use(cors());

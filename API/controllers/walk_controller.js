@@ -1,6 +1,5 @@
-const { walk, local_codes } = require("../config/models/index");
+const { walk, local_validation } = require("../config/models/index");
 const { StatusCodes } = require("http-status-codes");
-const { locals } = require("../utils/code_order");
 const { validate_locals } = require("../utils/validate_locals");
 
 // TODO In the creation of a walk verify if the user wants to start from another desired endpoint as their starting point
@@ -35,11 +34,11 @@ const create_walk = async (req, res) => {
 
   // * Create user's local_validation row
   const found_local_validation = await local_validation.findOne({
-    where: { user_id: req.user.id },
+    where: { UserId: req.user.id },
   });
 
   if (!found_local_validation) {
-    await local_validation.create({ user_id: req.user.id });
+    await local_validation.create({ UserId: req.user.id });
   }
 
   await walk.create({
