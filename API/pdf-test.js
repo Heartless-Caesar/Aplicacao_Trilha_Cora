@@ -1,16 +1,12 @@
 const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
-const { options } = require("../config/pdf_options");
-const partial = fs.readFileSync(
-  path.join(`${__dirname}/../assets/partial_cert.html`)
-);
-const complete = fs.readFileSync(
-  path.join(`${__dirname}/../assets/complete_cert.html`)
-);
+const { options } = require("./config/pdf_options");
+const partial = fs.readFileSync(path.join(`assets/partial_cert.html`));
+const complete = fs.readFileSync(path.join(`assets/complete_cert.html`));
 
-const generate_trial_cert = async (req, res) => {
-  const { name, start_local, start_time, finish_local, finish_time, type } =
+const pdf_test = async (req, res) => {
+  const { start_local, start_time, finish_local, finish_time, type } =
     req.query;
   const document = {};
 
@@ -31,7 +27,7 @@ const generate_trial_cert = async (req, res) => {
     document = {
       html: complete,
       data: {
-        name: name,
+        name: req.user.name,
         start_local: start_local,
         finish_local: finish_local,
         start_time: start_time,
@@ -54,8 +50,8 @@ app.get('/download', function(request, response){
   var readStream = new stream.PassThrough();
   readStream.end(fileContents);
 
-  response.set('Content-disposition', 'attachment; filename=' + fileName);
-  response.set('Content-Type', 'text/plain');
+  res.set('Content-disposition', 'attachment; filename=' + fileName);
+  res.set('Content-Type', 'text/plain');
 
   readStream.pipe(response);
 });
@@ -74,4 +70,4 @@ app.get('/download', function(request, response){
     });
 };
 
-module.exports = { generate_trial_cert };
+module.exports = { pdf_test };
