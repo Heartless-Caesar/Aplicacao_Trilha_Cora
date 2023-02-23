@@ -1,10 +1,11 @@
-import { View, Text} from "react-native";
+import { View, Text, Image} from "react-native";
 import CustomMapStyle from "../styles/custom_map_style";
+import Trail from "../assets/trail.png"
 
 const CustomMap = () => {
     return (
         <View style={CustomMapStyle.container}>
-            <Text>Mapa</Text>
+            <Image source={Trail}/>
         </View>
     );
 };

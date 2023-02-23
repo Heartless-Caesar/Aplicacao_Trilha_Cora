@@ -15,7 +15,7 @@ const CustomHeaderStyle = StyleSheet.create({
         justifyContent: "center"
     },
     bell: {
-        marginTop: "5%",
+        marginTop: "4%",
         marginLeft: "78%",
         alignItems: "baseline",
         justifyContent: "center"
