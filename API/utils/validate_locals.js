@@ -1,7 +1,7 @@
 const { local_codes, local_validation } = require("../config/models/index");
 
-const validate_locals = async (start_code, finish_code, user_id) => {
-  const found_codes = await local_codes.findAll({ where: { id: 3 } });
+const validate_locals = async (start_code, finish_code, UserId) => {
+  const found_codes = await local_codes.findAll({ where: { id: 1 } });
 
   // * CBG start point
   if (start_code == found_codes[0].cbg) {
@@ -9,31 +9,31 @@ const validate_locals = async (start_code, finish_code, user_id) => {
       case found_codes[0].cog:
         await local_validation.update(
           { CBG: true, COG: true },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].prn:
         await local_validation.update(
           { CBG: true, COG: true, PRN: true },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].sfg:
         await local_validation.update(
           { CBG: true, COG: true, PRN: true, SFG: true },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].jrg:
         await local_validation.update(
           { CBG: true, COG: true, PRN: true, SFG: true, JRG: true },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].itg:
         await local_validation.update(
           { CBG: true, COG: true, PRN: true, SFG: true, JRG: true, ITG: true },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cdg:
@@ -47,7 +47,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             CDG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       default:
@@ -67,7 +67,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CBG: true,
             COG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].prn:
@@ -76,7 +76,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             PRN: true,
             COG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].sfg:
@@ -87,7 +87,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             PRN: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].jrg:
@@ -98,7 +98,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             SFG: true,
             JRG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].itg:
@@ -110,7 +110,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             JRG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
 
@@ -124,7 +124,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             CDG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       default:
@@ -144,7 +144,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             COG: true,
             PRN: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cbg:
@@ -154,7 +154,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             COG: true,
             CBG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].sfg:
@@ -163,7 +163,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             PRN: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].jrg:
@@ -173,7 +173,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             SFG: true,
             JRG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].itg:
@@ -184,7 +184,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             JRG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cdg:
@@ -196,7 +196,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             CDG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       default:
@@ -216,7 +216,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             PRN: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cog:
@@ -226,7 +226,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             SFG: true,
             COG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cbg:
@@ -237,7 +237,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             COG: true,
             CBG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].jrg:
@@ -246,7 +246,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             SFG: true,
             JRG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].itg:
@@ -256,7 +256,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             JRG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cdg:
@@ -267,7 +267,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             CDG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       default:
@@ -287,7 +287,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             JRG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].sfg:
@@ -297,7 +297,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].prn:
@@ -308,7 +308,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cog:
@@ -320,7 +320,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cbg:
@@ -333,7 +333,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             SFG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cdg:
@@ -342,7 +342,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             ITG: true,
             CDG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       default:
@@ -362,7 +362,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].jrg:
@@ -372,7 +372,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].jrg:
@@ -382,7 +382,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].sfg:
@@ -393,7 +393,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].prn:
@@ -405,7 +405,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       case found_codes[0].cog:
@@ -418,7 +418,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
 
@@ -433,7 +433,7 @@ const validate_locals = async (start_code, finish_code, user_id) => {
             CDG: true,
             ITG: true,
           },
-          { where: { user_id: user_id } }
+          { where: { UserId: UserId } }
         );
         break;
       default:
