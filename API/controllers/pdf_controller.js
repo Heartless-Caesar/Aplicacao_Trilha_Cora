@@ -46,9 +46,6 @@ const generate_trial_cert = async (req, res) => {
         .create(document, options)
         .then(async (res) => {
             console.log('Criação de PDF sucedida')
-            // * Envio de email para medico
-            // * Parametros: Diretorio & Nome do arquivo
-            //TODO: Adicionar parametro para email do usuario correspondente ao codigo
             await enviarEmail(`../output_files/`, `${name}_certificate.pdf`)
             console.log(res)
         })
