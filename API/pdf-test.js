@@ -29,7 +29,7 @@ const pdf_test = async () => {
         finish_time: finish_time,
       },
       path: `./output_files/${name}_certificate.pdf`,
-      type: "stream",
+      type: "",
     };
   } else {
     document = {
@@ -42,7 +42,7 @@ const pdf_test = async () => {
         finish_time: finish_time,
       },
       path: `./output_files/${name}_certificate.pdf`,
-      type: "stream",
+      type: "",
     };
   }
 
