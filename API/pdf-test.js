@@ -28,7 +28,7 @@ const pdf_test = async () => {
         start_time: start_time,
         finish_time: finish_time,
       },
-      path: `../output_files/${name}_certificate.pdf`,
+      path: `./output_files/${name}_certificate.pdf`,
       type: "stream",
     };
   } else {
@@ -41,7 +41,7 @@ const pdf_test = async () => {
         start_time: start_time,
         finish_time: finish_time,
       },
-      path: `../output_files/${name}_certificate.pdf`,
+      path: `./output_files/${name}_certificate.pdf`,
       type: "stream",
     };
   }
@@ -65,7 +65,7 @@ app.get('/download', function(request, response){
 });
 */
   // ! END
-
+  console.log(document.path);
   return pdf
     .create(document, options)
     .then((res) => {
@@ -79,5 +79,3 @@ app.get('/download', function(request, response){
 };
 
 pdf_test();
-
-module.exports = { pdf_test };
