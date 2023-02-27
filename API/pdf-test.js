@@ -28,8 +28,8 @@ const pdf_test = async () => {
         start_time: start_time,
         finish_time: finish_time,
       },
-      path: `./output_files/${name}_certificate.pdf`,
-      type: "",
+      path: `./output_files/${name}.pdf`,
+      type: "buffer",
     };
   } else {
     document = {
@@ -41,8 +41,8 @@ const pdf_test = async () => {
         start_time: start_time,
         finish_time: finish_time,
       },
-      path: `./output_files/${name}_certificate.pdf`,
-      type: "",
+      path: `./output_files/${name}.pdf`,
+      type: "buffer",
     };
   }
 
@@ -65,12 +65,25 @@ app.get('/download', function(request, response){
 });
 */
   // ! END
-  console.log(document.path);
+
   return pdf
     .create(document, options)
     .then((res) => {
       console.log("Criação de PDF sucedida");
       console.log(res);
+
+      const fileContents = Buffer.from(res, "base64");
+
+      const readStream = new stream.PassThrough();
+      readStream.end(fileContents);
+
+      res.set(
+        "Content-disposition",
+        "attachment; filename=" + `${document.data.name}.pdf`
+      );
+      res.set("Content-Type", "text/plain");
+
+      readStream.pipe(res);
     })
     .catch((error) => {
       console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
