@@ -5,7 +5,9 @@ import Trail from "../assets/trail.png";
 const CustomMap = () => {
   return (
     <View style={CustomMapStyle.container}>
-      <Image source={Trail} />
+      <Image
+        style={CustomMapStyle.image}
+        source={Trail} />
     </View>
   );
 };

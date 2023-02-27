@@ -7,7 +7,12 @@ const CustomMapStyle = StyleSheet.create({
     width: "90%",
     height: "70%",
     margin: "5%"
-  }
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    overflow: "hidden"
+  },
 });
 
 export default CustomMapStyle;

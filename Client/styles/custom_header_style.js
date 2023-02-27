@@ -6,7 +6,8 @@ const CustomHeaderStyle = StyleSheet.create({
         width: "100%",
         height: "11%",
         flexDirection: "row",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+        zIndex: 10,
     },
     menu: {
         marginTop: "10%",
