@@ -8,19 +8,17 @@ import CustomModal from "../components/custom_modal";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 const Homepage = () => {
-  const [visible, setVisible] = useState(true);
-  const onPressModal = () => {
-    return <CustomModal makeVisible={visible} setMakeVisible={setVisible} />
-  };
+  const [visible, setVisible] = useState(false);
 
   return (
     <SafeAreaView style={HomeStyles.container}>
+      <CustomModal makeVisible={visible} setMakeVisible={setVisible}/>
       <CustomHeader />
       <CustomMap />
       <View style={HomeStyles.footer}>
         <CustomButton
           text={<MaterialCommunityIcons name="run" size={28} color="white" />}
-          onPress={onPressModal}
+          onPress={() => setVisible(true)}
         />
       </View>
     </SafeAreaView>
