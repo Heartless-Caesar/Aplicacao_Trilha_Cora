@@ -1,6 +1,6 @@
-const { pdf_test } = require("../pdf-test");
-const pdf_test_router = require("express").Router();
+const { generate_trial_cert } = require("../controllers/pdf_controller");
+const pdf_router = require("express").Router();
 
-pdf_test_router.route("/pdf_cert").get(pdf_test);
+pdf_router.route("/pdf_cert").get(generate_trial_cert);
 
-module.exports = { pdf_test_router };
+module.exports = { pdf_router };

@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class walk extends Model {
     /**
@@ -13,16 +11,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  walk.init({
-    start_location: DataTypes.STRING,
-    start_time: DataTypes.TIME,
-    start_date: DataTypes.DATE,
-    finish_time: DataTypes.TIME,
-    finish_date: DataTypes.DATE,
-    finish_location: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'walk',
-  });
+  walk.init(
+    {
+      start_location: DataTypes.STRING,
+      start_time: DataTypes.TIME,
+      start_date: DataTypes.DATE,
+      finish_time: DataTypes.TIME,
+      finish_date: DataTypes.DATE,
+      finish_location: DataTypes.STRING,
+      type: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "walk",
+    }
+  );
   return walk;
 };

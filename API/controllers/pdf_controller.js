@@ -10,7 +10,7 @@ const complete = fs.readFileSync(
 );
 
 const generate_trial_cert = async (req, res) => {
-  const { name, start_local, start_time, finish_local, finish_time, type } =
+  const { start_local, start_time, finish_local, finish_time, type } =
     req.query;
   const document = {};
 
@@ -31,13 +31,13 @@ const generate_trial_cert = async (req, res) => {
     document = {
       html: complete,
       data: {
-        name: name,
+        name: req.user.name,
         start_local: start_local,
         finish_local: finish_local,
         start_time: start_time,
         finish_time: finish_time,
       },
-      path: `../output_files/${name}_certificate.pdf`,
+      path: `../output_files/${req.user.name}_certificate.pdf`,
       type: "Stream",
     };
   }
@@ -67,6 +67,13 @@ app.get('/download', function(request, response){
     .then(async (res) => {
       console.log("Criação de PDF sucedida");
       console.log(res);
+
+      res.writeHead(200, {
+        "Content-Type": "audio/mpeg",
+        "Content-Length": res.length,
+        "Content-Disposition": `attachment; filename=${req.user.name}_certificate.pdf`,
+      });
+      res.download(`../output_files/${req.user.name}_certificate.pdf`);
     })
     .catch(async (error) => {
       console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");

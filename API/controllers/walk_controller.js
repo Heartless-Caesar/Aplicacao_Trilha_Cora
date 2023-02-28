@@ -6,7 +6,8 @@ const { validate_locals } = require("../utils/validate_locals");
 // * last_endpoint == desired walk id
 // ! FRONT END -> User can select which previous walk ending point they wish to use as a new starting point
 const create_walk = async (req, res) => {
-  const { start_location, start_time, start_date, last_endpoint_id } = req.body;
+  const { start_location, start_time, start_date, type, last_endpoint_id } =
+    req.body;
 
   if (last_endpoint_id) {
     const prev_walk = await walk.findOne({
@@ -24,6 +25,7 @@ const create_walk = async (req, res) => {
       start_location: prev_walk.dataValues.finish_location,
       start_time: prev_walk.dataValues.finish_time,
       start_date: prev_walk.dataValues.finish_date,
+      type: prev_walk.dataValues.type,
       UserId: req.user.id,
     });
 
@@ -45,6 +47,7 @@ const create_walk = async (req, res) => {
     start_location: start_location,
     start_time: start_time,
     start_date: start_date,
+    type: prev_walk.dataValues.type,
     UserId: req.user.id,
   });
 
