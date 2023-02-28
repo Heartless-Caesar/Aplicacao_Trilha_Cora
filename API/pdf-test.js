@@ -71,9 +71,9 @@ app.get('/download', function(request, response){
     .then((res) => {
       console.log("Criação de PDF sucedida");
       console.log(res);
-
+      console.log(typeof res);
       // ! THIS PASSES PDF OBJ INTO BUFFER
-      // const fileContents = Buffer.from(res, "base64");
+      const fileContents = Buffer.from(res, "base64");
       // console.log(typeof res);
 
       // * Pass to client
