@@ -66,23 +66,26 @@ app.get('/download', function(request, response){
 */
   // ! END
 
-  return pdf
+  pdf
     .create(document, options)
     .then((res) => {
       console.log("Criação de PDF sucedida");
       console.log(res);
 
-      const fileContents = Buffer.from(res, "base64");
+      // ! THIS PASSES PDF OBJ INTO BUFFER
+      // const fileContents = Buffer.from(res, "base64");
+      // console.log(typeof res);
 
+      // * Pass to client
       const readStream = new stream.PassThrough();
-      readStream.end(fileContents);
+      readStream.end(res);
 
       res.set(
         "Content-disposition",
         "attachment; filename=" + `${document.data.name}.pdf`
       );
       res.set("Content-Type", "text/plain");
-
+      console.log("Success");
       readStream.pipe(res);
     })
     .catch((error) => {
