@@ -47,7 +47,7 @@ const create_walk = async (req, res) => {
     start_location: start_location,
     start_time: start_time,
     start_date: start_date,
-    type: prev_walk.dataValues.type,
+    type: type,
     UserId: req.user.id,
   });
 

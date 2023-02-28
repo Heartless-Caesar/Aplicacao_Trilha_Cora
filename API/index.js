@@ -25,6 +25,8 @@ app.use(body_parser.json());
 
 app.use(code_router);
 
+app.use(pdf_router);
+
 // * Auth endpoints
 app.use(auth_router);
 

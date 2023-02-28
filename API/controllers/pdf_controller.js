@@ -53,23 +53,18 @@ const generate_trial_cert = async (req, res) => {
     };
   }
 
-  return pdf
+  pdf
     .create(document, options)
     .then(async (res) => {
       console.log("Criação de PDF sucedida");
       console.log(res);
-
-      res.writeHead(200, {
-        "Content-Type": "audio/mpeg",
-        "Content-Length": res.length,
-        "Content-Disposition": `attachment; filename=${req.user.name}_certificate.pdf`,
-      });
-      res.download(`../output_files/${req.user.name}_certificate.pdf`);
     })
     .catch(async (error) => {
       console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
       console.log(`Output error ${error}`);
     });
+
+  res.download(`../output_files/${req.user.name}_certificate.pdf`);
 };
 
 module.exports = { generate_trial_cert };
