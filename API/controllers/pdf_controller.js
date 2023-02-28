@@ -10,8 +10,15 @@ const complete = fs.readFileSync(
 );
 
 const generate_trial_cert = async (req, res) => {
-  const { start_local, start_time, finish_local, finish_time, type } =
-    req.query;
+  const {
+    start_local,
+    start_time,
+    finish_local,
+    finish_time,
+    start_date,
+    finish_date,
+    type,
+  } = req.query;
   const document = {};
 
   if (type == "partial") {
@@ -23,6 +30,8 @@ const generate_trial_cert = async (req, res) => {
         finish_local: finish_local,
         start_time: start_time,
         finish_time: finish_time,
+        start_date: start_date,
+        finish_date: finish_date,
       },
       path: "../output",
       type: "Stream",
@@ -36,31 +45,13 @@ const generate_trial_cert = async (req, res) => {
         finish_local: finish_local,
         start_time: start_time,
         finish_time: finish_time,
+        start_date: start_date,
+        finish_date: finish_date,
       },
       path: `../output_files/${req.user.name}_certificate.pdf`,
       type: "Stream",
     };
   }
-
-  // ! START
-  // * Download file from memory
-  /* 
-  var stream = require('stream');
-//...
-app.get('/download', function(request, response){
-  //...
-  var fileContents = Buffer.from(fileData, "base64");
-  
-  var readStream = new stream.PassThrough();
-  readStream.end(fileContents);
-
-  response.set('Content-disposition', 'attachment; filename=' + fileName);
-  response.set('Content-Type', 'text/plain');
-
-  readStream.pipe(response);
-});
-*/
-  // ! END
 
   return pdf
     .create(document, options)
