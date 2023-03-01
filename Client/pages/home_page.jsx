@@ -12,9 +12,9 @@ const Homepage = () => {
 
   return (
     <SafeAreaView style={HomeStyles.container}>
-      <CustomModal makeVisible={visible} setMakeVisible={setVisible}/>
       <CustomHeader />
       <CustomMap />
+      <CustomModal makeVisible={visible} setMakeVisible={setVisible}/>
       <View style={HomeStyles.footer}>
         <CustomButton
           text={<MaterialCommunityIcons name="run" size={28} color="white" />}

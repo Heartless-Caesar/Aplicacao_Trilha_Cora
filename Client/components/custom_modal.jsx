@@ -1,24 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, Button, Modal } from "react-native";
+import CustomModalStyle from "../styles/custom_modal_styles";
 
 const CustomModal = (props) => {
   return (
-    <Modal animationType="none" visible={props.makeVisible} style={{
-      margin: 20,
-      backgroundColor: 'white',
-      borderRadius: 20,
-      padding: 35,
-      alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-    }}>
-      <View>
+    <Modal
+      animationType="none"
+      transparent={true}
+      visible={props.makeVisible}
+    >
+      <View style={CustomModalStyle.modal}>
         <Text>Criando caminhada</Text>
         <Button
           title="Fechar"
