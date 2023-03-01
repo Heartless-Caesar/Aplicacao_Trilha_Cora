@@ -25,8 +25,6 @@ app.use(body_parser.json());
 
 app.use(code_router);
 
-app.use(pdf_router);
-
 // * Auth endpoints
 app.use(auth_router);
 
@@ -39,6 +37,8 @@ app.use(auth_middleware, walk_router);
 app.use(auth_middleware, pdf_router);
 
 app.use(auth_middleware, refresh_router);
+
+app.use(auth_middleware, pdf_router);
 
 // * Create entities according to db tables
 const start = async () => {

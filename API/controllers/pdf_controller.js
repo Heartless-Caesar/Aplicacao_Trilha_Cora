@@ -19,7 +19,7 @@ const generate_trial_cert = async (req, res) => {
     finish_date,
     type,
   } = req.query;
-  const document = {};
+  let document = {};
 
   if (type == "partial") {
     document = {
@@ -33,7 +33,7 @@ const generate_trial_cert = async (req, res) => {
         start_date: start_date,
         finish_date: finish_date,
       },
-      path: "../output",
+      path: `../output_files/${req.user.name}_certificate.pdf`,
       type: "Stream",
     };
   } else {
