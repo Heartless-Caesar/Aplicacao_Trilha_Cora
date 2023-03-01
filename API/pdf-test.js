@@ -7,7 +7,6 @@ const complete = fs.readFileSync(
 const partial = fs.readFileSync(path.join(`assets/partial_cert.html`), "utf8");
 const { options } = require("./config/pdf_options");
 const pdf = require("pdf-creator-node");
-var stream = require("stream");
 
 const pdf_test = async () => {
   const start_local = "Cidade de Goias";
@@ -45,26 +44,6 @@ const pdf_test = async () => {
       type: "",
     };
   }
-
-  // ! START
-  // * Download file from memory
-  /* 
-  
-//...
-app.get('/download', function(request, response){
-  //...
-  var fileContents = Buffer.from(fileData, "base64");
-  
-  var readStream = new stream.PassThrough();
-  readStream.end(fileContents);
-
-  res.set('Content-disposition', 'attachment; filename=' + fileName);
-  res.set('Content-Type', 'text/plain');
-
-  readStream.pipe(response);
-});
-*/
-  // ! END
 
   pdf
     .create(document, options)
