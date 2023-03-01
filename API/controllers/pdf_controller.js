@@ -2,6 +2,7 @@ const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
 const { options } = require("../config/pdf_options");
+const { StatusCodes } = require("http-status-codes");
 const partial = fs.readFileSync(
   path.join(`${__dirname}/../assets/partial_cert.html`)
 );
@@ -34,7 +35,7 @@ const generate_trial_cert = async (req, res) => {
         finish_date: finish_date,
       },
       path: `../output_files/${req.user.name}_certificate.pdf`,
-      type: "Stream",
+      type: "",
     };
   } else {
     document = {
@@ -49,7 +50,7 @@ const generate_trial_cert = async (req, res) => {
         finish_date: finish_date,
       },
       path: `../output_files/${req.user.name}_certificate.pdf`,
-      type: "Stream",
+      type: "",
     };
   }
 
@@ -64,7 +65,12 @@ const generate_trial_cert = async (req, res) => {
       console.log(`Output error ${error}`);
     });
 
-  res.download(`../output_files/${req.user.name}_certificate.pdf`);
+  res
+    .status(StatusCodes.OK)
+    .download(
+      `../output_files/${req.user.name}_certificate.pdf`,
+      `${req.user.name}_certificate.pdf`
+    );
 };
 
 module.exports = { generate_trial_cert };

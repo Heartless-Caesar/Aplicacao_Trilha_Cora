@@ -29,7 +29,7 @@ const pdf_test = async () => {
         finish_time: finish_time,
       },
       path: `./output_files/${name}.pdf`,
-      type: "buffer",
+      type: "",
     };
   } else {
     document = {
@@ -42,7 +42,7 @@ const pdf_test = async () => {
         finish_time: finish_time,
       },
       path: `./output_files/${name}.pdf`,
-      type: "buffer",
+      type: "",
     };
   }
 
@@ -72,21 +72,8 @@ app.get('/download', function(request, response){
       console.log("Criação de PDF sucedida");
       console.log(res);
       console.log(typeof res);
-      // ! THIS PASSES PDF OBJ INTO BUFFER
-      const fileContents = Buffer.from(res, "base64");
-      // console.log(typeof res);
 
-      // * Pass to client
-      const readStream = new stream.PassThrough();
-      readStream.end(res);
-
-      res.set(
-        "Content-disposition",
-        "attachment; filename=" + `${document.data.name}.pdf`
-      );
-      res.set("Content-Type", "text/plain");
       console.log("Success");
-      readStream.pipe(res);
     })
     .catch((error) => {
       console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
