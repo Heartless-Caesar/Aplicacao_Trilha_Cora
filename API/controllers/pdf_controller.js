@@ -1,7 +1,6 @@
 const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
-const { options } = require("../config/pdf_options");
 const { StatusCodes } = require("http-status-codes");
 const partial = fs.readFileSync(
   path.join(`${__dirname}/../assets/partial_cert.html`)
@@ -55,7 +54,32 @@ const generate_trial_cert = async (req, res) => {
   }
 
   pdf
-    .create(document, options)
+    .create(document, {
+      childProcessOptions: {
+        format: "A4",
+        orientation: "landscape",
+        border: "10mm",
+        header: {
+          height: "10mm",
+          contents:
+            '<div style="text-align: center;">Certificado Trilha de Cora Coralina</div>',
+        },
+        footer: {
+          height: "10mm",
+          contents: {
+            first: "Cover page",
+            2: "Second page", // Any page number is working. 1-based index
+            default:
+              '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
+            last: "Last Page",
+          },
+        },
+        timeout: 10000,
+        env: {
+          OPENSSL_CONF: "/dev/null",
+        },
+      },
+    })
     .then(async (res) => {
       console.log("Criação de PDF sucedida");
       console.log(res);
