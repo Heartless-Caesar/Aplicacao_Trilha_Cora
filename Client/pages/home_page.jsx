@@ -6,13 +6,14 @@ import CustomHeader from "../components/custom_header";
 import CustomMap from "../components/custom_map";
 import CustomModal from "../components/custom_modal";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
+import MapScreen from "../components/map_component";
 
 const Homepage = () => {
   const [visible, setVisible] = useState(false);
 
   return (
     <SafeAreaView style={HomeStyles.container}>
-      <CustomHeader />
+      {/* <CustomHeader />
       <CustomMap />
       <CustomModal makeVisible={visible} setMakeVisible={setVisible}/>
       <View style={HomeStyles.footer}>
@@ -20,7 +21,8 @@ const Homepage = () => {
           text={<MaterialCommunityIcons name="run" size={28} color="white" />}
           onPress={() => setVisible(true)}
         />
-      </View>
+      </View> */}
+      <MapScreen />
     </SafeAreaView>
   );
 };
