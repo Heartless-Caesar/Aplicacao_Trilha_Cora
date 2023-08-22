@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  Animated,
 } from "react-native";
 import {
   requestForegroundPermissionsAsync,
@@ -14,16 +15,20 @@ import {
   LocationAccuracy,
 } from "expo-location";
 import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 
 import coordinates from "../assets/coordinates";
 
+const { width, height } = Dimensions.get("window");
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.02;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
 
 const MapScreen = () => {
   const [location, setLocation] = useState(null);
-  const [showMenu, setShowMenu] = useState(false); // New state for menu visibility
   const [visitedCoordinates, setVisitedCoordinates] = useState([]);
+  const [showMenu, setShowMenu] = useState(false);
   const mapRef = useRef(null);
 
   const requestPosition = async () => {
@@ -54,6 +59,16 @@ const MapScreen = () => {
       }
     );
   }, []);
+
+  const menuOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(menuOpacity, {
+      toValue: showMenu ? 1 : 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  }, [showMenu]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -86,6 +101,7 @@ const MapScreen = () => {
           strokeWidth={2}
         />
       </MapView>
+
       <View style={styles.floatingRectangle}>
         <TouchableOpacity style={styles.menuIcon} onPress={toggleMenu}>
           <Ionicons name="menu-outline" size={24} color="black" />
@@ -95,14 +111,12 @@ const MapScreen = () => {
           style={styles.profilePic}
         />
       </View>
-      {showMenu && (
-        <View style={styles.menuContent}>
-          {/* Add your menu items here */}
-          <Text>Menu Item 1</Text>
-          <Text>Menu Item 2</Text>
-          {/* ... */}
-        </View>
-      )}
+      <Animated.View style={[styles.menuContent, { opacity: menuOpacity }]}>
+        {/* Add your menu items here */}
+        <Text style={styles.menuItem}>Menu Item 1</Text>
+        <Text style={styles.menuItem}>Menu Item 2</Text>
+        {/* ... */}
+      </Animated.View>
     </View>
   );
 };
@@ -118,14 +132,14 @@ const styles = StyleSheet.create({
   },
   floatingRectangle: {
     position: "absolute",
-    top: 20,
+    top: "6%",
     left: 20,
     right: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backgroundColor: "#FFCC80",
     borderRadius: 10,
     elevation: 4,
   },
@@ -133,18 +147,21 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   profilePic: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 20,
   },
   menuContent: {
     position: "absolute",
-    top: 70, // Adjust the top position as needed
-    right: 20,
+    top: "12%", // Adjust the top position as needed
+    right: "74%",
     backgroundColor: "white",
     borderRadius: 8,
     elevation: 4,
     padding: 10,
+  },
+  menuItem: {
+    paddingVertical: 8,
   },
 });
 

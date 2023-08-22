@@ -12,18 +12,9 @@ const Homepage = () => {
   const [visible, setVisible] = useState(false);
 
   return (
-    <SafeAreaView style={HomeStyles.container}>
-      {/* <CustomHeader />
-      <CustomMap />
-      <CustomModal makeVisible={visible} setMakeVisible={setVisible}/>
-      <View style={HomeStyles.footer}>
-        <CustomButton
-          text={<MaterialCommunityIcons name="run" size={28} color="white" />}
-          onPress={() => setVisible(true)}
-        />
-      </View> */}
+    <>
       <MapScreen />
-    </SafeAreaView>
+    </>
   );
 };
 
