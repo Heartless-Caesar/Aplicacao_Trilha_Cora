@@ -8,12 +8,12 @@ import CustomModal from "../components/custom_modal";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import MapScreen from "../components/map_component";
 
-const Homepage = () => {
+const Homepage = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <MapScreen />
+      <MapScreen navigation={navigation} />
     </>
   );
 };
