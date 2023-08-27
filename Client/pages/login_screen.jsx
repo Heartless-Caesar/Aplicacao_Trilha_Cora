@@ -1,8 +1,4 @@
-import {
-  View,
-  Image,
-  useWindowDimensions,
-} from "react-native";
+import { View, Image, useWindowDimensions } from "react-native";
 import React, { useState } from "react";
 import loginStyle from "../styles/login_style";
 import Logo from "../assets/caminho-de-cora-black.png";
@@ -17,21 +13,21 @@ const Login_screen = ({ navigation }) => {
   const { height } = useWindowDimensions();
 
   const onSignInPress = async () => {
-    // await axios({
-    //   url: "http://localhost:3000/Login",
-    //   method: "POST",
-    //   data: {
-    //     username: username,
-    //     password: password,
-    //   },
-    // })
-    //   .then((res) => {
-    //     console.log(res.data);
-    navigation.replace("Home");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    await axios({
+      url: "http://localhost:3000/Login",
+      method: "POST",
+      data: {
+        username: username,
+        password: password,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        navigation.replace("Home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onRegisterPress = () => {
@@ -58,7 +54,11 @@ const Login_screen = ({ navigation }) => {
         setValue={setPassword}
       />
       <CustomButton onPress={onSignInPress} text="Sign In" />
-      <CustomButton onPress={onRegisterPress} text="Cadastre-se" type="TERTIARY" />
+      <CustomButton
+        onPress={onRegisterPress}
+        text="Cadastre-se"
+        type="TERTIARY"
+      />
     </View>
   );
 };

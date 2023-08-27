@@ -7,9 +7,10 @@ import CustomButton from "../components/custom_button";
 import toast from "react-native-simple-toast";
 import axios from "axios";
 
-const Register_screen = ({navigation}) => {
+const Register_screen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const { height } = useWindowDimensions();
 
@@ -25,6 +26,7 @@ const Register_screen = ({navigation}) => {
       data: {
         username: username,
         password: password,
+        email: email,
       },
     })
       .then((res) => {
@@ -67,8 +69,19 @@ const Register_screen = ({navigation}) => {
         setValue={setCheckPassword}
         secureTextEntry={true}
       />
+
+      <CustomInput
+        placeholder="Email"
+        value={email}
+        setValue={setEmail}
+        secureTextEntry={false}
+      />
+
       <CustomButton onPress={onRegisterPress} text="Register" />
-      <CustomButton onPress={() => navigation.navigate('Login')} text="Página de login" />
+      <CustomButton
+        onPress={() => navigation.navigate("Login")}
+        text="Página de login"
+      />
     </View>
   );
 };
