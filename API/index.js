@@ -3,11 +3,11 @@ const { auth_middleware } = require("./middleware/auth_middleware.js");
 const app = express();
 const cors = require("cors");
 const body_parser = require("body-parser");
-const port = process.env.PORT || 3000;
 const { sequelize } = require("./models/index.js");
 const { auth_router } = require("./routes/auth_routes.js");
 const { pdf_router } = require("./routes/pdf_routes.js");
 require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 

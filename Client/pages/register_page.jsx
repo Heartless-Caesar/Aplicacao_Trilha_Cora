@@ -15,32 +15,41 @@ const Register_screen = ({ navigation }) => {
   const { height } = useWindowDimensions();
 
   const onRegisterPress = async () => {
-    if (password != checkPassword) {
-      toast.show("As senhas não são iguais", toast.LONG, toast.TOP);
-      return;
-    }
+    // if (password !== checkPassword) {
+    //   toast.show("As senhas não são iguais", toast.LONG, toast.TOP);
+    //   return;
+    // }
 
-    await axios({
-      url: "http://localhost:3000/Register",
-      method: "POST",
-      data: {
-        username: username,
-        password: password,
-        email: email,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-        toast.show("Cadastrado com sucesso", toast.LONG, toast.TOP);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.show(
-          "Não foi possível realizar o cadastro",
-          toast.LONG,
-          toast.TOP
-        );
-      });
+    // try {
+    //   const response = await axios.post(
+    //     "http://10.0.2.2:5000/Register",
+    //     {
+    //       username: username,
+    //       password: password,
+    //       email: email,
+    //     },
+    //     {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     }
+    //   );
+
+    //   if (response.status === 201) {
+    //     console.log("Registration successful:", response.data);
+    //     toast.show("Cadastrado com sucesso", toast.LONG, toast.TOP);
+    //   } else {
+    //     console.log("Unexpected response:", response.status);
+    //     toast.show(
+    //       "Não foi possível realizar o cadastro",
+    //       toast.LONG,
+    //       toast.TOP
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.log("Error:", error.message);
+    //   toast.show("Não foi possível realizar o cadastro", toast.LONG, toast.TOP);
+    // }
+
+    navigation.navigate("Home");
   };
 
   return (

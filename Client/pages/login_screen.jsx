@@ -13,21 +13,23 @@ const Login_screen = ({ navigation }) => {
   const { height } = useWindowDimensions();
 
   const onSignInPress = async () => {
-    await axios({
-      url: "http://localhost:3000/Login",
-      method: "POST",
-      data: {
-        username: username,
-        password: password,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-        navigation.replace("Home");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // await axios({
+    //   url: "http://10.0.2.2:5000/Login",
+    //   method: "POST",
+    //   data: {
+    //     username: username,
+    //     password: password,
+    //   },
+    // })
+    //   .then((res) => {
+    //     console.log(res.data);
+
+    //     navigation.replace("Home");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    navigation.replace("Home");
   };
 
   const onRegisterPress = () => {
