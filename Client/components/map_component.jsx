@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   Animated,
+  Pressable,
 } from "react-native";
 import {
   requestForegroundPermissionsAsync,
@@ -25,7 +26,7 @@ const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
 
-const MapScreen = () => {
+const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [visitedCoordinates, setVisitedCoordinates] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
@@ -113,7 +114,13 @@ const MapScreen = () => {
       </View>
       <Animated.View style={[styles.menuContent, { opacity: menuOpacity }]}>
         {/* Add your menu items here */}
-        <Text style={styles.menuItem}>Menu Item 1</Text>
+        <Pressable
+          onPress={() => {
+            navigation.replace("PDF");
+          }}
+        >
+          <Text style={styles.menuItem}>Certificados</Text>
+        </Pressable>
         <Text style={styles.menuItem}>Menu Item 2</Text>
         {/* ... */}
       </Animated.View>
