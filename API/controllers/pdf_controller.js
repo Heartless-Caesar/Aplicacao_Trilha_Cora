@@ -1,61 +1,59 @@
-const pdf = require('pdf-creator-node')
-const fs = require('fs')
-const path = require('path')
-const { options } = require('../config/pdf_options')
+const pdf = require("pdf-creator-node");
+const fs = require("fs");
+const path = require("path");
+const { options } = require("../config/pdf_options");
 const partial = fs.readFileSync(
-    path.join(`${__dirname}/../assets/partial_cert.html`)
-)
+  path.join(`${__dirname}/../assets/partial_cert.html`)
+);
 const complete = fs.readFileSync(
-    path.join(`${__dirname}/../assets/complete_cert.html`)
-)
+  path.join(`${__dirname}/../assets/complete_cert.html`)
+);
+const { User } = require("../models");
 
 const generate_trial_cert = async (req, res) => {
-    const { name, start_local, start_time, finish_local, finish_time, type } =
-        req.query
-    const document = {}
+  const { inicio, destino, type, userId } = req.query;
+  const document = {};
 
-    if (type == 'partial') {
-        document = {
-            html: partial,
-            data: {
-                name: req.user.name,
-                start_local: start_local,
-                finish_local: finish_local,
-                start_time: start_time,
-                finish_time: finish_time,
-            },
-            path: '../output',
-            type: 'Stream',
-        }
-    } else {
-        document = {
-            html: complete,
-            data: {
-                name: name,
-                start_local: start_local,
-                finish_local: finish_local,
-                start_time: start_time,
-                finish_time: finish_time,
-            },
-            path: `../output_files/${name}_certificate.pdf`,
-            type: 'Stream',
-        }
-    }
+  const user = await User.findOne({ where: { id: userId } });
 
-    return pdf
-        .create(document, options)
-        .then(async (res) => {
-            console.log('Criação de PDF sucedida')
-            // * Envio de email para medico
-            // * Parametros: Diretorio & Nome do arquivo
-            //TODO: Adicionar parametro para email do usuario correspondente ao codigo
-            await enviarEmail(`../output_files/`, `${name}_certificate.pdf`)
-            console.log(res)
-        })
-        .catch(async (error) => {
-            console.log('Algo de errado ocorreu ao tentar gerar o arquivo PDF')
-            console.log(`Output error ${error}`)
-        })
-}
+  if (type == "partial") {
+    document = {
+      html: partial,
+      data: {
+        name: req.user.name,
+        inicio: inicio,
+        destino: destino,
+      },
+      path: "../output",
+      type: "Stream",
+    };
+  } else {
+    document = {
+      html: complete,
+      data: {
+        name: user.username,
+      },
+      path: null,
+      type: "Stream",
+    };
+  }
 
-module.exports = { generate_trial_cert }
+  return pdf
+    .create(document, options)
+    .then((result) => {
+      const pdfBuffer = result[0].content;
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=certificado.pdf"
+      );
+      res.send(pdfBuffer);
+    })
+    .catch(async (error) => {
+      console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
+      console.log(`Output error ${error}`);
+    });
+};
+
+module.exports = { generate_trial_cert };
