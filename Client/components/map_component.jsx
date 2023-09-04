@@ -17,6 +17,7 @@ import {
 } from "expo-location";
 import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
+import { getDistance } from "geolib";
 
 import coordinates from "../assets/coordinates";
 
@@ -41,6 +42,37 @@ const MapScreen = ({ navigation }) => {
       console.log(location);
     }
   };
+
+  const isCloseToCoordinate = (coordinate) => {
+    if (location) {
+      const distance = getDistance(
+        {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+        {
+          latitude: coordinate.latitude,
+          longitude: coordinate.longitude,
+        }
+      );
+
+      // Adjust the threshold distance (e.g., 50 meters) as needed
+      return distance <= 200; // You can change the threshold as per your requirement
+    }
+    return false;
+  };
+
+  const updateVisitedCoordinates = () => {
+    const updatedVisitedCoordinates = coordinates.filter((coordinate) =>
+      isCloseToCoordinate(coordinate)
+    );
+    setVisitedCoordinates(updatedVisitedCoordinates);
+  };
+
+  // Call updateVisitedCoordinates whenever the user's location changes
+  useEffect(() => {
+    updateVisitedCoordinates();
+  }, [location]);
 
   useEffect(() => {
     requestPosition();

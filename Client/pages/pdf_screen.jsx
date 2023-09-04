@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import pdf_styles from "../styles/pdf_screen_styles";
+import { getDistance } from "geolib";
 
 const PDFDownloadPage = ({ navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
