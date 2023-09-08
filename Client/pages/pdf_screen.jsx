@@ -10,9 +10,12 @@ import {
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import pdf_styles from "../styles/pdf_screen_styles";
 import { getDistance } from "geolib";
+import { useUserContext } from "../utils/userPersistence";
 
-const PDFDownloadPage = ({ navigation }) => {
+const PDFDownloadPage = ({ navigation }, props) => {
   const [showMenu, setShowMenu] = useState(false);
+  const { user, id } = useUserContext();
+
   const pdfList = [
     { title: "Sample PDF 1", url: "https://example.com/sample1.pdf" },
     { title: "Sample PDF 2", url: "https://example.com/sample2.pdf" },

@@ -5,6 +5,7 @@ import Logo from "../assets/caminho-de-cora-black.png";
 import CustomInput from "../components/customInput";
 import CustomButton from "../components/custom_button";
 import axios from "axios";
+import { Config } from "react-native-dotenv";
 
 // TODO Finish login screen
 const Login_screen = ({ navigation }) => {
@@ -13,23 +14,33 @@ const Login_screen = ({ navigation }) => {
   const { height } = useWindowDimensions();
 
   const onSignInPress = async () => {
-    await axios({
-      url: "http://192.168.1.13:5000/Login",
-      method: "POST",
-      data: {
-        username: username,
-        password: password,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-
-        navigation.replace("Home");
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await axios({
+        url: "http://192.168.1.13:5000/Login",
+        method: "POST",
+        data: {
+          username: username,
+          password: password,
+        },
       });
-    navigation.replace("Home");
+
+      // Assuming the server returns a JWT token upon successful login
+      const { token } = response.data;
+
+      // Verify and decode the JWT token
+      const decodedToken = jwt.verify(token, Config.JWT_SECRET);
+
+      // Access user data from the decoded token
+      const { id, username } = decodedToken;
+
+      console.log("User ID:", id);
+      console.log("Username:", username);
+
+      // Redirect to the Home screen
+      navigation.replace("Home");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onRegisterPress = () => {

@@ -68,14 +68,6 @@ const login_user = async (req, res) => {
     }
   );
 
-  // const refresh_token = jwt.sign(
-  //     { id: found_user.id, username: found_user.username },
-  //     process.env.JWT_SECRET,
-  //     {
-  //         expiresIn: '1d',
-  //     }
-  // )
-
   res.status(StatusCodes.OK).json({ Message: "Usuario logado", token: token });
 };
 
