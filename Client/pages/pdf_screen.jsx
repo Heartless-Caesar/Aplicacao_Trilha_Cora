@@ -12,15 +12,69 @@ import pdf_styles from "../styles/pdf_screen_styles";
 import { getDistance } from "geolib";
 import { useUserContext } from "../utils/userPersistence";
 
-const PDFDownloadPage = ({ navigation }, props) => {
+const PDFDownloadPage = ({ navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [local_1, setLocal_1] = useState({});
+  const [local_2, setLocal_2] = useState({});
+  const [fetchedLocals, setFetchedLocals] = useState({});
   const { user, id } = useUserContext();
 
   const pdfList = [
     { title: "Sample PDF 1", url: "https://example.com/sample1.pdf" },
     { title: "Sample PDF 2", url: "https://example.com/sample2.pdf" },
-    // Add more PDFs as needed
+    { title: "Sample PDF 3", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 4", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 5", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 6", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 7", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 8", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 9", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 10", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 11", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 12", url: "https://example.com/sample2.pdf" },
+    { title: "Sample PDF 13", url: "https://example.com/sample2.pdf" },
   ];
+
+  const fetchValidations = async () => {
+    try {
+      // Make a GET request with the user ID as a parameter
+      const response = await axios.get(`http://192.168.1.13:5000/locals/`, {
+        userId: id,
+      });
+
+      if (response.status === 200) {
+        // Data was fetched successfully
+        setFetchedLocals(response.data);
+        console.log("Data:", response.data);
+      } else {
+        // Handle unexpected response status
+        console.log("Unexpected response:", response.status);
+      }
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error("Error:", error.message);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      // Make a GET request with the user ID as a parameter
+      const response = await axios.get(
+        `http://192.168.1.13:5000/data?userId=${id}?local_1=${local_1}?local_2=${local_2}`
+      );
+
+      if (response.status === 200) {
+        // Data was fetched successfully
+        console.log("Data:", response.data);
+      } else {
+        // Handle unexpected response status
+        console.log("Unexpected response:", response.status);
+      }
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error("Error:", error.message);
+    }
+  };
 
   const menuOpacity = useRef(new Animated.Value(0)).current;
 
@@ -40,6 +94,10 @@ const PDFDownloadPage = ({ navigation }, props) => {
     // Implement your PDF download logic here
     console.log("Downloading PDF from:", url);
   };
+
+  useEffect(() => {
+    fetchValidations();
+  }, []);
 
   return (
     <View style={pdf_styles.container}>
@@ -74,7 +132,10 @@ const PDFDownloadPage = ({ navigation }, props) => {
           onPress={() => handleDownload(pdf.url)}
         >
           <Text style={pdf_styles.pdfTitle}>{pdf.title}</Text>
-          <TouchableOpacity style={pdf_styles.downloadButton}>
+          <TouchableOpacity
+            style={pdf_styles.downloadButton}
+            onPress={() => fetchData()}
+          >
             <Text style={pdf_styles.buttonText}>Download</Text>
           </TouchableOpacity>
         </TouchableOpacity>

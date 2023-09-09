@@ -6,6 +6,7 @@ const body_parser = require("body-parser");
 const { sequelize } = require("./models/index.js");
 const { auth_router } = require("./routes/auth_routes.js");
 const { pdf_router } = require("./routes/pdf_routes.js");
+const { validationRouter } = require("./routes/validationRoutes.js");
 require("dotenv").config();
 const port = process.env.PORT || 3000;
 
@@ -17,6 +18,8 @@ app.use(body_parser.json());
 app.use(auth_router);
 
 app.use(auth_middleware, pdf_router);
+
+app.use(validationRouter);
 
 const start = async () => {
   try {

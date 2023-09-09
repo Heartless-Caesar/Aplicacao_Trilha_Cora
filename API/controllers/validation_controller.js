@@ -1,3 +1,4 @@
+import { StatusCodes } from "http-status-codes";
 import { Locals } from "../models/index";
 
 const validateLocal = async (req, res) => {
@@ -96,6 +97,15 @@ const validateLocal = async (req, res) => {
     default:
       break;
   }
+
+  const allLocals = locals.findAll({ where: { userId: userId } });
+
+  res.status(StatusCodes.OK).json({
+    Message: "Usuario logado",
+    locals: {
+      allLocals: allLocals,
+    },
+  });
 };
 
 module.exports = { validateLocal };
