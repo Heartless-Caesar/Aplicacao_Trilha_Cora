@@ -14,12 +14,12 @@ app.use(cors());
 
 app.use(body_parser.json());
 
+app.use(validationRouter);
+
 //Auth endpoints
 app.use(auth_router);
 
 app.use(auth_middleware, pdf_router);
-
-app.use(validationRouter);
 
 const start = async () => {
   try {

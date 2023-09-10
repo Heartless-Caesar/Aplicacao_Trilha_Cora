@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import pdf_styles from "../styles/pdf_screen_styles";
-import { getDistance } from "geolib";
 import { useUserContext } from "../utils/userPersistence";
 
 const PDFDownloadPage = ({ navigation }) => {
@@ -38,7 +37,7 @@ const PDFDownloadPage = ({ navigation }) => {
   const fetchValidations = async () => {
     try {
       // Make a GET request with the user ID as a parameter
-      const response = await axios.get(`http://192.168.1.13:5000/locals/`, {
+      const response = await axios.get(`http://192.168.1.13:5000/fetch`, {
         userId: id,
       });
 
@@ -56,25 +55,26 @@ const PDFDownloadPage = ({ navigation }) => {
     }
   };
 
-  const fetchData = async () => {
-    try {
-      // Make a GET request with the user ID as a parameter
-      const response = await axios.get(
-        `http://192.168.1.13:5000/data?userId=${id}?local_1=${local_1}?local_2=${local_2}`
-      );
+  // const updateLocal = async () => {
+  //   try {
+  //     // Make a GET request with the user ID as a parameter
+  //     const response = await axios.patch(`http://192.168.1.13:5000/update`, {
+  //       local: local,
+  //       userId: id,
+  //     });
 
-      if (response.status === 200) {
-        // Data was fetched successfully
-        console.log("Data:", response.data);
-      } else {
-        // Handle unexpected response status
-        console.log("Unexpected response:", response.status);
-      }
-    } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error("Error:", error.message);
-    }
-  };
+  //     if (response.status === 200) {
+  //       // Data was fetched successfully
+  //       console.log("Data:", response.data);
+  //     } else {
+  //       // Handle unexpected response status
+  //       console.log("Unexpected response:", response.status);
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that occurred during the request
+  //     console.error("Error:", error.message);
+  //   }
+  // };
 
   const menuOpacity = useRef(new Animated.Value(0)).current;
 
@@ -125,21 +125,22 @@ const PDFDownloadPage = ({ navigation }) => {
         {/* Insert more items in menu */}
       </Animated.View>
       {/* Insert more items in menu */}
-      {pdfList.map((pdf, index) => (
-        <TouchableOpacity
-          key={index}
-          style={pdf_styles.pdfContainer}
-          onPress={() => handleDownload(pdf.url)}
-        >
-          <Text style={pdf_styles.pdfTitle}>{pdf.title}</Text>
+      {fetchedLocals &&
+        pdfList.map((pdf, index) => (
           <TouchableOpacity
-            style={pdf_styles.downloadButton}
-            onPress={() => fetchData()}
+            key={index}
+            style={pdf_styles.pdfContainer}
+            onPress={() => handleDownload(pdf.url)}
           >
-            <Text style={pdf_styles.buttonText}>Download</Text>
+            <Text style={pdf_styles.pdfTitle}>{pdf.title}</Text>
+            <TouchableOpacity
+              style={pdf_styles.downloadButton}
+              onPress={() => updateLocal()}
+            >
+              <Text style={pdf_styles.buttonText}>Download</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
-      ))}
+        ))}
     </View>
   );
 };

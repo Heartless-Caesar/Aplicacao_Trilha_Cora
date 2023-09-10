@@ -1,111 +1,120 @@
-import { StatusCodes } from "http-status-codes";
-import { Locals } from "../models/index";
+const { StatusCodes } = require("http-status-codes");
+const { Locals } = require("../models/index");
 
 const validateLocal = async (req, res) => {
-  const { inicio, userId } = req.body;
-  let locals;
-  switch (inicio) {
+  const { local, userId } = req.body;
+  let update;
+
+  switch (local) {
     case "corumba":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.corumba = true;
+      update.corumba = true;
 
-      await locals.save();
-      console.log(`Locail ${inicio}, do usuario de id ${userId} atualizado`);
+      await update.save();
+      console.log(`Locail ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "cocal":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.cocal = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.cocal = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "pire":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.pire = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.pire = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "frans":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.frans = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.frans = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "jara":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.jara = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.jara = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "ita":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.ita = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.ita = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "itab":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.itab = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.itab = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     case "cid_go":
-      locals = Locals.findOne({
+      update = Locals.findOne({
         where: {
           UserId: userId,
         },
       });
 
-      locals.cid_go = true;
-      await locals.save();
-      console.log(`Local ${inicio}, do usuario de id ${userId} atualizado`);
+      update.cid_go = true;
+      await update.save();
+      console.log(`Local ${local}, do usuario de id ${userId} atualizado`);
       break;
     default:
+      console.log(`Algo de rrado ocorreu ao atualizar o local`);
       break;
   }
 
-  const allLocals = locals.findAll({ where: { userId: userId } });
+  res.status(StatusCodes.OK).json({
+    Message: "Local atualizado",
+  });
+};
+
+const fetchAllLocals = async (req, res) => {
+  const { userId } = req.body;
+
+  const allLocals = await Locals.findAll({ where: { userId: userId } });
 
   res.status(StatusCodes.OK).json({
-    Message: "Usuario logado",
-    locals: {
+    Locals: {
       allLocals: allLocals,
     },
   });
 };
 
-module.exports = { validateLocal };
+module.exports = { validateLocal, fetchAllLocals };

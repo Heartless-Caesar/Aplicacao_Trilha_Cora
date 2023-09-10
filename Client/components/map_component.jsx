@@ -128,6 +128,17 @@ const MapScreen = ({ navigation }) => {
             }}
           />
         )}
+        {coordinates &&
+          coordinates.map((item) => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                }}
+              />
+            );
+          })}
         <Polyline
           coordinates={coordinates}
           strokeColor="#FF0000"
