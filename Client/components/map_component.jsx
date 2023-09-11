@@ -20,11 +20,12 @@ import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appro
 import { getDistance } from "geolib";
 
 import coordinates from "../assets/coordinates";
+import { keyLocations } from "../assets/keyLocations";
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.02;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+//const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
 
 const MapScreen = ({ navigation }) => {
@@ -57,13 +58,13 @@ const MapScreen = ({ navigation }) => {
       );
 
       // Adjust the threshold distance (e.g., 50 meters) as needed
-      return distance <= 200; // You can change the threshold as per your requirement
+      return distance <= 2000; // You can change the threshold as per your requirement
     }
     return false;
   };
 
   const updateVisitedCoordinates = () => {
-    const updatedVisitedCoordinates = coordinates.filter((coordinate) =>
+    const updatedVisitedCoordinates = keyLocations.filter((coordinate) =>
       isCloseToCoordinate(coordinate)
     );
     setVisitedCoordinates(updatedVisitedCoordinates);
@@ -128,10 +129,11 @@ const MapScreen = ({ navigation }) => {
             }}
           />
         )}
-        {coordinates &&
-          coordinates.map((item) => {
+        {keyLocations &&
+          keyLocations.map((item, idx) => {
             return (
               <Marker
+                key={idx}
                 coordinate={{
                   latitude: item.latitude,
                   longitude: item.longitude,

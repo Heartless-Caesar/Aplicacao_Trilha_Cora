@@ -4,7 +4,7 @@ const pdf_styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    paddingTop: "50%",
+    paddingTop: "35%",
     backgroundColor: "#F4F4F4",
   },
   pdfContainer: {

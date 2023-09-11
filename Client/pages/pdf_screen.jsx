@@ -6,10 +6,12 @@ import {
   Animated,
   Image,
   Pressable,
+  FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import pdf_styles from "../styles/pdf_screen_styles";
 import { useUserContext } from "../utils/userPersistence";
+import axios from "axios";
 
 const PDFDownloadPage = ({ navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -101,30 +103,7 @@ const PDFDownloadPage = ({ navigation }) => {
 
   return (
     <View style={pdf_styles.container}>
-      {/* Reactangle */}
-      <View style={pdf_styles.floatingRectangle}>
-        <TouchableOpacity style={pdf_styles.menuIcon} onPress={toggleMenu}>
-          <Ionicons name="menu-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <Image
-          source={require("../assets/profile-pic.png")}
-          style={pdf_styles.profilePic}
-        />
-      </View>
-      {/* Menu itself */}
-      <Animated.View style={[pdf_styles.menuContent, { opacity: menuOpacity }]}>
-        {/* Add your menu items here */}
-        <Pressable
-          onPress={() => {
-            navigation.replace("Home");
-          }}
-        >
-          <Text style={pdf_styles.menuItem}>Home</Text>
-        </Pressable>
-        <Text style={pdf_styles.menuItem}>Menu Item 2</Text>
-        {/* Insert more items in menu */}
-      </Animated.View>
-      {/* Insert more items in menu */}
+      {/* Components Below */}
       {fetchedLocals &&
         pdfList.map((pdf, index) => (
           <TouchableOpacity
@@ -141,6 +120,31 @@ const PDFDownloadPage = ({ navigation }) => {
             </TouchableOpacity>
           </TouchableOpacity>
         ))}
+
+      {/* Menu */}
+      <View style={pdf_styles.floatingRectangle}>
+        <TouchableOpacity style={pdf_styles.menuIcon} onPress={toggleMenu}>
+          <Ionicons name="menu-outline" size={24} color="black" />
+        </TouchableOpacity>
+        <Image
+          source={require("../assets/profile-pic.png")}
+          style={pdf_styles.profilePic}
+        />
+      </View>
+
+      {/* Menu itself */}
+      <Animated.View style={[pdf_styles.menuContent, { opacity: menuOpacity }]}>
+        {/* Add your menu items here */}
+        <Pressable
+          onPress={() => {
+            navigation.replace("Home");
+          }}
+        >
+          <Text style={pdf_styles.menuItem}>Home</Text>
+        </Pressable>
+        <Text style={pdf_styles.menuItem}>Menu Item 2</Text>
+        {/* Insert more items in menu */}
+      </Animated.View>
     </View>
   );
 };

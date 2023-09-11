@@ -108,6 +108,8 @@ const validateLocal = async (req, res) => {
 const fetchAllLocals = async (req, res) => {
   const { userId } = req.body;
 
+  console.log(userId);
+
   const allLocals = await Locals.findAll({ where: { userId: userId } });
 
   res.status(StatusCodes.OK).json({

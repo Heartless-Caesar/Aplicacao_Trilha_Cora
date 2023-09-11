@@ -28,17 +28,17 @@ const Login_screen = ({ navigation }) => {
         },
       });
 
-      const userData = response.data;
+      // const userData = response.data;
 
-      setUserData(userData);
+      // setUserData(userData);
 
-      console.log(userData.token);
+      // console.log(userData.token);
 
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${userData.token}`;
+      // axios.defaults.headers.common[
+      //   "Authorization"
+      // ] = `Bearer ${userData.token}`;
 
-      await SecureStore.setItemAsync(TOKEN_KEY, userData.token);
+      // await SecureStore.setItemAsync(TOKEN_KEY, userData.token);
 
       // Redirect to the Home screen
       navigation.replace("Home");
