@@ -23,8 +23,8 @@ import coordinates from "../assets/coordinates";
 import { keyLocations } from "../assets/keyLocations";
 
 const { width, height } = Dimensions.get("window");
-const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.02;
+//const ASPECT_RATIO = width / height;
+//const LATITUDE_DELTA = 0.02;
 //const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
 
