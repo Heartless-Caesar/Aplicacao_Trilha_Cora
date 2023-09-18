@@ -8,6 +8,7 @@ import {
   Text,
   Animated,
   Pressable,
+  Button,
 } from "react-native";
 import {
   requestForegroundPermissionsAsync,
@@ -18,9 +19,11 @@ import {
 import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import { getDistance } from "geolib";
+import NotificationPopup from "./notification_pop_up";
 
 import coordinates from "../assets/coordinates";
 import { keyLocations } from "../assets/keyLocations";
+import home_styles from "../styles/home_page_styles";
 
 const { width, height } = Dimensions.get("window");
 //const ASPECT_RATIO = width / height;
@@ -31,8 +34,14 @@ const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [visitedCoordinates, setVisitedCoordinates] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const mapRef = useRef(null);
+
+  const clearNotification = () => {
+    setNotificationMessage("");
+  };
 
   const requestPosition = async () => {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -67,6 +76,9 @@ const MapScreen = ({ navigation }) => {
     const updatedVisitedCoordinates = keyLocations.filter((coordinate) =>
       isCloseToCoordinate(coordinate)
     );
+
+    setNotificationMessage(`Parabéns! Você passou por mais um ponto chave`);
+
     setVisitedCoordinates(updatedVisitedCoordinates);
   };
 
@@ -94,6 +106,16 @@ const MapScreen = ({ navigation }) => {
     );
   }, []);
 
+  useEffect(() => {
+    if (notificationMessage) {
+      const notificationTimeout = setTimeout(() => {
+        clearNotification();
+      }, 5000); // Notification will disappear after 5 seconds
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [notificationMessage]);
+
   const menuOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -106,6 +128,17 @@ const MapScreen = ({ navigation }) => {
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
+  };
+
+  //Emular passagem de local
+  const triggerNotification = () => {
+    setNotificationMessage("Parabéns! Você passou por um ponto de interesse");
+    setIsNotificationVisible(true);
+
+    // Clear the notification after 3 seconds
+    setTimeout(() => {
+      setIsNotificationVisible(false);
+    }, 3000);
   };
 
   return (
@@ -157,6 +190,12 @@ const MapScreen = ({ navigation }) => {
           style={styles.profilePic}
         />
       </View>
+      {notificationMessage && (
+        <NotificationPopup
+          message={notificationMessage}
+          isVisible={isNotificationVisible}
+        />
+      )}
       <Animated.View style={[styles.menuContent, { opacity: menuOpacity }]}>
         {/* Add your menu items here */}
         <Pressable
@@ -169,6 +208,10 @@ const MapScreen = ({ navigation }) => {
         <Text style={styles.menuItem}>Menu Item 2</Text>
         {/* ... */}
       </Animated.View>
+
+      <View style={home_styles.notificationButton}>
+        <Button title="Trigger Notification" onPress={triggerNotification} />
+      </View>
     </View>
   );
 };
