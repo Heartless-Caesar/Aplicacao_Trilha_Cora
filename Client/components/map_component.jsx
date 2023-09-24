@@ -20,24 +20,89 @@ import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import { getDistance } from "geolib";
 import NotificationPopup from "./notification_pop_up";
-
+import { useNetworkState } from "react-native-offline";
 import coordinates from "../assets/coordinates";
 import { keyLocations } from "../assets/keyLocations";
 import home_styles from "../styles/home_page_styles";
-
+import SQLite from "react-native-sqlite-storage";
+import {
+  initDatabase,
+  isDatabasePresent,
+  setupDatabaseTable,
+} from "../utils/DatabaseHelper"; // Import the DatabaseHelper
 const { width, height } = Dimensions.get("window");
 //const ASPECT_RATIO = width / height;
 //const LATITUDE_DELTA = 0.02;
 //const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
+const db = SQLite.openDatabase(
+  {
+    name: "LocationDatabase",
+    location: "default",
+  },
+  () => {},
+  (error) => {
+    console.error("Error opening the database:", error);
+  }
+);
 
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [visitedCoordinates, setVisitedCoordinates] = useState([]);
+  const [locationData, setLocationData] = useState([]);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [databasePresent, setDatabasePresent] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const mapRef = useRef(null);
+  const networkState = useNetworkState();
+
+  const saveCoordinatesToDatabase = (latitude, longitude) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "INSERT INTO Coordinates (latitude, longitude) VALUES (?, ?)",
+          [latitude, longitude],
+          (_, resultSet) => {
+            console.log("Coordinates saved to the database");
+          },
+          (_, error) => {
+            console.error("Error saving coordinates to the database:", error);
+          }
+        );
+      },
+      (error) => {
+        console.error("Transaction error:", error);
+      }
+    );
+  };
+
+  const startLocationRecording = () => {
+    const locationRecordingInterval = setInterval(async () => {
+      const currentPosition = await getCurrentPositionAsync();
+      setLocationData((prevLocationData) => [
+        ...prevLocationData,
+        currentPosition,
+      ]);
+
+      // Save coordinates to SQLite database
+      saveCoordinatesToDatabase(
+        currentPosition.coords.latitude,
+        currentPosition.coords.longitude
+      );
+    }, 180000); // Record every 3 minutes (180000 milliseconds)
+
+    // Clear the interval when the component unmounts or navigates away
+    return () => clearInterval(locationRecordingInterval);
+  };
+
+  // Call startLocationRecording only when offline
+  useEffect(() => {
+    if (!networkState.isConnected) {
+      requestPosition();
+      startLocationRecording();
+    }
+  }, [networkState.isConnected]);
 
   const clearNotification = () => {
     setNotificationMessage("");
@@ -88,8 +153,26 @@ const MapScreen = ({ navigation }) => {
   }, [location]);
 
   useEffect(() => {
-    requestPosition();
-  }, []);
+    // Check if the database is already present
+    isDatabasePresent()
+      .then((present) => {
+        setDatabasePresent(present);
+        if (!present) {
+          // If not present, set up the database table
+          setupDatabaseTable();
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking database:", error);
+      });
+
+    requestPosition(); // Request user's position
+
+    // Start recording location every 3 minutes if offline and database is present
+    if (!networkState.isConnected && databasePresent) {
+      startLocationRecording();
+    }
+  }, [networkState.isConnected, databasePresent]);
 
   useEffect(() => {
     watchPositionAsync(

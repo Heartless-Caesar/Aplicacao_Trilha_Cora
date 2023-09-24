@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
+import { useNetworkState } from "react-native-offline";
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Change the initial value to null
   const [id, setId] = useState(0);
+
+  const networkState = useNetworkState();
 
   // Function to set user data
   const setUserData = (userData) => {
@@ -13,7 +17,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUserData, id, setId }}>
+    <UserContext.Provider
+      value={{ user, setUserData, id, setId, networkState }}
+    >
       {children}
     </UserContext.Provider>
   );
