@@ -24,13 +24,7 @@ import { useNetworkState } from "react-native-offline";
 import coordinates from "../assets/coordinates";
 import { keyLocations } from "../assets/keyLocations";
 import home_styles from "../styles/home_page_styles";
-//import SQLite from "react-native-sqlite-storage";
-import {
-  initDatabase,
-  isDatabasePresent,
-  setupDatabaseTable,
-} from "../utils/DatabaseHelper"; // Import the DatabaseHelper
-const { width, height } = Dimensions.get("window");
+
 //const ASPECT_RATIO = width / height;
 //const LATITUDE_DELTA = 0.02;
 //const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -45,6 +39,7 @@ const MapScreen = ({ navigation }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const mapRef = useRef(null);
+  const network = useNetworkState();
 
   const clearNotification = () => {
     setNotificationMessage("");
@@ -59,6 +54,10 @@ const MapScreen = ({ navigation }) => {
       console.log(location);
     }
   };
+
+  useEffect(() => {
+    requestPosition();
+  }, []);
 
   const isCloseToCoordinate = (coordinate) => {
     if (location) {
@@ -80,52 +79,52 @@ const MapScreen = ({ navigation }) => {
   };
 
   const updateVisitedCoordinates = () => {
-    const updatedVisitedCoordinates = keyLocations.filter((coordinate) =>
-      isCloseToCoordinate(coordinate)
+    const updatedVisitedCoordinates = keyLocations.reduce(
+      (acc, locationObj) => {
+        const [locationKey] = Object.keys(locationObj);
+        const { latitude, longitude } = locationObj[locationKey];
+
+        if (isCloseToCoordinate({ latitude, longitude })) {
+          acc.push(locationKey);
+        }
+
+        return acc;
+      },
+      []
     );
 
     setNotificationMessage(`Parabéns! Você passou por mais um ponto chave`);
     setVisitedCoordinates(updatedVisitedCoordinates);
 
-    // Save visited coordinates to a JSON file
-    const filePath = `${FileSystem.documentDirectory}visitedCoordinates.json`;
-    FileSystem.writeAsStringAsync(
-      filePath,
-      JSON.stringify(updatedVisitedCoordinates)
-    )
-      .then(() => console.log("Visited coordinates saved to file"))
-      .catch((error) =>
-        console.error("Error saving visited coordinates:", error)
-      );
+    // Salva pings em um arquivo JSON caso esteja offline
+    if (!network) {
+      const filePath = `${FileSystem.documentDirectory}visitedCoordinates.json`;
+      FileSystem.writeAsStringAsync(
+        filePath,
+        JSON.stringify(updatedVisitedCoordinates)
+      )
+        .then(() => console.log("Visited coordinates saved to file"))
+        .catch((error) =>
+          console.error("Error saving visited coordinates:", error)
+        );
+    }
   };
 
   useEffect(() => {
-    // Retrieve visited coordinates from the JSON file on component mount
-    const filePath = `${FileSystem.documentDirectory}visitedCoordinates.json`;
-    FileSystem.readAsStringAsync(filePath)
-      .then((data) => {
-        if (data) {
-          setVisitedCoordinates(JSON.parse(data));
-        }
-      })
-      .catch((error) =>
-        console.error("Error reading visited coordinates:", error)
-      );
-  }, []);
-
-  useEffect(() => {
-    // Retrieve visited coordinates from the JSON file on component mount
-    const filePath = `${FileSystem.documentDirectory}visitedCoordinates.json`;
-    FileSystem.readAsStringAsync(filePath)
-      .then((data) => {
-        if (data) {
-          setVisitedCoordinates(JSON.parse(data));
-        }
-      })
-      .catch((error) =>
-        console.error("Error reading visited coordinates:", error)
-      );
-  }, []);
+    // Busca coordenadas do arquivo JSON para ser verificada posteriormente
+    if (!network) {
+      const filePath = `${FileSystem.documentDirectory}visitedCoordinates.json`;
+      FileSystem.readAsStringAsync(filePath)
+        .then((data) => {
+          if (data) {
+            setVisitedCoordinates(JSON.parse(data));
+          }
+        })
+        .catch((error) =>
+          console.error("Error reading visited coordinates:", error)
+        );
+    }
+  }, [network]);
 
   // Call updateVisitedCoordinates whenever the user's location changes
   useEffect(() => {

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1696130143787" clover="3.2.0">
+  <project timestamp="1696130143787" name="All files">
+    <metrics statements="16" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0" elements="18" coveredelements="0" complexity="0" loc="16" ncloc="16" packages="3" files="16" classes="16"/>
+    <package name="assets">
+      <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="coordinates.js" path="/home/cesa/Gh/trilha_backend/Client/assets/coordinates.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+      <file name="keyLocations.js" path="/home/cesa/Gh/trilha_backend/Client/assets/keyLocations.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="styles">
+      <metrics statements="11" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="custom_accordion_body_styles.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_accordion_body_styles.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="custom_accordion_title_style.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_accordion_title_style.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="custom_button_style.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_button_style.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="custom_header_style.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_header_style.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="custom_input_style.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_input_style.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="custom_map_style.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_map_style.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="custom_modal_styles.js" path="/home/cesa/Gh/trilha_backend/Client/styles/custom_modal_styles.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="dropdown_styles.js" path="/home/cesa/Gh/trilha_backend/Client/styles/dropdown_styles.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="home_page_styles.js" path="/home/cesa/Gh/trilha_backend/Client/styles/home_page_styles.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="login_style.js" path="/home/cesa/Gh/trilha_backend/Client/styles/login_style.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+      <file name="pdf_screen_styles.js" path="/home/cesa/Gh/trilha_backend/Client/styles/pdf_screen_styles.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <file name="DatabaseHelper.js" path="/home/cesa/Gh/trilha_backend/Client/utils/DatabaseHelper.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="get_current_date.js" path="/home/cesa/Gh/trilha_backend/Client/utils/get_current_date.js">
+        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+      </file>
+      <file name="token.js" path="/home/cesa/Gh/trilha_backend/Client/utils/token.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
