@@ -5,7 +5,7 @@ import Logo from "../assets/caminho-de-cora-black.png";
 import CustomInput from "../components/customInput";
 import CustomButton from "../components/custom_button";
 import axios from "axios";
-import { JWT_SECRET } from "@env";
+//import { JWT_SECRET } from "@env";
 import { useUserContext } from "../utils/userPersistence";
 import SecureStore from "expo-secure-store";
 import { TOKEN_KEY } from "../utils/token";

@@ -20,7 +20,7 @@ import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
 import { getDistance } from "geolib";
 import NotificationPopup from "./notification_pop_up";
-import { useNetworkState } from "react-native-offline";
+import { useIsConnected } from "react-native-offline";
 import coordinates from "../assets/coordinates";
 import { keyLocations } from "../assets/keyLocations";
 import home_styles from "../styles/home_page_styles";
@@ -38,8 +38,48 @@ const MapScreen = ({ navigation }) => {
   const [databasePresent, setDatabasePresent] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [isSimulationRunning, setIsSimulationRunning] = useState(false);
+
   const mapRef = useRef(null);
-  const network = useNetworkState();
+  const network = useIsConnected();
+
+  const simulateUserMovement = async () => {
+    if (isSimulationRunning) {
+      console.log("Simulation is already running.");
+      return;
+    }
+
+    setIsSimulationRunning(true);
+
+    try {
+      for (let i = 0; i < coordinates.length; i++) {
+        const coordinate = coordinates[i];
+        console.log(`Moving to coordinate: ${JSON.stringify(coordinate)}`);
+
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        const closeToKeyLocation = keyLocations.some((keyLocation) => {
+          const locationKey = Object.keys(keyLocation)[0];
+          const distance = getDistance(coordinate, keyLocation[locationKey]);
+          if (distance <= 2000) {
+            console.log(`User is close to the key location: ${locationKey}`);
+            triggerNotification(locationKey);
+            return true;
+          }
+          return false;
+        });
+
+        if (!closeToKeyLocation) {
+          console.log("User is not close to any key location.");
+        }
+      }
+    } catch (error) {
+      console.error("Simulation error:", error);
+    } finally {
+      console.log("Simulation completed.");
+      setIsSimulationRunning(false);
+    }
+  };
 
   const clearNotification = () => {
     setNotificationMessage("");
@@ -73,7 +113,23 @@ const MapScreen = ({ navigation }) => {
       );
 
       // Adjust the threshold distance (e.g., 50 meters) as needed
-      return distance <= 2000; // You can change the threshold as per your requirement
+      const isClose = distance <= 6000; // You can change the threshold as per your requirement
+
+      if (isClose) {
+        // Mock patch request to a server
+        axios
+          .patch("https://example.com/api/user/key_location", {
+            keyLocation: coordinate, // Pass the key location data
+          })
+          .then((response) => {
+            console.log("Patch request successful:", response.data);
+          })
+          .catch((error) => {
+            console.error("Patch request error:", error);
+          });
+      }
+
+      return isClose;
     }
     return false;
   };
@@ -171,8 +227,10 @@ const MapScreen = ({ navigation }) => {
   };
 
   //Emular passagem de local
-  const triggerNotification = () => {
-    setNotificationMessage("Parabéns! Você passou por um ponto de interesse");
+  const triggerNotification = (locationKey) => {
+    setNotificationMessage(
+      `Parabéns! Você passou pelo ponto de interesse: ${locationKey}`
+    );
     setIsNotificationVisible(true);
 
     // Clear the notification after 3 seconds
@@ -203,14 +261,14 @@ const MapScreen = ({ navigation }) => {
           />
         )}
         {keyLocations &&
-          keyLocations.map((item, idx) => {
+          keyLocations.map((item) => {
+            const locationKey = Object.keys(item)[0];
+            const { latitude, longitude } = item[locationKey];
             return (
               <Marker
-                key={idx}
-                coordinate={{
-                  latitude: item.latitude,
-                  longitude: item.longitude,
-                }}
+                key={locationKey}
+                coordinate={{ latitude, longitude }}
+                title={locationKey}
               />
             );
           })}
@@ -251,6 +309,24 @@ const MapScreen = ({ navigation }) => {
 
       <View style={home_styles.notificationButton}>
         <Button title="Trigger Notification" onPress={triggerNotification} />
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 65,
+          right: 0,
+          left: "0%",
+          alignItems: "center",
+        }}
+      >
+        {/* Button to trigger the simulation */}
+        <Button
+          title={
+            isSimulationRunning ? "Simulation Running" : "Start Simulation"
+          }
+          onPress={simulateUserMovement}
+          disabled={isSimulationRunning}
+        />
       </View>
     </View>
   );
