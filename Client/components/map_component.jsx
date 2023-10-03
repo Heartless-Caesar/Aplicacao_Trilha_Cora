@@ -56,6 +56,14 @@ const MapScreen = ({ navigation }) => {
         const coordinate = coordinates[i];
         console.log(`Moving to coordinate: ${JSON.stringify(coordinate)}`);
 
+        // Update the user's location (marker) on the map
+        setLocation({
+          coords: {
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
+          },
+        });
+
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         const closeToKeyLocation = keyLocations.some((keyLocation) => {
@@ -117,16 +125,17 @@ const MapScreen = ({ navigation }) => {
 
       if (isClose) {
         // Mock patch request to a server
-        axios
-          .patch("https://example.com/api/user/key_location", {
-            keyLocation: coordinate, // Pass the key location data
-          })
-          .then((response) => {
-            console.log("Patch request successful:", response.data);
-          })
-          .catch((error) => {
-            console.error("Patch request error:", error);
-          });
+        // axios
+        //   .patch("https://example.com/api/user/key_location", {
+        //     keyLocation: coordinate, // Pass the key location data
+        //   })
+        //   .then((response) => {
+        //     console.log("Patch request successful:", response.data);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Patch request error:", error);
+        //   });
+        console.log("Sent to api");
       }
 
       return isClose;
