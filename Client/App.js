@@ -7,26 +7,49 @@ import Homepage from "./pages/home_page";
 import { UserProvider } from "./utils/userPersistence";
 import PDFDownloadPage from "./pages/pdf_screen";
 import { NetworkProvider } from "react-native-offline";
-
-const Stack = createNativeStackNavigator();
+import React, { useEffect } from "react";
+import { View } from "react-native";
+import {
+  registerBackgroundTask,
+  startBackgroundTask,
+  BACKGROUND_TASK_NAME,
+} from "./utils/BackgroundTasks";
 
 export default function App() {
+  useEffect(() => {
+    registerBackgroundTask();
+
+    // Start the background task
+    startBackgroundTask();
+
+    // Unregister the background task when the component unmounts
+    return () => {
+      TaskManager.isTaskDefined(BACKGROUND_TASK_NAME).then((defined) => {
+        if (defined) {
+          TaskManager.unregisterTaskAsync(BACKGROUND_TASK_NAME);
+        }
+      });
+    };
+  }, []);
+
   return (
-    <NetworkProvider>
-      <UserProvider>
-        <NavigationContainer>
-          <StatusBar style="auto" />
-          <Stack.Navigator
-            initialRouteName="Login"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen name="Login" component={Login_screen} />
-            <Stack.Screen name="Register" component={Register_screen} />
-            <Stack.Screen name="Home" component={Homepage} />
-            <Stack.Screen name="PDF" component={PDFDownloadPage} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserProvider>
-    </NetworkProvider>
+    <View>
+      <NetworkProvider>
+        <UserProvider>
+          <NavigationContainer>
+            <StatusBar style="auto" />
+            <Stack.Navigator
+              initialRouteName="Login"
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen name="Login" component={Login_screen} />
+              <Stack.Screen name="Register" component={Register_screen} />
+              <Stack.Screen name="Home" component={Homepage} />
+              <Stack.Screen name="PDF" component={PDFDownloadPage} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </UserProvider>
+      </NetworkProvider>
+    </View>
   );
 }

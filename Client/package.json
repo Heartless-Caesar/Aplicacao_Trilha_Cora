@@ -37,7 +37,8 @@
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "^0.18.12",
-    "react-test-renderer": "^18.1.0"
+    "react-test-renderer": "^18.1.0",
+    "expo-task-manager": "~11.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0"

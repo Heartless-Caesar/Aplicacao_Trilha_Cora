@@ -39,9 +39,24 @@ const MapScreen = ({ navigation }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
+  const [validationPoints, setValidationPoints] = useState([]);
 
   const mapRef = useRef(null);
   const network = useIsConnected();
+
+  //Busca as localizações chave, se estiver falso manda para ser verdadeiro, se for verdadeiro nada será feito
+  // * Se local ja nao tiver sido passado ao chegar proximo aquele local para aquele usuario sera validado
+  useEffect(() => {
+    axios
+      .get(`http://localhost/api/user/locals/${userId}`)
+      .then((response) => {
+        console.log("Data fetch successful:", response.data);
+        setValidationPoints(response.data);
+      })
+      .catch((error) => {
+        console.error("Data fetch unsuccessful:", error);
+      });
+  }, []);
 
   const simulateUserMovement = async () => {
     if (isSimulationRunning) {
@@ -120,27 +135,49 @@ const MapScreen = ({ navigation }) => {
         }
       );
 
-      // Adjust the threshold distance (e.g., 50 meters) as needed
-      const isClose = distance <= 6000; // You can change the threshold as per your requirement
+      const locationKey = getKeyForCoordinate(coordinate);
 
-      if (isClose) {
-        // Mock patch request to a server
-        // axios
-        //   .patch("https://example.com/api/user/key_location", {
-        //     keyLocation: coordinate, // Pass the key location data
-        //   })
-        //   .then((response) => {
-        //     console.log("Patch request successful:", response.data);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Patch request error:", error);
-        //   });
+      // Check if the location is close and not already validated
+      if (distance <= 6000 && !isLocationValidated(locationKey)) {
+        axios
+          .patch(`http://localhost/api/user/key_location/${locationKey}`, {
+            validated: true,
+          })
+          .then((response) => {
+            console.log("Patch request successful:", response.data);
+          })
+          .catch((error) => {
+            console.error("Patch request error:", error);
+          });
+
         console.log("Sent to api");
       }
 
-      return isClose;
+      return distance <= 6000;
     }
     return false;
+  };
+
+  const getKeyForCoordinate = (coordinate) => {
+    let closestLocationKey = null;
+    let closestDistance = Infinity;
+
+    keyLocations.forEach((item) => {
+      const locationKey = Object.keys(item)[0];
+      const { latitude, longitude } = item[locationKey];
+      const distance = getDistance(coordinate, { latitude, longitude });
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestLocationKey = locationKey;
+      }
+    });
+
+    return closestLocationKey;
+  };
+
+  const isLocationValidated = (locationKey) => {
+    return validationPoints.some((point) => point === locationKey);
   };
 
   const updateVisitedCoordinates = () => {
