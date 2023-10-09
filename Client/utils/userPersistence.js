@@ -1,24 +1,36 @@
 import React, { createContext, useContext, useState } from "react";
-import axios from "axios";
 import { useIsConnected } from "react-native-offline";
 
 const UserContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Change the initial value to null
+  const [user, setUser] = useState(null);
   const [id, setId] = useState(0);
+  const [locals, setLocals] = useState([]);
 
   const networkState = useIsConnected();
 
-  // Function to set user data
   const setUserData = (userData) => {
-    setUser(userData);
+    setUser(userData.user);
     setId(userData.id);
+  };
+
+  const setUserLocals = (userLocals) => {
+    setLocals(userLocals);
   };
 
   return (
     <UserContext.Provider
-      value={{ user, setUserData, id, setId, networkState }}
+      value={{
+        user,
+        setUserData,
+        id,
+        setId,
+        networkState,
+        locals,
+        setUserLocals,
+      }}
     >
       {children}
     </UserContext.Provider>

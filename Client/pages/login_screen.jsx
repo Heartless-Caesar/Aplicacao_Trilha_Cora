@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { View, Image, useWindowDimensions } from "react-native";
 import React, { useState } from "react";
 import loginStyle from "../styles/login_style";
@@ -12,10 +13,25 @@ import { TOKEN_KEY } from "../utils/token";
 
 // TODO Finish login screen
 const Login_screen = ({ navigation }) => {
-  const { setUserData, setId, id, user } = useUserContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { height } = useWindowDimensions();
+  const { setUserData, setUserLocals } = useUserContext();
+
+  const fetchAllLocals = async (userId) => {
+    try {
+      const response = await axios.get("http://192.168.1.13:5000/fetch", {
+        userId: userId,
+      });
+
+      // Update the array of locals in the context
+      setUserLocals(response.data.Locals.allLocals);
+
+      // ... (rest of the code)
+    } catch (error) {
+      console.error("Error fetching locals:", error);
+    }
+  };
 
   const onSignInPress = async () => {
     try {
@@ -28,17 +44,19 @@ const Login_screen = ({ navigation }) => {
         },
       });
 
-      // const userData = response.data;
+      const userData = response.data;
 
-      // setUserData(userData);
+      fetchAllLocals(userData.id);
 
-      // console.log(userData.token);
+      setUserData(userData);
 
-      // axios.defaults.headers.common[
-      //   "Authorization"
-      // ] = `Bearer ${userData.token}`;
+      console.log(userData.token);
 
-      // await SecureStore.setItemAsync(TOKEN_KEY, userData.token);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${userData.token}`;
+
+      await SecureStore.setItemAsync(TOKEN_KEY, userData.token);
 
       // Redirect to the Home screen
       navigation.replace("Home");
@@ -52,6 +70,7 @@ const Login_screen = ({ navigation }) => {
     navigation.replace("Register");
   };
 
+  // eslint-disable-next-line no-unused-vars
   const logout = async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
-  Dimensions,
   StyleSheet,
   TouchableOpacity,
   Image,
@@ -17,25 +16,25 @@ import {
   LocationAccuracy,
 } from "expo-location";
 import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
+import { Ionicons } from "@expo/vector-icons";
 import { getDistance } from "geolib";
 import NotificationPopup from "./notification_pop_up";
 import { useIsConnected } from "react-native-offline";
 import coordinates from "../assets/coordinates";
 import { keyLocations } from "../assets/keyLocations";
-import home_styles from "../styles/home_page_styles";
-
-//const ASPECT_RATIO = width / height;
-//const LATITUDE_DELTA = 0.02;
-//const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+import { useUserContext } from "../utils/userPersistence";
+import axios from "axios";
+import FileSystem from "expo-file-system";
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
 
+// eslint-disable-next-line react/prop-types
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [visitedCoordinates, setVisitedCoordinates] = useState([]);
-  const [locationData, setLocationData] = useState([]);
+  //const [locationData, setLocationData] = useState([]);
   const [notificationMessage, setNotificationMessage] = useState("");
-  const [databasePresent, setDatabasePresent] = useState(false);
+  //const [databasePresent, setDatabasePresent] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
@@ -43,12 +42,13 @@ const MapScreen = ({ navigation }) => {
 
   const mapRef = useRef(null);
   const network = useIsConnected();
+  const { id } = useUserContext();
 
   //Busca as localizações chave, se estiver falso manda para ser verdadeiro, se for verdadeiro nada será feito
   // * Se local ja nao tiver sido passado ao chegar proximo aquele local para aquele usuario sera validado
   useEffect(() => {
     axios
-      .get(`http://localhost/api/user/locals/${userId}`)
+      .get(`http://localhost/api/user/locals/${id}`)
       .then((response) => {
         console.log("Data fetch successful:", response.data);
         setValidationPoints(response.data);
@@ -87,6 +87,23 @@ const MapScreen = ({ navigation }) => {
           if (distance <= 2000) {
             console.log(`User is close to the key location: ${locationKey}`);
             triggerNotification(locationKey);
+
+            // Validate the location if not already validated
+            const locationValidated = isLocationValidated(locationKey);
+            if (!locationValidated) {
+              axios
+                .patch(`http://192.168.1.13:5000/update`, {
+                  local: locationKey,
+                  userId: id,
+                })
+                .then((response) => {
+                  console.log("Patch request successful:", response.data);
+                })
+                .catch((error) => {
+                  console.error("Patch request error:", error);
+                });
+            }
+
             return true;
           }
           return false;
@@ -140,8 +157,9 @@ const MapScreen = ({ navigation }) => {
       // Check if the location is close and not already validated
       if (distance <= 6000 && !isLocationValidated(locationKey)) {
         axios
-          .patch(`http://localhost/api/user/key_location/${locationKey}`, {
-            validated: true,
+          .patch(`http://192.168.1.13:5000/update`, {
+            local: locationKey,
+            userId: id,
           })
           .then((response) => {
             console.log("Patch request successful:", response.data);
@@ -330,6 +348,7 @@ const MapScreen = ({ navigation }) => {
           <Ionicons name="menu-outline" size={24} color="black" />
         </TouchableOpacity>
         <Image
+          // eslint-disable-next-line no-undef
           source={require("../assets/profile-pic.png")}
           style={styles.profilePic}
         />
@@ -344,6 +363,7 @@ const MapScreen = ({ navigation }) => {
         {/* Add your menu items here */}
         <Pressable
           onPress={() => {
+            // eslint-disable-next-line react/prop-types
             navigation.replace("PDF");
           }}
         >
@@ -353,9 +373,9 @@ const MapScreen = ({ navigation }) => {
         {/* ... */}
       </Animated.View>
 
-      <View style={home_styles.notificationButton}>
+      {/* <View style={home_styles.notificationButton}>
         <Button title="Trigger Notification" onPress={triggerNotification} />
-      </View>
+      </View> */}
       <View
         style={{
           position: "absolute",

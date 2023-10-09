@@ -15,30 +15,45 @@ const register_user = async (req, res) => {
 
   const hashed_password = await bcrypt.hash(password, await bcrypt.genSalt(10));
 
-  const new_user = await User.create({
-    username: username,
-    password: hashed_password,
-    email: email,
-  });
+  try {
+    // Create the user
+    const new_user = await User.create({
+      username: username,
+      password: hashed_password,
+      email: email,
+    });
 
-  if (!new_user) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
+    // Create a local entry for the user
+    await Locals.create({
+      UserId: new_user.id,
+      corumba: false,
+      cocal: false,
+      pire: false,
+      frans: false,
+      jara: false,
+      ita: false,
+      itab: false,
+      cid_go: false,
+    });
+
+    const token = jwt.sign(
+      { id: new_user.id, username: new_user.username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.EXPIRES_IN,
+      }
+    );
+
+    res.status(StatusCodes.CREATED).json({
+      Message: "Usuário criado",
+      token: token,
+    });
+  } catch (error) {
+    console.error("Error creating user and local entry:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ Message: "Falha ao tentar criar o usuário" });
   }
-
-  const token = jwt.sign(
-    { id: new_user.id, username: new_user.username },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.EXPIRES_IN,
-    }
-  );
-
-  res.status(StatusCodes.CREATED).json({
-    Message: "Usuário criado",
-    token: token,
-  });
 };
 
 const login_user = async (req, res) => {

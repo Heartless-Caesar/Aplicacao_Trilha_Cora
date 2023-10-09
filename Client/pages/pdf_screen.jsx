@@ -18,23 +18,44 @@ const PDFDownloadPage = ({ navigation }) => {
   const [local_1, setLocal_1] = useState({});
   const [local_2, setLocal_2] = useState({});
   const [fetchedLocals, setFetchedLocals] = useState({});
-  const { user, id } = useUserContext();
+  const { locals, id } = useUserContext();
 
-  const pdfList = [
-    { title: "Sample PDF 1", url: "https://example.com/sample1.pdf" },
-    { title: "Sample PDF 2", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 3", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 4", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 5", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 6", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 7", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 8", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 9", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 10", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 11", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 12", url: "https://example.com/sample2.pdf" },
-    { title: "Sample PDF 13", url: "https://example.com/sample2.pdf" },
-  ];
+  const pdfList = [];
+  if (locals.length >= 2) {
+    for (let i = 0; i < locals.length; i++) {
+      for (let j = i + 1; j < locals.length; j++) {
+        pdfList.push({
+          title: `${locals[i].name} to ${locals[j].name}`,
+          startLocal: locals[i],
+          endLocal: locals[j],
+        });
+      }
+    }
+  }
+
+  const handleDownload = async (startLocal, endLocal) => {
+    try {
+      // Make a POST request to your API to generate the PDF
+      const response = await axios.post(
+        "http://192.168.1.13:5000/generate-pdf",
+        {
+          startLocal,
+          endLocal,
+        }
+      );
+
+      if (response.status === 200) {
+        // Handle successful response (e.g., display success message)
+        console.log("PDF generated successfully:", response.data);
+      } else {
+        // Handle unexpected response status
+        console.log("Unexpected response:", response.status);
+      }
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error("Error:", error.message);
+    }
+  };
 
   const fetchValidations = async () => {
     try {
@@ -57,27 +78,6 @@ const PDFDownloadPage = ({ navigation }) => {
     }
   };
 
-  // const updateLocal = async () => {
-  //   try {
-  //     // Make a GET request with the user ID as a parameter
-  //     const response = await axios.patch(`http://192.168.1.13:5000/update`, {
-  //       local: local,
-  //       userId: id,
-  //     });
-
-  //     if (response.status === 200) {
-  //       // Data was fetched successfully
-  //       console.log("Data:", response.data);
-  //     } else {
-  //       // Handle unexpected response status
-  //       console.log("Unexpected response:", response.status);
-  //     }
-  //   } catch (error) {
-  //     // Handle any errors that occurred during the request
-  //     console.error("Error:", error.message);
-  //   }
-  // };
-
   const menuOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -92,11 +92,6 @@ const PDFDownloadPage = ({ navigation }) => {
     setShowMenu(!showMenu);
   };
 
-  const handleDownload = (url) => {
-    // Implement your PDF download logic here
-    console.log("Downloading PDF from:", url);
-  };
-
   useEffect(() => {
     fetchValidations();
   }, []);
@@ -104,17 +99,13 @@ const PDFDownloadPage = ({ navigation }) => {
   return (
     <View style={pdf_styles.container}>
       {/* Components Below */}
-      {fetchedLocals &&
+      {locals &&
         pdfList.map((pdf, index) => (
-          <TouchableOpacity
-            key={index}
-            style={pdf_styles.pdfContainer}
-            onPress={() => handleDownload(pdf.url)}
-          >
+          <TouchableOpacity key={index} style={pdf_styles.pdfContainer}>
             <Text style={pdf_styles.pdfTitle}>{pdf.title}</Text>
             <TouchableOpacity
               style={pdf_styles.downloadButton}
-              onPress={() => updateLocal()}
+              onPress={() => handleDownload(local_1.local, local_2.local)}
             >
               <Text style={pdf_styles.buttonText}>Download</Text>
             </TouchableOpacity>

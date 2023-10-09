@@ -14,6 +14,7 @@ import {
   startBackgroundTask,
   BACKGROUND_TASK_NAME,
 } from "./utils/BackgroundTasks";
+import TaskManager from "expo-task-manager";
 
 export default function App() {
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function App() {
       });
     };
   }, []);
+  const Stack = createNativeStackNavigator();
 
   return (
     <View>
