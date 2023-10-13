@@ -7,31 +7,10 @@ import Homepage from "./pages/home_page";
 import { UserProvider } from "./utils/userPersistence";
 import PDFDownloadPage from "./pages/pdf_screen";
 import { NetworkProvider } from "react-native-offline";
-import React, { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
-import {
-  registerBackgroundTask,
-  startBackgroundTask,
-  BACKGROUND_TASK_NAME,
-} from "./utils/BackgroundTasks";
-import TaskManager from "expo-task-manager";
 
 export default function App() {
-  useEffect(() => {
-    registerBackgroundTask();
-
-    // Start the background task
-    startBackgroundTask();
-
-    // Unregister the background task when the component unmounts
-    return () => {
-      TaskManager.isTaskDefined(BACKGROUND_TASK_NAME).then((defined) => {
-        if (defined) {
-          TaskManager.unregisterTaskAsync(BACKGROUND_TASK_NAME);
-        }
-      });
-    };
-  }, []);
   const Stack = createNativeStackNavigator();
 
   return (

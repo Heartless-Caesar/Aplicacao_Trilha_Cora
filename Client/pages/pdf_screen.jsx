@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
@@ -6,17 +7,15 @@ import {
   Animated,
   Image,
   Pressable,
-  FlatList,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from the appropriate package
+import { Ionicons } from "@expo/vector-icons";
 import pdf_styles from "../styles/pdf_screen_styles";
 import { useUserContext } from "../utils/userPersistence";
 import axios from "axios";
 
+// eslint-disable-next-line react/prop-types
 const PDFDownloadPage = ({ navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [local_1, setLocal_1] = useState({});
-  const [local_2, setLocal_2] = useState({});
   const [fetchedLocals, setFetchedLocals] = useState({});
   const { locals, id } = useUserContext();
 
@@ -39,8 +38,8 @@ const PDFDownloadPage = ({ navigation }) => {
       const response = await axios.post(
         "http://192.168.1.13:5000/generate-pdf",
         {
-          startLocal,
-          endLocal,
+          startLocal: startLocal,
+          endLocal: endLocal,
         }
       );
 
@@ -105,7 +104,7 @@ const PDFDownloadPage = ({ navigation }) => {
             <Text style={pdf_styles.pdfTitle}>{pdf.title}</Text>
             <TouchableOpacity
               style={pdf_styles.downloadButton}
-              onPress={() => handleDownload(local_1.local, local_2.local)}
+              onPress={() => handleDownload(pdf.startLocal, pdf.endLocal)}
             >
               <Text style={pdf_styles.buttonText}>Download</Text>
             </TouchableOpacity>
@@ -118,7 +117,7 @@ const PDFDownloadPage = ({ navigation }) => {
           <Ionicons name="menu-outline" size={24} color="black" />
         </TouchableOpacity>
         <Image
-          source={require("../assets/profile-pic.png")}
+          source={import("../assets/profile-pic.png")}
           style={pdf_styles.profilePic}
         />
       </View>
@@ -128,6 +127,7 @@ const PDFDownloadPage = ({ navigation }) => {
         {/* Add your menu items here */}
         <Pressable
           onPress={() => {
+            // eslint-disable-next-line react/prop-types
             navigation.replace("Home");
           }}
         >

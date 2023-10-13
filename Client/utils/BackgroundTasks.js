@@ -12,14 +12,3 @@ export const registerBackgroundTask = () => {
     return TaskManager.TaskManagerExecutionResult.Success;
   });
 };
-
-export const startBackgroundTask = () => {
-  TaskManager.isTaskDefined(BACKGROUND_TASK_NAME).then((defined) => {
-    if (defined) {
-      console.log("Starting background task...");
-      TaskManager.startTask(BACKGROUND_TASK_NAME);
-    } else {
-      console.log("Background task not defined.");
-    }
-  });
-};

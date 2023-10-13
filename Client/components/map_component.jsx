@@ -26,19 +26,19 @@ import { useUserContext } from "../utils/userPersistence";
 import axios from "axios";
 import FileSystem from "expo-file-system";
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 };
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
+/*eslint max-lines: ["error", 500]*/
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [visitedCoordinates, setVisitedCoordinates] = useState([]);
-  //const [locationData, setLocationData] = useState([]);
   const [notificationMessage, setNotificationMessage] = useState("");
-  //const [databasePresent, setDatabasePresent] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
   const [validationPoints, setValidationPoints] = useState([]);
+  const [initialPosition, setInitialPosition] = useState(INTIAL_POSITION);
 
   const mapRef = useRef(null);
   const network = useIsConnected();
@@ -58,6 +58,7 @@ const MapScreen = ({ navigation }) => {
       });
   }, []);
 
+  /*eslint max-lines-per-function: ["error", 500]*/
   const simulateUserMovement = async () => {
     if (isSimulationRunning) {
       console.log("Simulation is already running.");
@@ -81,36 +82,43 @@ const MapScreen = ({ navigation }) => {
 
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        const closeToKeyLocation = keyLocations.some((keyLocation) => {
-          const locationKey = Object.keys(keyLocation)[0];
-          const distance = getDistance(coordinate, keyLocation[locationKey]);
-          if (distance <= 2000) {
-            console.log(`User is close to the key location: ${locationKey}`);
-            triggerNotification(locationKey);
+        // Check if the location is already validated (true)
+        // Check if the location is already validated (true)
+        const locationKey = getKeyForCoordinate(coordinate);
+        const locationValidated = isLocationValidated(locationKey);
 
-            // Validate the location if not already validated
-            const locationValidated = isLocationValidated(locationKey);
-            if (!locationValidated) {
-              axios
-                .patch(`http://192.168.1.13:5000/update`, {
-                  local: locationKey,
-                  userId: id,
-                })
-                .then((response) => {
-                  console.log("Patch request successful:", response.data);
-                })
-                .catch((error) => {
-                  console.error("Patch request error:", error);
-                });
+        // Only send the PATCH request if the location is not validated (false)
+        if (!locationValidated) {
+          const closeToKeyLocation = keyLocations.some((keyLocation) => {
+            const locationKey = Object.keys(keyLocation)[0];
+            const distance = getDistance(coordinate, keyLocation[locationKey]);
+            if (distance <= 2000) {
+              console.log(`User is close to the key location: ${locationKey}`);
+              triggerNotification(locationKey);
+
+              // Validate the location only if it's not already validated (false)
+              if (!isLocationValidated(locationKey)) {
+                axios
+                  .patch("http://192.168.1.13:5000/update", {
+                    local: locationKey,
+                    userId: id,
+                  })
+                  .then((response) => {
+                    console.log("Patch request successful:", response.data);
+                  })
+                  .catch((error) => {
+                    console.error("Patch request error:", error);
+                  });
+              }
+
+              return true;
             }
+            return false;
+          });
 
-            return true;
+          if (!closeToKeyLocation) {
+            console.log("User is not close to any key location.");
           }
-          return false;
-        });
-
-        if (!closeToKeyLocation) {
-          console.log("User is not close to any key location.");
         }
       }
     } catch (error) {
@@ -131,7 +139,11 @@ const MapScreen = ({ navigation }) => {
     if (granted) {
       const currentPosition = await getCurrentPositionAsync();
       setLocation(currentPosition);
-      console.log(location);
+      setInitialPosition({
+        latitude: currentPosition.coords.latitude,
+        longitude: currentPosition.coords.longitude,
+      });
+      console.log("Initial position set:", initialPosition);
     }
   };
 
@@ -157,7 +169,7 @@ const MapScreen = ({ navigation }) => {
       // Check if the location is close and not already validated
       if (distance <= 6000 && !isLocationValidated(locationKey)) {
         axios
-          .patch(`http://192.168.1.13:5000/update`, {
+          .patch("http://192.168.1.13:5000/update", {
             local: locationKey,
             userId: id,
           })
@@ -213,8 +225,8 @@ const MapScreen = ({ navigation }) => {
       []
     );
 
-    setNotificationMessage(`Parabéns! Você passou por mais um ponto chave`);
-    setVisitedCoordinates(updatedVisitedCoordinates);
+    setNotificationMessage("Parabéns! Você passou por mais um ponto chave");
+    updatedVisitedCoordinates(updatedVisitedCoordinates);
 
     // Salva pings em um arquivo JSON caso esteja offline
     if (!network) {
@@ -397,6 +409,14 @@ const MapScreen = ({ navigation }) => {
     </View>
   );
 };
+
+/******************** Tipando props do componente **************************/
+
+MapScreen.propTypes = {
+  navigation: PropTypes.node,
+};
+
+/************************************************************************* */
 
 const styles = StyleSheet.create({
   container: {
