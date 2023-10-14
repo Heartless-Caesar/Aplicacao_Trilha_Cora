@@ -1,4 +1,4 @@
-const { sequelize, User, Walk } = require("../models");
+const { sequelize, User, Walk, Locals } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -25,7 +25,6 @@ const register_user = async (req, res) => {
 
     // Create a local entry for the user
     await Locals.create({
-      UserId: new_user.id,
       corumba: false,
       cocal: false,
       pire: false,
@@ -34,6 +33,7 @@ const register_user = async (req, res) => {
       ita: false,
       itab: false,
       cid_go: false,
+      UserId: new_user.id,
     });
 
     const token = jwt.sign(
@@ -83,7 +83,12 @@ const login_user = async (req, res) => {
     }
   );
 
-  res.status(StatusCodes.OK).json({ Message: "Usuario logado", token: token });
+  res.status(StatusCodes.OK).json({
+    Message: "Usuario logado",
+    token: token,
+    id: found_user.id,
+    username: found_user.username,
+  });
 };
 
 module.exports = { register_user, login_user };

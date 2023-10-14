@@ -106,16 +106,14 @@ const validateLocal = async (req, res) => {
 };
 
 const fetchAllLocals = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query; // Use req.query to get userId
 
   console.log(userId);
 
-  const allLocals = await Locals.findAll({ where: { userId: userId } });
+  const allLocals = await Locals.findAll({ where: { UserId: userId } });
 
   res.status(StatusCodes.OK).json({
-    Locals: {
-      allLocals: allLocals,
-    },
+    Locals: allLocals,
   });
 };
 

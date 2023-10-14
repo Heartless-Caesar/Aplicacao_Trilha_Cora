@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   const setUserData = (userData) => {
     setUser(userData.user);
     setId(userData.id);
+    //console.log(id);
   };
 
   const setUserLocals = (userLocals) => {

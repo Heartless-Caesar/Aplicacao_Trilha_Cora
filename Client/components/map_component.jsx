@@ -46,17 +46,29 @@ const MapScreen = ({ navigation }) => {
 
   //Busca as localizações chave, se estiver falso manda para ser verdadeiro, se for verdadeiro nada será feito
   // * Se local ja nao tiver sido passado ao chegar proximo aquele local para aquele usuario sera validado
-  useEffect(() => {
-    axios
-      .get(`http://localhost/api/user/locals/${id}`)
-      .then((response) => {
-        console.log("Data fetch successful:", response.data);
-        setValidationPoints(response.data);
-      })
-      .catch((error) => {
-        console.error("Data fetch unsuccessful:", error);
+  const fetchLocals = async () => {
+    console.log(`Id param: ${id}`);
+    try {
+      const response = await axios.get("http://192.168.1.13:5000/fetch", {
+        params: {
+          userId: id,
+        },
       });
-  }, []);
+
+      console.log("Data fetch successful:", response.data);
+      setValidationPoints(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined && id !== null) {
+      fetchLocals();
+    } else {
+      console.log("Id is not valid:", id);
+    }
+  }, [id]);
 
   /*eslint max-lines-per-function: ["error", 500]*/
   const simulateUserMovement = async () => {
@@ -98,17 +110,17 @@ const MapScreen = ({ navigation }) => {
 
               // Validate the location only if it's not already validated (false)
               if (!isLocationValidated(locationKey)) {
-                axios
-                  .patch("http://192.168.1.13:5000/update", {
-                    local: locationKey,
-                    userId: id,
-                  })
-                  .then((response) => {
-                    console.log("Patch request successful:", response.data);
-                  })
-                  .catch((error) => {
-                    console.error("Patch request error:", error);
-                  });
+                //   axios
+                //     .patch("http://192.168.1.13:5000/update", {
+                //       local: locationKey,
+                //       userId: id,
+                //     })
+                //     .then((response) => {
+                //       console.log("Patch request successful:", response.data);
+                //     })
+                //     .catch((error) => {
+                //       console.error("Patch request error:", error);
+                //     });
               }
 
               return true;
@@ -226,7 +238,7 @@ const MapScreen = ({ navigation }) => {
     );
 
     setNotificationMessage("Parabéns! Você passou por mais um ponto chave");
-    updatedVisitedCoordinates(updatedVisitedCoordinates);
+    setVisitedCoordinates(updatedVisitedCoordinates);
 
     // Salva pings em um arquivo JSON caso esteja offline
     if (!network) {
@@ -413,7 +425,7 @@ const MapScreen = ({ navigation }) => {
 /******************** Tipando props do componente **************************/
 
 MapScreen.propTypes = {
-  navigation: PropTypes.node,
+  navigation: PropTypes.any,
 };
 
 /************************************************************************* */

@@ -14,23 +14,21 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <View>
-      <NetworkProvider>
-        <UserProvider>
-          <NavigationContainer>
-            <StatusBar style="auto" />
-            <Stack.Navigator
-              initialRouteName="Login"
-              screenOptions={{ headerShown: false }}
-            >
-              <Stack.Screen name="Login" component={Login_screen} />
-              <Stack.Screen name="Register" component={Register_screen} />
-              <Stack.Screen name="Home" component={Homepage} />
-              <Stack.Screen name="PDF" component={PDFDownloadPage} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </UserProvider>
-      </NetworkProvider>
-    </View>
+    <NetworkProvider>
+      <UserProvider>
+        <NavigationContainer>
+          <StatusBar style="auto" />
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Login" component={Login_screen} />
+            <Stack.Screen name="Register" component={Register_screen} />
+            <Stack.Screen name="Home" component={Homepage} />
+            <Stack.Screen name="PDF" component={PDFDownloadPage} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserProvider>
+    </NetworkProvider>
   );
 }

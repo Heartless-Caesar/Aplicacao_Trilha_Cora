@@ -8,8 +8,8 @@ import CustomButton from "../components/custom_button";
 import axios from "axios";
 //import { JWT_SECRET } from "@env";
 import { useUserContext } from "../utils/userPersistence";
-import SecureStore from "expo-secure-store";
-import { TOKEN_KEY } from "../utils/token";
+//import SecureStore from "expo-secure-store";
+//import { TOKEN_KEY } from "../utils/token";
 
 // TODO Finish login screen
 const Login_screen = ({ navigation }) => {
@@ -23,10 +23,8 @@ const Login_screen = ({ navigation }) => {
       const response = await axios.get("http://192.168.1.13:5000/fetch", {
         userId: userId,
       });
-
-      // Update the array of locals in the context
+      //Update the array of locals in the context
       setUserLocals(response.data.Locals.allLocals);
-
       // ... (rest of the code)
     } catch (error) {
       console.error("Error fetching locals:", error);
@@ -46,17 +44,17 @@ const Login_screen = ({ navigation }) => {
 
       const userData = response.data;
 
-      fetchAllLocals(userData.id);
-
+      //fetchAllLocals(userData.id);
+      console.log(userData);
       setUserData(userData);
 
-      console.log(userData.token);
+      // console.log(userData.token);
 
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${userData.token}`;
+      // axios.defaults.headers.common[
+      //   "Authorization"
+      // ] = `Bearer ${userData.token}`;
 
-      await SecureStore.setItemAsync(TOKEN_KEY, userData.token);
+      // await SecureStore.setItemAsync(TOKEN_KEY, userData.token);
 
       // Redirect to the Home screen
       navigation.replace("Home");
@@ -71,13 +69,13 @@ const Login_screen = ({ navigation }) => {
   };
 
   // eslint-disable-next-line no-unused-vars
-  const logout = async () => {
-    await SecureStore.deleteItemAsync(TOKEN_KEY);
+  // const logout = async () => {
+  //   await SecureStore.deleteItemAsync(TOKEN_KEY);
 
-    axios.defaults.headers.common["Authorization"] = "";
+  //   axios.defaults.headers.common["Authorization"] = "";
 
-    setUserData({ Message: "", token: null });
-  };
+  //   setUserData({ Message: "", token: null });
+  // };
 
   return (
     <View style={loginStyle.container}>
