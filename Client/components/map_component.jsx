@@ -55,8 +55,15 @@ const MapScreen = ({ navigation }) => {
         },
       });
 
-      console.log("Data fetch successful:", response.data);
-      setValidationPoints(response.data);
+      console.log("Data fetch successful:", response.data.Locals);
+
+      // Ensure response.data is an array before setting it as validationPoints
+      if (Array.isArray(response.data.Locals)) {
+        setValidationPoints(response.data.Locals);
+        console.log(validationPoints);
+      } else {
+        console.error("Received data is not an array:", response.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -109,18 +116,21 @@ const MapScreen = ({ navigation }) => {
               triggerNotification(locationKey);
 
               // Validate the location only if it's not already validated (false)
-              if (!isLocationValidated(locationKey)) {
-                //   axios
-                //     .patch("http://192.168.1.13:5000/update", {
-                //       local: locationKey,
-                //       userId: id,
-                //     })
-                //     .then((response) => {
-                //       console.log("Patch request successful:", response.data);
-                //     })
-                //     .catch((error) => {
-                //       console.error("Patch request error:", error);
-                //     });
+              if (!locationValidated) {
+                axios.patch("http://192.168.1.13:5000/update", {
+                  local: locationKey,
+                  userId: id,
+                });
+
+                const index = validationPoints.findIndex(
+                  (point) => point === locationKey
+                );
+
+                if (index !== -1) {
+                  const updatedValidationPoints = [...validationPoints];
+                  updatedValidationPoints[index] = true;
+                  setValidationPoints(updatedValidationPoints);
+                }
               }
 
               return true;
@@ -219,7 +229,7 @@ const MapScreen = ({ navigation }) => {
   };
 
   const isLocationValidated = (locationKey) => {
-    return validationPoints.some((point) => point === locationKey);
+    return validationPoints[locationKey] === true;
   };
 
   const updateVisitedCoordinates = () => {
@@ -285,7 +295,7 @@ const MapScreen = ({ navigation }) => {
       (res) => {
         console.log(res);
         setLocation(res);
-        mapRef.current?.animateCamera({ pitch: 70, center: res.coords });
+        mapRef.current?.animateCamera({ center: res.coords });
       }
     );
   }, []);

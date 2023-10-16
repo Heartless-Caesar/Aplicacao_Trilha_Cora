@@ -6,13 +6,13 @@ export const keyLocations = [
   //Pirenópolis
   { pire: { latitude: -15.852405323411013, longitude: -48.95874081008256 } },
   //São Francisco de Goiás
-  { sao: { latitude: -15.92930856556028, longitude: -49.261074834972796 } },
+  { frans: { latitude: -15.92930856556028, longitude: -49.261074834972796 } },
   //Jaraguá
-  { jaragua: { latitude: -15.753921544558613, longitude: -49.33221062381873 } },
+  { jara: { latitude: -15.753921544558613, longitude: -49.33221062381873 } },
   //Itaguari
   { ita: { latitude: -15.919377743809333, longitude: -49.60638217564553 } },
   //Itaberaí
   { itab: { latitude: -16.02564691075203, longitude: -49.803076482197405 } },
   //Cidade de Goiás
-  { cid: { latitude: -15.94009812983507, longitude: -50.149764243596174 } },
+  { cid_go: { latitude: -15.94009812983507, longitude: -50.149764243596174 } },
 ];
