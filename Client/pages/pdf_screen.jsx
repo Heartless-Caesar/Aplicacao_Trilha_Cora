@@ -17,14 +17,54 @@ import axios from "axios";
 const PDFDownloadPage = ({ navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [fetchedLocals, setFetchedLocals] = useState({});
-  const { locals, id } = useUserContext();
+  const { id } = useUserContext();
+
+  const fetchValidations = async () => {
+    try {
+      // Make a GET request with the user ID as a parameter
+      const response = await axios.get(`http://192.168.1.13:5000/fetch`, {
+        params: {
+          userId: id,
+        },
+      });
+
+      if (response.status === 200) {
+        // Data was fetched successfully
+        setFetchedLocals(response.data);
+        console.log("Data:", response.data);
+      } else {
+        // Handle unexpected response status
+        console.log("Unexpected response:", response.status);
+      }
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error("Error:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchValidations();
+  }, []);
 
   const pdfList = [];
-  if (locals.length >= 2) {
+  if (fetchedLocals.length >= 1) {
+    const allowedProperties = [
+      "cocal",
+      "corumba",
+      "frans",
+      "ita",
+      "itab",
+      "jara",
+      "pire",
+    ];
+    const locals = Object.keys(fetchedLocals[0]).filter((property) =>
+      allowedProperties.includes(property)
+    );
+
     for (let i = 0; i < locals.length; i++) {
       for (let j = i + 1; j < locals.length; j++) {
         pdfList.push({
-          title: `${locals[i].name} to ${locals[j].name}`,
+          title: `${locals[i]} to ${locals[j]}`,
           startLocal: locals[i],
           endLocal: locals[j],
         });
@@ -56,27 +96,6 @@ const PDFDownloadPage = ({ navigation }) => {
     }
   };
 
-  const fetchValidations = async () => {
-    try {
-      // Make a GET request with the user ID as a parameter
-      const response = await axios.get(`http://192.168.1.13:5000/fetch`, {
-        userId: id,
-      });
-
-      if (response.status === 200) {
-        // Data was fetched successfully
-        setFetchedLocals(response.data);
-        console.log("Data:", response.data);
-      } else {
-        // Handle unexpected response status
-        console.log("Unexpected response:", response.status);
-      }
-    } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error("Error:", error.message);
-    }
-  };
-
   const menuOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -91,25 +110,9 @@ const PDFDownloadPage = ({ navigation }) => {
     setShowMenu(!showMenu);
   };
 
-  useEffect(() => {
-    fetchValidations();
-  }, []);
-
   return (
     <View style={pdf_styles.container}>
       {/* Components Below */}
-      {locals &&
-        pdfList.map((pdf, index) => (
-          <TouchableOpacity key={index} style={pdf_styles.pdfContainer}>
-            <Text style={pdf_styles.pdfTitle}>{pdf.title}</Text>
-            <TouchableOpacity
-              style={pdf_styles.downloadButton}
-              onPress={() => handleDownload(pdf.startLocal, pdf.endLocal)}
-            >
-              <Text style={pdf_styles.buttonText}>Download</Text>
-            </TouchableOpacity>
-          </TouchableOpacity>
-        ))}
 
       {/* Menu */}
       <View style={pdf_styles.floatingRectangle}>
@@ -136,6 +139,20 @@ const PDFDownloadPage = ({ navigation }) => {
         <Text style={pdf_styles.menuItem}>Menu Item 2</Text>
         {/* Insert more items in menu */}
       </Animated.View>
+      {fetchedLocals &&
+        pdfList.map((pdf, index) => (
+          <TouchableOpacity key={index} style={pdf_styles.pdfContainer}>
+            <Text style={pdf_styles.pdfTitle}>
+              Certificado de {pdf.startLocal} a {pdf.endLocal}
+            </Text>
+            <TouchableOpacity
+              style={pdf_styles.downloadButton}
+              onPress={() => handleDownload(pdf.startLocal, pdf.endLocal)}
+            >
+              <Text style={pdf_styles.buttonText}>Download</Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        ))}
     </View>
   );
 };

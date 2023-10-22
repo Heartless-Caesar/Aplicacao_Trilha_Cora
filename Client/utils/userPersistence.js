@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useIsConnected } from "react-native-offline";
+import axios from "axios";
 
 const UserContext = createContext();
 
@@ -8,7 +9,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [id, setId] = useState(0);
   const [locals, setLocals] = useState([]);
-
   const networkState = useIsConnected();
 
   const setUserData = (userData) => {

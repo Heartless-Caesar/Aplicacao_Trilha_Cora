@@ -49,7 +49,7 @@ const MapScreen = ({ navigation }) => {
   const fetchLocals = async () => {
     console.log(`Id param: ${id}`);
     try {
-      const response = await axios.get("http://192.168.1.13:5000/fetch", {
+      const response = await axios.get("http://192.168.166.171:5000/fetch", {
         params: {
           userId: id,
         },
@@ -108,7 +108,7 @@ const MapScreen = ({ navigation }) => {
 
         // Only send the PATCH request if the location is not validated (false)
         if (!locationValidated) {
-          const closeToKeyLocation = keyLocations.some((keyLocation) => {
+          const closeToKeyLocation = keyLocations.some(async (keyLocation) => {
             const locationKey = Object.keys(keyLocation)[0];
             const distance = getDistance(coordinate, keyLocation[locationKey]);
             if (distance <= 2000) {
@@ -117,11 +117,6 @@ const MapScreen = ({ navigation }) => {
 
               // Validate the location only if it's not already validated (false)
               if (!locationValidated) {
-                axios.patch("http://192.168.1.13:5000/update", {
-                  local: locationKey,
-                  userId: id,
-                });
-
                 const index = validationPoints.findIndex(
                   (point) => point === locationKey
                 );
@@ -131,6 +126,11 @@ const MapScreen = ({ navigation }) => {
                   updatedValidationPoints[index] = true;
                   setValidationPoints(updatedValidationPoints);
                 }
+
+                await axios.patch("http://192.168.1.13:5000/update", {
+                  local: locationKey,
+                  userId: id,
+                });
               }
 
               return true;
@@ -337,6 +337,8 @@ const MapScreen = ({ navigation }) => {
     }, 3000);
   };
 
+  const pinColor = "blue";
+
   return (
     <View style={styles.container}>
       <MapView
@@ -356,6 +358,7 @@ const MapScreen = ({ navigation }) => {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }}
+            pinColor={pinColor}
           />
         )}
         {keyLocations &&
