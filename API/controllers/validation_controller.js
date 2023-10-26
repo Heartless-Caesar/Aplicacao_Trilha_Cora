@@ -39,8 +39,6 @@ const validateLocal = async (req, res) => {
 const fetchAllLocals = async (req, res) => {
   const { userId } = req.query;
 
-  console.log(userId);
-
   try {
     const allLocals = await Locals.findAll({ where: { UserId: userId } });
 

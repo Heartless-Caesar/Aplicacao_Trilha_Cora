@@ -8,6 +8,7 @@ import {
     Image,
     Pressable,
     FlatList,
+    ActivityIndicator,
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import pdf_styles from "../styles/pdf_screen_styles"
@@ -31,17 +32,15 @@ const PDFDownloadPage = ({ navigation }) => {
         corumba: "Corumba",
     }
 
+    useEffect(() => {
+        fetchValidations()
+    }, [])
+
     const fetchValidations = async () => {
         try {
-            const response = await axios.get(`http://192.168.1.13:5000/fetch`, {
-                params: {
-                    userId: id,
-                },
-            })
-
+            const response = await fetchData()
             if (response.status === 200) {
-                setFetchedLocals(response.data.Locals)
-
+                const fetchedLocals = response.data.Locals
                 const allowedProperties = [
                     "cocal",
                     "corumba",
@@ -53,36 +52,52 @@ const PDFDownloadPage = ({ navigation }) => {
                     "cid_go",
                 ]
 
-                console.log(fetchedLocals)
-                const locals = Object.keys(fetchedLocals[0]).filter(
-                    (property) => allowedProperties.includes(property)
+                const locals = filterAllowedProperties(
+                    fetchedLocals,
+                    allowedProperties
                 )
-
-                const generatedPdfList = []
-                for (let i = 0; i < locals.length; i++) {
-                    for (let j = i + 1; j < locals.length; j++) {
-                        generatedPdfList.push({
-                            title: `${locals[i]} to ${locals[j]}`,
-                            startLocal: locals[i],
-                            endLocal: locals[j],
-                        })
-                    }
-                }
-
-                // Now that the pdfList is generated, set it in your state or variable.
-                setPdfList(generatedPdfList) // Assuming you have a state variable or some mechanism to store pdfList
-                console.log(`PDF List ${generatedPdfList}`)
+                const generatedPdfList = generatePdfList(locals)
+                setPdfList(generatedPdfList)
             } else {
-                console.log("Unexpected response:", response.status)
+                handleErrorResponse(response.status)
             }
         } catch (error) {
-            console.error("Error:", error.message)
+            console.error("An error occurred:", error)
         }
     }
 
-    useEffect(() => {
-        fetchValidations()
-    }, [])
+    const fetchData = async () => {
+        return await axios.get(`http://192.168.1.13:5000/fetch`, {
+            params: {
+                userId: id,
+            },
+        })
+    }
+
+    const filterAllowedProperties = (fetchedLocals, allowedProperties) => {
+        return Object.keys(fetchedLocals[0]).filter((property) =>
+            allowedProperties.includes(property)
+        )
+    }
+
+    const generatePdfList = (locals) => {
+        const generatedPdfList = []
+        for (let i = 0; i < locals.length; i++) {
+            for (let j = i + 1; j < locals.length; j++) {
+                generatedPdfList.push({
+                    title: `${locals[i]} to ${locals[j]}`,
+                    startLocal: locals[i],
+                    endLocal: locals[j],
+                })
+            }
+        }
+        console.log(`PDF List ${generatedPdfList}`)
+        return generatedPdfList
+    }
+
+    const handleErrorResponse = (statusCode) => {
+        console.log("Unexpected response:", statusCode)
+    }
 
     const handleDownload = async (startLocal, endLocal) => {
         try {
@@ -159,32 +174,41 @@ const PDFDownloadPage = ({ navigation }) => {
                 >
                     <Text style={pdf_styles.menuItem}>Home</Text>
                 </Pressable>
-                <Text style={pdf_styles.menuItem}>Menu Item 2</Text>
+                <Text style={pdf_styles.menuItem}>Informações turísticas</Text>
                 {/* Insert more items in menu */}
             </Animated.View>
-            <FlatList
-                data={filteredPdfList}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={pdf_styles.pdfContainer}
-                    >
-                        <Text style={pdf_styles.pdfTitle}>
-                            Certificado de {localNames[item.startLocal]} a{" "}
-                            {localNames[item.endLocal]}
-                        </Text>
+            {pdfList && pdfList.length > 0 ? (
+                <FlatList
+                    data={filteredPdfList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
                         <TouchableOpacity
-                            style={pdf_styles.downloadButton}
-                            onPress={() =>
-                                handleDownload(item.startLocal, item.endLocal)
-                            }
+                            key={index}
+                            style={pdf_styles.pdfContainer}
                         >
-                            <Text style={pdf_styles.buttonText}>Download</Text>
+                            <Text style={pdf_styles.pdfTitle}>
+                                Certificado de {localNames[item.startLocal]} a{" "}
+                                {localNames[item.endLocal]}
+                            </Text>
+                            <TouchableOpacity
+                                style={pdf_styles.downloadButton}
+                                onPress={() =>
+                                    handleDownload(
+                                        item.startLocal,
+                                        item.endLocal
+                                    )
+                                }
+                            >
+                                <Text style={pdf_styles.buttonText}>
+                                    Download
+                                </Text>
+                            </TouchableOpacity>
                         </TouchableOpacity>
-                    </TouchableOpacity>
-                )}
-            />
+                    )}
+                />
+            ) : (
+                <ActivityIndicator size="large" color="#0000ff" />
+            )}
         </View>
     )
 }
