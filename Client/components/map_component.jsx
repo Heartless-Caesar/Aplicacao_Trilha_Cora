@@ -60,7 +60,7 @@ const MapScreen = ({ navigation }) => {
         console.log(`Id param: ${id}`)
         try {
             const response = await axios.get(
-                "http://192.168.166.171:5000/fetch",
+                `http://${process.env.BASE_URL}/fetch`,
                 {
                     params: {
                         userId: id,
@@ -153,7 +153,7 @@ const MapScreen = ({ navigation }) => {
                                     }
 
                                     await axios.patch(
-                                        "http://192.168.1.13:5000/update",
+                                        `http://${process.env.BASE_URL}/update`,
                                         {
                                             local: locationKey,
                                             userId: id,
@@ -220,7 +220,7 @@ const MapScreen = ({ navigation }) => {
             // Check if the location is close and not already validated
             if (distance <= 6000 && !isLocationValidated(locationKey)) {
                 axios
-                    .patch("http://192.168.1.13:5000/update", {
+                    .patch(`http://${process.env.BASE_URL}/update`, {
                         local: locationKey,
                         userId: id,
                     })

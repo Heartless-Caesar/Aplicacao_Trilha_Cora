@@ -56,6 +56,7 @@ const PDFDownloadPage = ({ navigation }) => {
                     fetchedLocals,
                     allowedProperties
                 )
+
                 const generatedPdfList = generatePdfList(locals)
                 setPdfList(generatedPdfList)
             } else {
@@ -67,7 +68,7 @@ const PDFDownloadPage = ({ navigation }) => {
     }
 
     const fetchData = async () => {
-        return await axios.get(`http://192.168.1.13:5000/fetch`, {
+        return await axios.get(`http://${process.env.BASE_URL}/fetch`, {
             params: {
                 userId: id,
             },
@@ -103,7 +104,7 @@ const PDFDownloadPage = ({ navigation }) => {
         try {
             // Make a POST request to your API to generate the PDF
             const response = await axios.post(
-                "http://192.168.1.13:5000/generate-pdf",
+                `http://${process.env.BASE_URL}/generate-pdf`,
                 {
                     startLocal: startLocal,
                     endLocal: endLocal,
