@@ -4,6 +4,32 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
+const createLocals = async (userId) => {
+  try {
+    await Locals.create({
+      corumba: false,
+      cocal: false,
+      pire: false,
+      frans: false,
+      jara: false,
+      ita: false,
+      itab: false,
+      cid_go: false,
+      salto: false,
+      pirineus: false,
+      caxam: false,
+      radio: false,
+      vila: false,
+      bene: false,
+      calci: false,
+      ferr: false,
+      UserId: userId,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const register_user = async (req, res) => {
   const { username, password, email } = req.body;
 
@@ -24,17 +50,7 @@ const register_user = async (req, res) => {
     });
 
     // Create a local entry for the user
-    await Locals.create({
-      corumba: false,
-      cocal: false,
-      pire: false,
-      frans: false,
-      jara: false,
-      ita: false,
-      itab: false,
-      cid_go: false,
-      UserId: new_user.id,
-    });
+    await createLocals(new_user.id);
 
     const token = jwt.sign(
       { id: new_user.id, username: new_user.username },

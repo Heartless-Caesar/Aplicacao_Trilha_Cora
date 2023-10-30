@@ -30,12 +30,17 @@ import PropTypes from "prop-types"
 
 const localNames = {
     cid_go: "Cidade de Goiás",
-    //cocal: "Cocalzinho de Goiás",
+    cocal: "Cocalzinho de Goiás",
     pire: "Pirenópolis",
     frans: "São Francisco de Goiás",
     jara: "Jaraguá",
     ita: "Itaguari",
     corumba: "Corumba",
+    ferr: "Ferreiro",
+    calc: "Calcilândia",
+    bene: "São Benedito",
+    vila: "Vila Aparecida",
+    radio: "Radiolândia",
 }
 
 /*eslint max-lines: ["error", 500]*/
@@ -114,7 +119,7 @@ const MapScreen = ({ navigation }) => {
                     },
                 })
 
-                await new Promise((resolve) => setTimeout(resolve, 500))
+                await new Promise((resolve) => setTimeout(resolve, 300))
 
                 // Check if the location is already validated (true)
                 // Check if the location is already validated (true)
@@ -134,7 +139,7 @@ const MapScreen = ({ navigation }) => {
                                 console.log(
                                     `User is close to the key location: ${locationKey}`
                                 )
-                                triggerNotification(locationKey)
+                                displayLocalNotification(locationKey)
 
                                 // Validate the location only if it's not already validated (false)
                                 if (!locationValidated) {
@@ -159,6 +164,8 @@ const MapScreen = ({ navigation }) => {
                                             userId: id,
                                         }
                                     )
+
+                                    triggerNotification(locationKey)
                                 }
 
                                 return true
@@ -231,6 +238,7 @@ const MapScreen = ({ navigation }) => {
                         console.error("Patch request error:", error)
                     })
 
+                triggerNotification(locationKey)
                 console.log("Sent to api")
             }
 
@@ -269,6 +277,11 @@ const MapScreen = ({ navigation }) => {
 
                 if (isCloseToCoordinate({ latitude, longitude })) {
                     acc.push(locationKey)
+                    const localName =
+                        localNames[locationKey] ||
+                        "Ponto de Interesse Desconhecido"
+                    const message = `Parabéns! Você passou pelo ponto de interesse: ${localName}`
+                    setNotificationMessage(message)
                 }
 
                 return acc
@@ -276,7 +289,6 @@ const MapScreen = ({ navigation }) => {
             []
         )
 
-        setNotificationMessage("Parabéns! Você passou por mais um ponto chave")
         setVisitedCoordinates(updatedVisitedCoordinates)
 
         // Salva pings em um arquivo JSON caso esteja offline
@@ -371,7 +383,6 @@ const MapScreen = ({ navigation }) => {
         )
         setIsNotificationVisible(true)
 
-        // Clear the notification after 3 seconds
         setTimeout(() => {
             setIsNotificationVisible(false)
         }, 3000)
@@ -390,8 +401,8 @@ const MapScreen = ({ navigation }) => {
                         location?.coords.latitude || INTIAL_POSITION.latitude,
                     longitude:
                         location?.coords.longitude || INTIAL_POSITION.longitude,
-                    latitudeDelta: 0.005,
-                    longitudeDelta: 0.005,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
                 }}
             >
                 {location && (
@@ -442,12 +453,13 @@ const MapScreen = ({ navigation }) => {
                     <Text style={styles.networkText}>Você está offline</Text>
                 </View>
             )}
-            {notificationMessage && (
+            {isNotificationVisible && (
                 <NotificationPopup
                     message={notificationMessage}
                     isVisible={isNotificationVisible}
                 />
             )}
+
             <Animated.View
                 style={[styles.menuContent, { opacity: menuOpacity }]}
             >

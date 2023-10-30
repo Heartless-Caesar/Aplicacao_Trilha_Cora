@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       ita: DataTypes.BOOLEAN,
       itab: DataTypes.BOOLEAN,
       cid_go: DataTypes.BOOLEAN,
+      ferr: DataTypes.BOOLEAN,
+      calc: DataTypes.BOOLEAN,
+      bene: DataTypes.BOOLEAN,
+      vila: DataTypes.BOOLEAN,
+      radio: DataTypes.BOOLEAN,
     },
     {
       sequelize,
