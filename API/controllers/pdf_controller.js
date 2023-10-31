@@ -2,58 +2,77 @@ const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
 const { options } = require("../config/pdf_options");
-const partial = fs.readFileSync(
-  path.join(`${__dirname}/../assets/partial_cert.html`)
-);
-const complete = fs.readFileSync(
-  path.join(`${__dirname}/../assets/complete_cert.html`)
-);
+const partial = fs.readFileSync(path.join(__dirname, "../assets/partial_cert.html"), "utf8");
+const complete = fs.readFileSync(path.join(__dirname, "../assets/complete_cert.html"), "utf8");
 const { User } = require("../models");
 
 const generate_trial_cert = async (req, res) => {
-  const { inicio, destino, type, userId } = req.query;
-  const document = {};
+  const { inicio, destino, userId } = req.query;
+
+  let document = {};
 
   const user = await User.findOne({ where: { id: userId } });
 
-  if (type == "partial") {
+  if (
+    (inicio !== "Cidade de Goiás" && destino !== "Corumba") ||
+    (inicio !== "Corumba" && destino !== "Cidade de Goiás")
+  ) {
     document = {
-      html: partial,
+      template: partial,
       data: {
         name: req.user.name,
         inicio: inicio,
         destino: destino,
       },
-      path: "../output",
-      type: "Stream",
+      path: "output",
     };
   } else {
     document = {
-      html: complete,
+      template: complete,
       data: {
         name: user.username,
       },
       path: null,
-      type: "Stream",
     };
   }
 
-  return pdf
-    .create(document, options)
-    .then((result) => {
-      const pdfBuffer = result[0].content;
+  const pdfTemplate = {
+    html: document.template,
+    data: document.data,
+  };
 
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=certificado.pdf"
-      );
-      res.send(pdfBuffer);
-    })
-    .catch(async (error) => {
-      console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
-      console.log(`Output error ${error}`);
+  const pdfOptions = {
+    format: "A4",
+    orientation: "portrait",
+    border: "10mm",
+  };
+
+  const pdfFile = pdf.create(pdfTemplate, pdfOptions);
+
+  if (document.path) {
+    const outputFile = path.join(__dirname, document.path, "certificado.pdf");
+    pdfFile.toFile(outputFile, (error, res) => {
+      if (error) {
+        console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
+        console.log(`Output error ${error}`);
+      } else {
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", "attachment; filename=certificado.pdf");
+        res.sendFile(outputFile);
+      }
     });
+  } else {
+    pdfFile.toStream((error, stream) => {
+      if (error) {
+        console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
+        console.log(`Output error ${error}`);
+      } else {
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", "attachment; filename=certificado.pdf");
+        stream.pipe(res);
+      }
+    });
+  }
 };
 
 module.exports = { generate_trial_cert };
