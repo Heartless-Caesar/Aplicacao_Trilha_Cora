@@ -8,11 +8,22 @@ import { UserProvider } from "./utils/userPersistence"
 import PDFDownloadPage from "./pages/pdf_screen"
 import { NetworkProvider } from "react-native-offline"
 import React from "react"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+
+import CocalScreen from "./pages/info/CocalScreen"
+import CalcilandiaScreen from "./pages/info/CalcilandiaScreen"
+import CidGoScreen from "./pages/info/CidGoScreen"
+import CorumbaScreen from "./pages/info/CorumbaScreen"
+import FerreiroScreen from "./pages/info/FerreiroScreen"
+import FranScreen from "./pages/info/FranScreen"
+import ItaguariScreen from "./pages/info/ItaguariScreen"
+import JaraScreen from "./pages/info/JaraScreen"
+import PireScreen from "./pages/info/PireScreen"
+import RadiolandiaScreen from "./pages/info/RadiolandiaScreen"
+import SaoBeneditoScreen from "./pages/info/SaoBeneditoScreen"
+import VilaAparecidaScreen from "./pages/info/VilaAparecidaScreen"
 
 export default function App() {
     const Stack = createNativeStackNavigator()
-    const Tab = createBottomTabNavigator()
 
     return (
         <NetworkProvider>
@@ -31,6 +42,51 @@ export default function App() {
                         />
                         <Stack.Screen name="Home" component={Homepage} />
                         <Stack.Screen name="PDF" component={PDFDownloadPage} />
+                        <Stack.Screen
+                            name="Cidade de Goiás"
+                            component={CidGoScreen}
+                        />
+                        <Stack.Screen
+                            name="Cocalzinho de Goiás"
+                            component={CocalScreen}
+                        />
+                        <Stack.Screen
+                            name="Pirenópolis"
+                            component={PireScreen}
+                        />
+                        <Stack.Screen
+                            name="São Francisco de Goiás"
+                            component={FranScreen}
+                        />
+                        <Stack.Screen name="Jaraguá" component={JaraScreen} />
+                        <Stack.Screen
+                            name="Itaguari"
+                            component={ItaguariScreen}
+                        />
+                        <Stack.Screen
+                            name="Corumba"
+                            component={CorumbaScreen}
+                        />
+                        <Stack.Screen
+                            name="Ferreiro"
+                            component={FerreiroScreen}
+                        />
+                        <Stack.Screen
+                            name="Calcilândia"
+                            component={CalcilandiaScreen}
+                        />
+                        <Stack.Screen
+                            name="São Benedito"
+                            component={SaoBeneditoScreen}
+                        />
+                        <Stack.Screen
+                            name="Vila Aparecida"
+                            component={VilaAparecidaScreen}
+                        />
+                        <Stack.Screen
+                            name="Radiolândia"
+                            component={RadiolandiaScreen}
+                        />
                     </Stack.Navigator>
                 </NavigationContainer>
             </UserProvider>

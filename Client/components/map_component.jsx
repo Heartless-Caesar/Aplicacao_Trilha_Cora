@@ -35,7 +35,7 @@ const localNames = {
     frans: "São Francisco de Goiás",
     jara: "Jaraguá",
     ita: "Itaguari",
-    corumba: "Corumba",
+    corumba: "Corumbá",
     ferr: "Ferreiro",
     calc: "Calcilândia",
     bene: "São Benedito",
@@ -54,10 +54,20 @@ const MapScreen = ({ navigation }) => {
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [validationPoints, setValidationPoints] = useState([])
     const [initialPosition, setInitialPosition] = useState(INTIAL_POSITION)
+    const [localKey, setLocalKey] = useState("")
+    const [showLocalPressable, setShowLocalPressable] = useState(false)
 
     const mapRef = useRef(null)
     const network = useIsConnected()
     const { id } = useUserContext()
+
+    const { navigate } = useNavigation() // Get the navigation function
+
+    const navigateToLocalScreen = () => {
+        if (localKey) {
+            navigate(localNames[localKey]) // Navigate to the local screen
+        }
+    }
 
     //Busca as localizações chave, se estiver falso manda para ser verdadeiro, se for verdadeiro nada será feito
     // * Se local ja nao tiver sido passado ao chegar proximo aquele local para aquele usuario sera validado
@@ -377,14 +387,14 @@ const MapScreen = ({ navigation }) => {
     const triggerNotification = (locationKey) => {
         const localName =
             localNames[locationKey] || "Ponto de Interesse Desconhecido"
-
-        setNotificationMessage(
-            `Parabéns! Você passou pelo ponto de interesse: ${localName}`
-        )
-        setIsNotificationVisible(true)
+        const message = `Parabéns! Você passou pelo ponto de interesse: ${localName}`
+        setNotificationMessage(message)
+        setLocalKey(locationKey) // Set the local key for navigation
+        setShowLocalPressable(true)
+        setIsVisible(true)
 
         setTimeout(() => {
-            setIsNotificationVisible(false)
+            setIsVisible(false)
         }, 3000)
     }
 
@@ -458,6 +468,16 @@ const MapScreen = ({ navigation }) => {
                     message={notificationMessage}
                     isVisible={isNotificationVisible}
                 />
+            )}
+            {showLocalPressable && (
+                <Pressable
+                    style={styles.localPressable}
+                    onPress={navigateToLocalScreen}
+                >
+                    <Text style={styles.localPressableText}>
+                        Go to {localNames[localKey]}
+                    </Text>
+                </Pressable>
             )}
 
             <Animated.View

@@ -11,7 +11,7 @@ const complete = fs.readFileSync(
 const { User } = require("../models");
 
 const generate_trial_cert = async (req, res) => {
-  const { inicio, destino, type, userId } = req.query;
+  const { inicio, destino, userId } = req.query;
   const document = {};
 
   const user = await User.findOne({ where: { id: userId } });
