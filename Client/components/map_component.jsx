@@ -27,6 +27,8 @@ import axios from "axios"
 import * as FileSystem from "expo-file-system"
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 }
 import PropTypes from "prop-types"
+import { useNavigation } from "@react-navigation/native"
+import GoToLocalPopup from "./GoToLocalNotification"
 
 const localNames = {
     cid_go: "Cidade de Goiás",
@@ -44,18 +46,22 @@ const localNames = {
 }
 
 /*eslint max-lines: ["error", 500]*/
+
 const MapScreen = ({ navigation }) => {
     const [location, setLocation] = useState(null)
     // eslint-disable-next-line no-unused-vars
     const [visitedCoordinates, setVisitedCoordinates] = useState([])
     const [notificationMessage, setNotificationMessage] = useState("")
     const [isNotificationVisible, setIsNotificationVisible] = useState(false)
+    const [isGoToLocalVisible, setIsGoToLocalVisible] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [validationPoints, setValidationPoints] = useState([])
     const [initialPosition, setInitialPosition] = useState(INTIAL_POSITION)
     const [localKey, setLocalKey] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
     const [showLocalPressable, setShowLocalPressable] = useState(false)
+    const [goToLocal, setGoToLocal] = useState("")
 
     const mapRef = useRef(null)
     const network = useIsConnected()
@@ -114,12 +120,14 @@ const MapScreen = ({ navigation }) => {
 
         setIsSimulationRunning(true)
 
+        let lastPatchTime = 0 // Variable to track the time of the last patch request
+
         try {
             for (let i = 0; i < coordinates.length; i++) {
                 const coordinate = coordinates[i]
-                console.log(
-                    `Moving to coordinate: ${JSON.stringify(coordinate)}`
-                )
+                // console.log(
+                //     `Moving to coordinate: ${JSON.stringify(coordinate)}`
+                // )
 
                 // Update the user's location (marker) on the map
                 setLocation({
@@ -131,27 +139,19 @@ const MapScreen = ({ navigation }) => {
 
                 await new Promise((resolve) => setTimeout(resolve, 300))
 
-                // Check if the location is already validated (true)
-                // Check if the location is already validated (true)
                 const locationKey = getKeyForCoordinate(coordinate)
                 const locationValidated = isLocationValidated(locationKey)
-
-                // Only send the PATCH request if the location is not validated (false)
+                console.log(locationValidated)
                 if (!locationValidated) {
-                    const closeToKeyLocation = keyLocations.some(
-                        async (keyLocation) => {
-                            const locationKey = Object.keys(keyLocation)[0]
-                            const distance = getDistance(
-                                coordinate,
-                                keyLocation[locationKey]
-                            )
-                            if (distance <= 2000) {
-                                console.log(
-                                    `User is close to the key location: ${locationKey}`
-                                )
-                                displayLocalNotification(locationKey)
+                    const currentTime = Date.now()
+                    const timeElapsed = currentTime - lastPatchTime
 
-                                // Validate the location only if it's not already validated (false)
+                    if (timeElapsed >= 30000) {
+                        // Check if 30 seconds have passed
+                        const closeToKeyLocation = keyLocations.some(
+                            async (keyLocation) => {
+                                // ... (existing code for checking location proximity)
+
                                 if (!locationValidated) {
                                     const index = validationPoints.findIndex(
                                         (point) => point === locationKey
@@ -175,17 +175,19 @@ const MapScreen = ({ navigation }) => {
                                         }
                                     )
 
+                                    lastPatchTime = Date.now() // Update the last patch time
                                     triggerNotification(locationKey)
                                 }
 
                                 return true
                             }
-                            return false
-                        }
-                    )
+                        )
 
-                    if (!closeToKeyLocation) {
-                        console.log("User is not close to any key location.")
+                        if (!closeToKeyLocation) {
+                            console.log(
+                                "User is not close to any key location."
+                            )
+                        }
                     }
                 }
             }
@@ -352,7 +354,7 @@ const MapScreen = ({ navigation }) => {
                 distanceInterval: 1,
             },
             (res) => {
-                console.log(res)
+                //console.log(res)
                 setLocation(res)
                 mapRef.current?.animateCamera({ center: res.coords })
             }
@@ -388,13 +390,15 @@ const MapScreen = ({ navigation }) => {
         const localName =
             localNames[locationKey] || "Ponto de Interesse Desconhecido"
         const message = `Parabéns! Você passou pelo ponto de interesse: ${localName}`
+        setGoToLocal(localName)
         setNotificationMessage(message)
         setLocalKey(locationKey) // Set the local key for navigation
         setShowLocalPressable(true)
         setIsVisible(true)
-
+        setIsGoToLocalVisible(true)
         setTimeout(() => {
             setIsVisible(false)
+            setIsGoToLocalVisible(false)
         }, 3000)
     }
 
@@ -447,11 +451,11 @@ const MapScreen = ({ navigation }) => {
                 <TouchableOpacity style={styles.menuIcon} onPress={toggleMenu}>
                     <Ionicons name="menu-outline" size={24} color="black" />
                 </TouchableOpacity>
-                <Image
+                {/* <Image
                     // eslint-disable-next-line no-undef
                     source={require("../assets/profile-pic.png")}
                     style={styles.profilePic}
-                />
+                /> */}
             </View>
             {/* Offline indicator */}
             {network ? (
@@ -469,17 +473,12 @@ const MapScreen = ({ navigation }) => {
                     isVisible={isNotificationVisible}
                 />
             )}
-            {showLocalPressable && (
-                <Pressable
-                    style={styles.localPressable}
-                    onPress={navigateToLocalScreen}
-                >
-                    <Text style={styles.localPressableText}>
-                        Go to {localNames[localKey]}
-                    </Text>
-                </Pressable>
+            {isGoToLocalVisible && (
+                <GoToLocalPopup
+                    location={goToLocal}
+                    isVisible={isGoToLocalVisible}
+                />
             )}
-
             <Animated.View
                 style={[styles.menuContent, { opacity: menuOpacity }]}
             >
@@ -588,6 +587,23 @@ const styles = StyleSheet.create({
     networkText: {
         fontSize: 18,
         color: "white", // You can set your preferred text color
+    },
+    goToContainer: {
+        backgroundColor: "#FAFAFA",
+        borderColor: "#000",
+        borderWidth: 1,
+        padding: 13,
+        borderRadius: 10,
+        position: "absolute",
+        height: "5%",
+        bottom: 16,
+        left: 16,
+        top: "18%",
+        right: 16,
+        alignItems: "center",
+    },
+    goToMessage: {
+        color: "#000000",
     },
 })
 
