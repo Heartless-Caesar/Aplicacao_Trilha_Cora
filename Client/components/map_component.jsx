@@ -237,7 +237,7 @@ const MapScreen = ({ navigation }) => {
             const locationKey = getKeyForCoordinate(coordinate)
 
             // Check if the location is close and not already validated
-            if (distance <= 6000 && !isLocationValidated(locationKey)) {
+            if (distance <= 6000 && isLocationValidated(locationKey) == false) {
                 axios
                     .patch(`http://${process.env.BASE_URL}/update`, {
                         local: locationKey,
@@ -387,6 +387,7 @@ const MapScreen = ({ navigation }) => {
 
     //Emular passagem de local
     const triggerNotification = (locationKey) => {
+        console.log(goToLocal)
         const localName =
             localNames[locationKey] || "Ponto de Interesse Desconhecido"
         const message = `Parabéns! Você passou pelo ponto de interesse: ${localName}`
@@ -394,10 +395,10 @@ const MapScreen = ({ navigation }) => {
         setNotificationMessage(message)
         setLocalKey(locationKey) // Set the local key for navigation
         setShowLocalPressable(true)
-        setIsVisible(true)
+        setIsNotificationVisible(true)
         setIsGoToLocalVisible(true)
         setTimeout(() => {
-            setIsVisible(false)
+            setIsNotificationVisible(false)
             setIsGoToLocalVisible(false)
         }, 3000)
     }
@@ -451,11 +452,6 @@ const MapScreen = ({ navigation }) => {
                 <TouchableOpacity style={styles.menuIcon} onPress={toggleMenu}>
                     <Ionicons name="menu-outline" size={24} color="black" />
                 </TouchableOpacity>
-                {/* <Image
-                    // eslint-disable-next-line no-undef
-                    source={require("../assets/profile-pic.png")}
-                    style={styles.profilePic}
-                /> */}
             </View>
             {/* Offline indicator */}
             {network ? (
@@ -471,14 +467,11 @@ const MapScreen = ({ navigation }) => {
                 <NotificationPopup
                     message={notificationMessage}
                     isVisible={isNotificationVisible}
+                    navigation={navigation}
+                    local={goToLocal}
                 />
             )}
-            {isGoToLocalVisible && (
-                <GoToLocalPopup
-                    location={goToLocal}
-                    isVisible={isGoToLocalVisible}
-                />
-            )}
+
             <Animated.View
                 style={[styles.menuContent, { opacity: menuOpacity }]}
             >
@@ -598,7 +591,7 @@ const styles = StyleSheet.create({
         height: "5%",
         bottom: 16,
         left: 16,
-        top: "18%",
+        top: "20%",
         right: 16,
         alignItems: "center",
     },

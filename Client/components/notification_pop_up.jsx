@@ -1,8 +1,14 @@
 // NotificationPopup.js
 import React, { useEffect, useRef } from "react"
-import { View, Text, StyleSheet, Animated } from "react-native"
+import {
+    Text,
+    StyleSheet,
+    Animated,
+    Pressable,
+    TouchableOpacity,
+} from "react-native"
 
-const NotificationPopup = ({ message, isVisible }) => {
+const NotificationPopup = ({ message, isVisible, navigation, local }) => {
     const fadeAnim = useRef(new Animated.Value(0)).current
 
     useEffect(() => {
@@ -21,11 +27,17 @@ const NotificationPopup = ({ message, isVisible }) => {
         }
     }, [fadeAnim, isVisible])
 
+    const navigateToGoToLocal = () => {
+        navigation.replace(local) // Navigate to the 'GoToLocal' page
+    }
+
     return (
         isVisible && (
+            //<TouchableOpacity onPress={navigateToGoToLocal}>
             <Animated.View style={{ ...styles.container, opacity: fadeAnim }}>
                 <Text style={styles.message}>{message}</Text>
             </Animated.View>
+            //</TouchableOpacity>
         )
     )
 }

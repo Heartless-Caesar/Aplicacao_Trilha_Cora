@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react"
-import { View, Text, StyleSheet, Animated } from "react-native"
+import { Text, StyleSheet, Animated, Pressable } from "react-native"
+import { useNavigation } from "@react-navigation/native"
 
 const GoToLocalPopup = ({ location, isVisible }) => {
     const fadeAnim = useRef(new Animated.Value(0)).current
+    const navigation = useNavigation()
 
     useEffect(() => {
         if (isVisible) {
@@ -11,17 +13,6 @@ const GoToLocalPopup = ({ location, isVisible }) => {
                 duration: 500,
                 useNativeDriver: true,
             }).start()
-
-            // Hide the popup after 3 seconds
-            const hideTimeout = setTimeout(() => {
-                Animated.timing(fadeAnim, {
-                    toValue: 0,
-                    duration: 500,
-                    useNativeDriver: true,
-                }).start()
-            }, 3000) // 3000 milliseconds = 3 seconds
-
-            return () => clearTimeout(hideTimeout) // Clean up the timeout on unmount
         } else {
             Animated.timing(fadeAnim, {
                 toValue: 0,
@@ -29,15 +20,19 @@ const GoToLocalPopup = ({ location, isVisible }) => {
                 useNativeDriver: true,
             }).start()
         }
-    }, [fadeAnim, isVisible, location])
+    }, [fadeAnim, isVisible])
 
     return (
         isVisible && (
-            <Animated.View style={{ ...styles.container, opacity: fadeAnim }}>
-                <Text style={styles.message}>
-                    Saiba mais sobre as atrações turísticas de {location}
-                </Text>
-            </Animated.View>
+            <Pressable onPress={() => navigation.navigate(location)}>
+                <Animated.View
+                    style={{ ...styles.container, opacity: fadeAnim }}
+                >
+                    <Text style={styles.message}>
+                        Saiba mais sobre as atrações turísticas de {location}
+                    </Text>
+                </Animated.View>
+            </Pressable>
         )
     )
 }
@@ -53,7 +48,7 @@ const styles = StyleSheet.create({
         height: "5%",
         bottom: 16,
         left: 16,
-        top: "18%",
+        top: "25%",
         right: 16,
         alignItems: "center",
     },
