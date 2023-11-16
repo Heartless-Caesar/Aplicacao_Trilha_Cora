@@ -3,29 +3,31 @@ const fs = require("fs");
 const path = require("path");
 const { options } = require("../config/pdf_options");
 const partial = fs.readFileSync(
-  path.join(`${__dirname}/../assets/partial_cert.html`)
+  path.join(`${__dirname}/../assets/partial_cert.html`),
+  "utf8"
 );
 const complete = fs.readFileSync(
-  path.join(`${__dirname}/../assets/complete_cert.html`)
+  path.join(`${__dirname}/../assets/complete_cert.html`),
+  "utf8"
 );
 const { User } = require("../models");
 
 const generate_trial_cert = async (req, res) => {
   const { inicio, destino, userId } = req.query;
-  const document = {};
+  let document = {};
 
   const user = await User.findOne({ where: { id: userId } });
 
-  if (type == "partial") {
+  if (inicio != "Cidade de Goiás" && destino != "Corumbá de Goiás") {
     document = {
       html: partial,
       data: {
-        name: req.user.name,
-        inicio: inicio,
+        nome: user.username,
+        origem: inicio,
         destino: destino,
       },
-      path: "../output",
-      type: "Stream",
+      path: "../output/certificado.pdf",
+      type: "Buffer",
     };
   } else {
     document = {
@@ -33,22 +35,21 @@ const generate_trial_cert = async (req, res) => {
       data: {
         name: user.username,
       },
-      path: null,
-      type: "Stream",
+      path: "../output/certificado.pdf",
+      type: "Buffer",
     };
   }
 
   return pdf
     .create(document, options)
-    .then((result) => {
-      const pdfBuffer = result[0].content;
-
+    .then(async (result) => {
+      // Assuming result is an array
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
         "attachment; filename=certificado.pdf"
       );
-      res.send(pdfBuffer);
+      res.send(result);
     })
     .catch(async (error) => {
       console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");

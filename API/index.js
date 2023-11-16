@@ -19,7 +19,7 @@ app.use(validationRouter);
 //Auth endpoints
 app.use(auth_router);
 
-app.use(auth_middleware, pdf_router);
+app.use(pdf_router);
 
 const start = async () => {
   try {
