@@ -1,7 +1,18 @@
-const pdf = require("pdf-creator-node");
-const fs = require("fs");
 const path = require("path");
+const fs = require("fs");
+const pdf = require("pdf-creator-node");
 const { options } = require("../config/pdf_options");
+const { User } = require("../models");
+let resultPath = "";
+// const partialPath = path.join(__dirname, "../assets/partial_cert.html", "utf8");
+// const completePath = path.join(
+//   __dirname,
+//   "../assets/complete_cert.html",
+//   "utf8"
+// );
+
+let outputPath = "";
+
 const partial = fs.readFileSync(
   path.join(`${__dirname}/../assets/partial_cert.html`),
   "utf8"
@@ -10,15 +21,16 @@ const complete = fs.readFileSync(
   path.join(`${__dirname}/../assets/complete_cert.html`),
   "utf8"
 );
-const { User } = require("../models");
 
 const generate_trial_cert = async (req, res) => {
   const { inicio, destino, userId } = req.query;
-  let document = {};
-
   const user = await User.findOne({ where: { id: userId } });
 
-  if (inicio != "Cidade de Goiás" && destino != "Corumbá de Goiás") {
+  let document = {};
+  let filename = "";
+
+  if (inicio !== "Cidade de Goiás" && destino !== "Corumbá de Goiás") {
+    filename = "partial_cert.pdf";
     document = {
       html: partial,
       data: {
@@ -26,34 +38,32 @@ const generate_trial_cert = async (req, res) => {
         origem: inicio,
         destino: destino,
       },
-      path: "../output/certificado.pdf",
+      path: __dirname + "/output/" + filename,
       type: "Buffer",
     };
   } else {
+    filename = "complete_cert.pdf";
     document = {
       html: complete,
       data: {
         name: user.username,
       },
-      path: "../output/certificado.pdf",
+      path: __dirname + "/output/" + filename,
       type: "Buffer",
     };
   }
 
   return pdf
     .create(document, options)
-    .then(async (result) => {
-      // Assuming result is an array
+    .then((resp) => {
+      console.log(resp);
+      // Send the file to the client
       res.setHeader("Content-Type", "application/pdf");
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=certificado.pdf"
-      );
-      res.send(result);
+      res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+      res.sendFile(resp.filename);
     })
-    .catch(async (error) => {
-      console.log("Algo de errado ocorreu ao tentar gerar o arquivo PDF");
-      console.log(`Output error ${error}`);
+    .catch((error) => {
+      console.error(error);
     });
 };
 

@@ -17,8 +17,9 @@ const options = {
       last: "Last Page",
     },
   },
+  localUrlAccess: true,
   childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
-  timeout: 1000,
+  timeout: 10000,
 };
 
 module.exports = { options };
