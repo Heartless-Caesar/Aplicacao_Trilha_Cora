@@ -14,6 +14,10 @@ import { Ionicons } from "@expo/vector-icons"
 import pdf_styles from "../styles/pdf_screen_styles"
 import { useUserContext } from "../utils/userPersistence"
 import axios from "axios"
+import { Permissions, MediaLibrary } from "expo"
+import * as FileSystem from "expo-file-system"
+import * as Sharing from "expo-sharing"
+import { Buffer } from "buffer"
 
 // eslint-disable-next-line react/prop-types
 // TODO Diminuir quantidade de itens na tela de certificados
@@ -30,6 +34,10 @@ const PDFDownloadPage = ({ navigation }) => {
         jara: "Jaraguá",
         ita: "Itaguari",
         corumba: "Corumba",
+    }
+
+    function getFileUri(name) {
+        return FileSystem.documentDirectory + `${encodeURI(name)}.pdf`
     }
 
     useEffect(() => {
@@ -101,26 +109,47 @@ const PDFDownloadPage = ({ navigation }) => {
     }
 
     const handleDownload = async (startLocal, endLocal) => {
+        console.log(startLocal + " " + endLocal)
         try {
-            // Make a POST request to your API to generate the PDF
-            const response = await axios.post(
-                `http://${process.env.BASE_URL}/generate-pdf`,
+            // Make a POST request to your API to generate the PDF using Axios
+            const response = await axios.get(
+                `http://${process.env.BASE_URL}/generate_cert`,
                 {
-                    startLocal: startLocal,
-                    endLocal: endLocal,
+                    params: {
+                        inicio: startLocal,
+                        destino: endLocal,
+                        userId: id,
+                    },
+                    headers: {
+                        "Content-Type": "application/PDF",
+                        Accept: "*/*",
+                        "Accept-Encoding": "gzip, deflate, br",
+                    },
+                    responseType: "arraybuffer",
                 }
             )
 
-            if (response.status === 200) {
-                // Handle successful response (e.g., display success message)
-                console.log("PDF generated successfully:", response.data)
-            } else {
-                // Handle unexpected response status
-                console.log("Unexpected response:", response.status)
-            }
+            const buff = Buffer.from(response.data, "base64")
+
+            const pdf = buff.toString("base64")
+            const fileUri = getFileUri("Certificado")
+            await FileSystem.writeAsStringAsync(fileUri, pdf, {
+                encoding: FileSystem.EncodingType.Base64,
+            })
+            await Sharing.shareAsync(fileUri)
         } catch (error) {
             // Handle any errors that occurred during the request
             console.error("Error:", error.message)
+        }
+    }
+
+    const saveFile = async (fileUri) => {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+        if (status === "granted") {
+            const asset = await MediaLibrary.createAssetAsync(fileUri)
+            await MediaLibrary.createAlbumAsync("Download", asset, false)
+        } else {
+            console.log("Permission denied to save file to camera roll")
         }
     }
 

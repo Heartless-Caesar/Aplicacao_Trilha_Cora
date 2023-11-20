@@ -83,7 +83,7 @@ const Register_screen = ({ navigation }) => {
                 placeholder="Email"
                 value={email}
                 setValue={setEmail}
-                secureTextEntry={false}
+                //secureTextEntry={false}
             />
 
             <CustomButton onPress={onRegisterPress} text="Register" />

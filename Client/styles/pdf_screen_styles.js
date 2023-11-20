@@ -55,7 +55,7 @@ const pdf_styles = StyleSheet.create({
     menuContent: {
         position: "absolute",
         top: "17%", // Adjust the top position as needed
-        right: "39%", // Adjust the right property to make the menu fully visible
+        right: "34%", // Adjust the right property to make the menu fully visible
         zIndex: 2, // Adjust the zIndex to make the menu appear above the content
         backgroundColor: "white",
         borderRadius: 8,

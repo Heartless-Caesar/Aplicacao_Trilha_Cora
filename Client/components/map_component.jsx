@@ -556,7 +556,7 @@ const styles = StyleSheet.create({
     menuContent: {
         position: "absolute",
         top: "12%",
-        right: "37%",
+        right: "32.5%",
         backgroundColor: "white",
         borderRadius: 8,
         elevation: 4,
