@@ -2,8 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const pdf = require("pdf-creator-node");
 const { options } = require("../config/pdf_options");
-const { User } = require("../models");
-
+const { User, certificados } = require("../models");
+const { v4: uuidv4 } = require("uuid");
 const partial = fs.readFileSync(
   path.join(`${__dirname}/../assets/partial_cert.html`),
   "utf8"
@@ -30,6 +30,18 @@ const generate_trial_cert = async (req, res) => {
 
   const inicioName = localNames[inicio] || inicio;
   const destinoName = localNames[destino] || destino;
+
+  const certificateEntry = await certificados.findOne({
+    where: { UserId: userId, origem: inicioName, destino: destinoName },
+  });
+
+  if (certificateEntry == null) {
+    await certificados.create({
+      origem: inicioName,
+      destino: destinoName,
+      UserId: userId,
+    });
+  }
 
   let document = {};
   const timestamp = new Date().toISOString().replace(/[^a-zA-Z0-9]/g, "");

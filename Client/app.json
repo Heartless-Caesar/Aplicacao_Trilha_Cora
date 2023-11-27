@@ -23,6 +23,8 @@
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#FFFFFF"
             },
+            "windowSoftInputMode": "adjustPan",
+            "softwareKeyboardLayoutMode": "pan",
             "permissions": ["INTERNET"]
         },
         "web": {

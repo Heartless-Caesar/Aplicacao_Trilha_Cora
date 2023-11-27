@@ -28,7 +28,7 @@ import * as FileSystem from "expo-file-system"
 const INTIAL_POSITION = { latitude: -15.924442, longitude: -48.80753 }
 import PropTypes from "prop-types"
 import { useNavigation } from "@react-navigation/native"
-import GoToLocalPopup from "./GoToLocalNotification"
+import Menu_Bar from "./menu_bar"
 
 const localNames = {
     cid_go: "Cidade de Goiás",
@@ -448,11 +448,9 @@ const MapScreen = ({ navigation }) => {
                 />
             </MapView>
 
-            <View style={styles.floatingRectangle}>
-                <TouchableOpacity style={styles.menuIcon} onPress={toggleMenu}>
-                    <Ionicons name="menu-outline" size={24} color="black" />
-                </TouchableOpacity>
-            </View>
+            {/* Nav bar */}
+            <Menu_Bar />
+
             {/* Offline indicator */}
             {network ? (
                 <View style={styles.networkFloatingRectangle}>
@@ -472,25 +470,6 @@ const MapScreen = ({ navigation }) => {
                 />
             )}
 
-            <Animated.View
-                style={[styles.menuContent, { opacity: menuOpacity }]}
-            >
-                {/* Add your menu items here */}
-                <Pressable
-                    onPress={() => {
-                        // eslint-disable-next-line react/prop-types
-                        navigation.replace("PDF")
-                    }}
-                >
-                    <Text style={styles.menuItem}>Certificados</Text>
-                </Pressable>
-                <Text style={styles.menuItem}>Informações turísticas</Text>
-                {/* ... */}
-            </Animated.View>
-
-            {/* <View style={home_styles.notificationButton}>
-        <Button title="Trigger Notification" onPress={triggerNotification} />
-      </View> */}
             <View
                 style={{
                     position: "absolute",
@@ -568,7 +547,7 @@ const styles = StyleSheet.create({
     },
     networkFloatingRectangle: {
         position: "absolute",
-        top: "13%",
+        top: "14%",
         left: 20,
         right: 20,
         alignItems: "center",

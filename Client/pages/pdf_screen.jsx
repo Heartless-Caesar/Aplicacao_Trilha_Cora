@@ -5,12 +5,9 @@ import {
     Text,
     TouchableOpacity,
     Animated,
-    Image,
-    Pressable,
     FlatList,
     ActivityIndicator,
 } from "react-native"
-import { Ionicons } from "@expo/vector-icons"
 import pdf_styles from "../styles/pdf_screen_styles"
 import { useUserContext } from "../utils/userPersistence"
 import axios from "axios"
@@ -18,6 +15,8 @@ import { Permissions, MediaLibrary } from "expo"
 import * as FileSystem from "expo-file-system"
 import * as Sharing from "expo-sharing"
 import { Buffer } from "buffer"
+import Menu_Bar from "../components/menu_bar"
+import { Ionicons } from "@expo/vector-icons"
 
 // eslint-disable-next-line react/prop-types
 // TODO Diminuir quantidade de itens na tela de certificados
@@ -176,37 +175,7 @@ const PDFDownloadPage = ({ navigation }) => {
     return (
         <View style={pdf_styles.container}>
             {/* Components Below */}
-
-            {/* Menu */}
-            <View style={pdf_styles.floatingRectangle}>
-                <TouchableOpacity
-                    style={pdf_styles.menuIcon}
-                    onPress={toggleMenu}
-                >
-                    <Ionicons name="menu-outline" size={24} color="black" />
-                </TouchableOpacity>
-                <Image
-                    source={import("../assets/profile-pic.png")}
-                    style={pdf_styles.profilePic}
-                />
-            </View>
-
-            {/* Menu itself */}
-            <Animated.View
-                style={[pdf_styles.menuContent, { opacity: menuOpacity }]}
-            >
-                {/* Add your menu items here */}
-                <Pressable
-                    onPress={() => {
-                        // eslint-disable-next-line react/prop-types
-                        navigation.replace("Home")
-                    }}
-                >
-                    <Text style={pdf_styles.menuItem}>Home</Text>
-                </Pressable>
-                <Text style={pdf_styles.menuItem}>Informações turísticas</Text>
-                {/* Insert more items in menu */}
-            </Animated.View>
+            <Menu_Bar />
             {pdfList && pdfList.length > 0 ? (
                 <FlatList
                     data={filteredPdfList}
@@ -217,11 +186,14 @@ const PDFDownloadPage = ({ navigation }) => {
                             style={pdf_styles.pdfContainer}
                         >
                             <Text style={pdf_styles.pdfTitle}>
-                                Certificado de {localNames[item.startLocal]} a{" "}
+                                Certificado de {localNames[item.startLocal]} à{" "}
                                 {localNames[item.endLocal]}
                             </Text>
                             <TouchableOpacity
-                                style={pdf_styles.downloadButton}
+                                style={[
+                                    pdf_styles.downloadButton,
+                                    { marginLeft: "2%" },
+                                ]}
                                 onPress={() =>
                                     handleDownload(
                                         item.startLocal,
@@ -230,7 +202,11 @@ const PDFDownloadPage = ({ navigation }) => {
                                 }
                             >
                                 <Text style={pdf_styles.buttonText}>
-                                    Download
+                                    Share
+                                    <Ionicons
+                                        name="share-social-outline"
+                                        style={{ marginLeft: "3%" }}
+                                    />
                                 </Text>
                             </TouchableOpacity>
                         </TouchableOpacity>
