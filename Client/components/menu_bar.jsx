@@ -104,6 +104,14 @@ const Menu_Bar = () => {
                         >
                             <Text style={styles.menuItem}>Validação</Text>
                         </Pressable>
+                        <Pressable
+                            onPress={() => {
+                                // eslint-disable-next-line react/prop-types
+                                navigation.replace("Login")
+                            }}
+                        >
+                            <Text style={styles.menuItem}>Sair</Text>
+                        </Pressable>
                     </>
                 )}
             </Animated.View>

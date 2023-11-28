@@ -14,6 +14,7 @@ import Menu_Bar from "../components/menu_bar"
 
 const Validation_Check = () => {
     const [identifier, setIdentifier] = useState(0)
+    const [identifierText, setIdentifierText] = useState()
     const [result, setResult] = useState([])
     const [loading, setLoading] = useState(false)
     const [errorText, setErrorText] = useState(null)
@@ -36,8 +37,12 @@ const Validation_Check = () => {
                 setResult([])
             } else {
                 setResult([res.data])
+                setIdentifierText(identifier)
+                console.log(result)
                 setErrorText(null)
             }
+
+            setIdentifier()
         } catch (error) {
             console.error("Error fetching result:", error)
             setErrorText("Erro na busca do certificado")
@@ -75,13 +80,16 @@ const Validation_Check = () => {
                         result.map((item, index) => (
                             <View key={index} style={styles.resultItem}>
                                 <Text style={styles.emphasizedText}>
+                                    Usuário: {item.user.name}
+                                </Text>
+                                <Text style={styles.emphasizedText}>
+                                    Identificador: {identifierText}
+                                </Text>
+                                <Text style={styles.emphasizedText}>
                                     Origem: {item.certificate.origem}
                                 </Text>
                                 <Text style={styles.emphasizedText}>
                                     Destino: {item.certificate.destino}
-                                </Text>
-                                <Text style={styles.emphasizedText}>
-                                    Usuário: {item.user.username}
                                 </Text>
                             </View>
                         ))

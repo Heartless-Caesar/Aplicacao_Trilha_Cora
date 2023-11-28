@@ -9,6 +9,7 @@ import axios from "axios"
 
 const Register_screen = ({ navigation }) => {
     const [username, setUsername] = useState("")
+    const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [checkPassword, setCheckPassword] = useState("")
@@ -25,6 +26,7 @@ const Register_screen = ({ navigation }) => {
                 "http://192.168.1.13:5000/Register",
                 {
                     username: username,
+                    name: name,
                     password: password,
                     email: email,
                 }
@@ -61,19 +63,20 @@ const Register_screen = ({ navigation }) => {
             />
 
             <CustomInput
-                placeholder="Username"
+                placeholder="Usuário"
                 value={username}
                 setValue={setUsername}
             />
+            <CustomInput placeholder="Nome" value={name} setValue={setName} />
             <CustomInput
-                placeholder="Password"
+                placeholder="Senha"
                 value={password}
                 setValue={setPassword}
                 secureTextEntry={true}
             />
 
             <CustomInput
-                placeholder="Confirm password"
+                placeholder="Confirmar Senha"
                 value={checkPassword}
                 setValue={setCheckPassword}
                 secureTextEntry={true}

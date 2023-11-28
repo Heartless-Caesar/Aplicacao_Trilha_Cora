@@ -31,9 +31,9 @@ const createLocals = async (userId) => {
 };
 
 const register_user = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, name } = req.body;
 
-  if (!username || !password || !email) {
+  if (!username || !password || !email || !name) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ Message: "Por favor insira todas as credenciais" });
@@ -45,6 +45,7 @@ const register_user = async (req, res) => {
     // Create the user
     const new_user = await User.create({
       username: username,
+      name: name,
       password: hashed_password,
       email: email,
     });

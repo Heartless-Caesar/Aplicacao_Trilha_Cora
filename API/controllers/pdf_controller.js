@@ -51,7 +51,7 @@ const generate_trial_cert = async (req, res) => {
 
   console.log(inicioName);
   console.log(destinoName);
-
+  console.log(user.name);
   if (
     (inicioName != "Cidade de Goiás" && destinoName != "Corumba") ||
     (inicioName != "Corumba" && destinoName != "Cidade de Goiás")
@@ -59,7 +59,7 @@ const generate_trial_cert = async (req, res) => {
     document = {
       html: partial,
       data: {
-        nome: user.username,
+        nome: user.name,
         origem: inicioName,
         destino: destinoName,
       },
