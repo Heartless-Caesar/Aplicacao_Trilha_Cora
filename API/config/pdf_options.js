@@ -1,25 +1,23 @@
-const options = {
-  format: "A4",
-  orientation: "landscape",
-  border: "10mm",
-  header: {
-    height: "10mm",
-    contents:
-      '<div style="text-align: center;">Certificado Trilha de Cora Coralina</div>',
-  },
-  // footer: {
-  //   height: "10mm",
-  //   contents: {
-  //     first: "Cover page",
-  //     2: "Second page", // Any page number is working. 1-based index
-  //     default:
-  //       '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
-  //     last: "Last Page",
-  //   },
-  // },
-  localUrlAccess: true,
-  childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
-  timeout: 10000,
+const options = (id) => {
+  return {
+    format: "A4",
+    orientation: "landscape",
+    border: "10mm",
+    header: {
+      height: "60mm",
+      // contents:
+      //   '<div style="text-align: center; margin: auto;">Certificado Trilha de Cora Coralina</div>',
+    },
+    footer: {
+      height: "10mm",
+      contents: {
+        default: `<span style="color: #444;">Identificador único: ${id}</span>`,
+      },
+    },
+    localUrlAccess: true,
+    childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+    timeout: 10000,
+  };
 };
 
 module.exports = { options };

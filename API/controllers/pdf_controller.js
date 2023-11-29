@@ -4,6 +4,7 @@ const pdf = require("pdf-creator-node");
 const { options } = require("../config/pdf_options");
 const { User, certificados } = require("../models");
 const { v4: uuidv4 } = require("uuid");
+const { StatusCodes } = require("http-status-codes");
 const partial = fs.readFileSync(
   path.join(`${__dirname}/../assets/partial_cert.html`),
   "utf8"
@@ -25,7 +26,7 @@ const generate_trial_cert = async (req, res) => {
     ita: "Itaguari",
     corumba: "Corumba",
   };
-
+  let possibleId = null;
   // TODO Implementar hash JWT identificador único
 
   const inicioName = localNames[inicio] || inicio;
@@ -36,11 +37,13 @@ const generate_trial_cert = async (req, res) => {
   });
 
   if (certificateEntry == null) {
-    await certificados.create({
+    const cert = await certificados.create({
       origem: inicioName,
       destino: destinoName,
       UserId: userId,
     });
+
+    possibleId = cert.id;
   }
 
   let document = {};
@@ -77,8 +80,15 @@ const generate_trial_cert = async (req, res) => {
     };
   }
 
+  if (possibleId != null) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: "Certificado não possível de ser gerado",
+      possibleId: possibleId,
+    });
+  }
+
   return pdf
-    .create(document, options)
+    .create(document, options(certificateEntry.id))
     .then((resp) => {
       console.log(resp);
       // Send the file to the client
