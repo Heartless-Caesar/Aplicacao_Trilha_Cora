@@ -43,5 +43,5 @@ npm install
 Após buscar todas as dependências basta utilizar o comando:
 
 ```Bash
-npm run dev
+npm start
 ```
