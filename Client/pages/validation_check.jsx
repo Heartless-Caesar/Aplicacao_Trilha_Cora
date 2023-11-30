@@ -95,7 +95,7 @@ const Validation_Check = () => {
                         ))
                     ) : (
                         <Text style={styles.emptyResultText}>
-                            Certificado não encontrado
+                            Busque por um certificado válido
                         </Text>
                     )}
                 </View>
