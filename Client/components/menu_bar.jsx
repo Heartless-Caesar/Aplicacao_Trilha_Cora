@@ -112,6 +112,14 @@ const Menu_Bar = () => {
                         >
                             <Text style={styles.menuItem}>Sair</Text>
                         </Pressable>
+                        <Pressable
+                            onPress={() => {
+                                // eslint-disable-next-line react/prop-types
+                                navigation.replace("Locals")
+                            }}
+                        >
+                            <Text style={styles.menuItem}>Locais</Text>
+                        </Pressable>
                     </>
                 )}
             </Animated.View>

@@ -16,7 +16,6 @@ import {
     LocationAccuracy,
 } from "expo-location"
 import MapView, { Polyline, PROVIDER_GOOGLE, Marker } from "react-native-maps"
-import { Ionicons } from "@expo/vector-icons"
 import { getDistance } from "geolib"
 import NotificationPopup from "./notification_pop_up"
 import { useIsConnected } from "react-native-offline"

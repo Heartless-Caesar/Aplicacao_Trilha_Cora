@@ -9,12 +9,21 @@ import PDFDownloadPage from "./pages/pdf_screen"
 import { NetworkProvider } from "react-native-offline"
 import React from "react"
 import Validation_Check from "./pages/validation_check"
+import Cocal from "./pages/info/Cocal"
+import Corumba from "./pages/info/Corumba"
+import Fran from "./pages/info/Fran"
+import Itab from "./pages/info/Itab"
+import Ita from "./pages/info/Itaguari"
+import Jara from "./pages/info/Jara"
+import Pire from "./pages/info/Pire"
+
+import Locals from "./pages/Locals"
 
 export default function App() {
     const Stack = createNativeStackNavigator()
 
     return (
-        <NetworkProvider>
+        <NetworkProvider pingOnlyIfOffline={true}>
             <UserProvider>
                 <NavigationContainer>
                     <StatusBar style="auto" />
@@ -32,8 +41,16 @@ export default function App() {
                             name="Validate"
                             component={Validation_Check}
                         />
+                        <Stack.Screen name="Locals" component={Locals} />
                         <Stack.Screen name="Home" component={Homepage} />
                         <Stack.Screen name="PDF" component={PDFDownloadPage} />
+                        <Stack.Screen name="Cocal" component={Cocal} />
+                        <Stack.Screen name="Corumba" component={Corumba} />
+                        <Stack.Screen name="Fran" component={Fran} />
+                        <Stack.Screen name="Itab" component={Itab} />
+                        <Stack.Screen name="Ita" component={Ita} />
+                        <Stack.Screen name="Jara" component={Jara} />
+                        <Stack.Screen name="Pire" component={Pire} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </UserProvider>
